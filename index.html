@@ -1337,7 +1337,7 @@ document.addEventListener("DOMContentLoaded", () => {
 setTimeout(() => { let splash = document.getElementById("splash"); if(splash && !splash.classList.contains("hideSplash")) { splash.classList.add("hideSplash"); setTimeout(() => splash.remove(), 800); } }, 3000);
 
 // ===================== UNREGISTERED SCAN MODULE =====================
-const SCAN_PROXY = 'https://136.83.12.65/scan-proxy.php';
+const SCAN_API_BASE = '/api/superassets/v1';
 let unregModeActive = false;
 let unregFilterActive = false;
 let unregDids = new Set();
@@ -1349,6 +1349,7 @@ let scanQueue = [];
 let scanInterval = null;
 let scanProcessed = 0;
 let scanIsRunning = false;
+let scanRequestInFlight = false;
 let scanTargetsMap = {};
 
 function toggleUnregMode() {
@@ -1423,12 +1424,44 @@ const HARDCODED_SERVICES = ["gosats","bigbasket","meesho","plutos","starexch","s
 let svcPage = 0;
 const SVC_PER_PAGE = 10;
 
+async function scanApiFetch(path, options = {}) {
+  const headers = { ...(options.headers || {}) };
+
+  let res;
+  try {
+    res = await fetch(SCAN_API_BASE + path, {
+      ...options,
+      headers
+    });
+  } catch (e) {
+    const err = new Error('BROWSER BLOCKED API REQUEST. USE A SERVER PROXY.');
+    err.networkBlocked = true;
+    err.cause = e;
+    throw err;
+  }
+
+  let data = null;
+  try {
+    data = await res.json();
+  } catch (e) {
+    data = {};
+  }
+
+  if (!res.ok) {
+    const msg = data.detail || data.message || data.error || `HTTP ${res.status}`;
+    const err = new Error(Array.isArray(msg) ? JSON.stringify(msg) : String(msg));
+    err.status = res.status;
+    throw err;
+  }
+
+  return data;
+}
+
 async function fetchScanServices() {
   const grid = document.getElementById('scan-services-grid');
   try {
-    const res = await fetch(SCAN_PROXY + '?action=services');
-    const data = await res.json();
-    scanServices = Array.isArray(data) ? data : (data.services || []);
+    const data = await scanApiFetch('/services');
+    scanServices = Array.isArray(data) ? data : (data.services || data.data || []);
     if (!scanServices.length) throw new Error('empty');
   } catch (e) {
     scanServices = HARDCODED_SERVICES;
@@ -1582,6 +1615,7 @@ async function startUnregScan() {
 }
 
 async function processNextScanItem() {
+  if (scanRequestInFlight) return;
   if (scanProcessed >= scanQueue.length) {
     stopUnregScan();
     document.getElementById('scan-progress-status').textContent = 'SCAN COMPLETE ✓';
@@ -1598,17 +1632,24 @@ async function processNextScanItem() {
   document.getElementById('scan-progress-bar').style.width = pct + '%';
   document.getElementById('scan-progress-status').textContent = `SCANNING ${scanProcessed + 1} / ${scanQueue.length} — ${item.number}`;
 
+  scanRequestInFlight = true;
   try {
-    let res = await fetch(SCAN_PROXY + '?action=check', {
+    let data = await scanApiFetch('/check', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ number: item.number, service: scanSelectedService })
     });
-    let data = await res.json();
 
     // Rate-limited — retry same number on next tick
     if (data.detail && data.detail.includes('Rate limit')) {
       document.getElementById('scan-progress-status').textContent = `RATE LIMITED — RETRYING ${item.number}...`;
+      return;
+    }
+
+    if (data.detail && /maintenance|down/i.test(String(data.detail))) {
+      stopUnregScan();
+      document.getElementById('scan-progress-status').textContent = 'SERVICE DOWN';
+      showToast(String(data.detail).toUpperCase());
       return;
     }
 
@@ -1620,7 +1661,8 @@ async function processNextScanItem() {
     }
 
     // Valid response — advance to next number
-    if (data.is_registered === false) {
+    const isRegistered = data.is_registered ?? data.registered ?? data.isRegistered;
+    if (isRegistered === false) {
       unregDids.add(item.did);
       document.getElementById('scan-result-text').textContent = unregDids.size + ' UNREGISTERED FOUND SO FAR';
     }
@@ -1628,7 +1670,32 @@ async function processNextScanItem() {
   } catch (e) {
     // Network error — retry same number on next tick
     document.getElementById('scan-progress-status').textContent = `ERR: ${e.message} — RETRYING ${item.number}`;
-    console.error('SCAN ERROR:', e, 'URL:', SCAN_PROXY);
+    if (e.networkBlocked) {
+      stopUnregScan();
+      document.getElementById('scan-progress-status').textContent = 'API BLOCKED BY BROWSER';
+      showToast('CORS BLOCKED. USE SERVER PROXY.');
+      console.error('SCAN ERROR:', e, 'URL:', SCAN_API_BASE);
+      return;
+    }
+    if (e.status === 401 || e.status === 403) {
+      stopUnregScan();
+      document.getElementById('scan-progress-status').textContent = 'API AUTH FAILED';
+      showToast(e.message.toUpperCase());
+      return;
+    }
+    if (e.status === 429 || /rate limit/i.test(e.message)) {
+      document.getElementById('scan-progress-status').textContent = `RATE LIMITED - RETRYING ${item.number}...`;
+      return;
+    }
+    if (/maintenance|down/i.test(e.message)) {
+      stopUnregScan();
+      document.getElementById('scan-progress-status').textContent = 'SERVICE DOWN';
+      showToast(e.message.toUpperCase());
+      return;
+    }
+    console.error('SCAN ERROR:', e, 'URL:', SCAN_API_BASE);
+  } finally {
+    scanRequestInFlight = false;
   }
 }
 
