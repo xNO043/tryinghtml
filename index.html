@@ -371,61 +371,94 @@ html, body {
 
 
 /* ===================== UNREGISTERED MODE STYLES ===================== */
-.unreg-toggle-wrap { display:flex; align-items:center; justify-content:center; gap:12px; padding:10px 0; margin: 8px 16px; }
-.unreg-toggle-label { font-size:12px; font-weight:800; color:#e2d8f0; letter-spacing:1.5px; text-transform:uppercase; white-space:nowrap; }
+.unreg-toggle-wrap { width:max-content; max-width:calc(100% - 60px); display:flex; align-items:center; justify-content:flex-end; gap:12px; padding:9px 12px 9px 16px; margin:8px 30px 12px auto; position:relative; z-index:10; border:1px solid rgba(0,255,204,0.28); border-radius:999px; background:linear-gradient(90deg, rgba(0,255,204,0.08), rgba(0,255,128,0.035)); box-shadow:0 0 18px rgba(0,255,204,0.13), inset 0 0 16px rgba(0,255,128,0.05); backdrop-filter:blur(8px); }
+.unreg-toggle-label { font-size:12px; font-weight:900; color:#00ffd5; letter-spacing:1.35px; text-transform:uppercase; white-space:nowrap; text-shadow:0 0 8px rgba(0,255,213,0.9), 0 0 18px rgba(0,255,128,0.55); }
 .unreg-toggle { position:relative; width:48px; height:26px; border-radius:13px; background:rgba(255,255,255,0.08); border:1.5px solid var(--obsidian-border); cursor:pointer; transition:all 0.3s ease; flex-shrink:0; }
 .unreg-toggle .unreg-knob { position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#71717a; transition:all 0.3s ease; box-shadow:0 0 4px rgba(0,0,0,0.3); }
 .unreg-toggle.on { background:rgba(0,255,128,0.12); border-color:#00ff80; box-shadow:0 0 18px rgba(0,255,128,0.35); }
 .unreg-toggle.on .unreg-knob { left:25px; background:#00ff80; box-shadow:0 0 12px rgba(0,255,128,0.7); }
 .unreg-toggle.off-flash { background:rgba(255,51,102,0.15); border-color:#ff3366; box-shadow:0 0 18px rgba(255,51,102,0.4); }
 .unreg-toggle.off-flash .unreg-knob { background:#ff3366; box-shadow:0 0 12px rgba(255,51,102,0.7); }
+@media (max-width:640px) {
+  .unreg-toggle-wrap { max-width:calc(100% - 24px); justify-content:center; gap:7px; padding:8px 10px 8px 12px; margin:8px auto 12px auto; }
+  .unreg-toggle-label { font-size:9px; line-height:1; letter-spacing:0.75px; white-space:nowrap; text-align:right; max-width:none; }
+}
 
-/* Scan Overlay Card */
-.scan-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:9999; display:none; justify-content:center; align-items:center; padding:16px; backdrop-filter:blur(8px); }
+/* Scan Overlay Wizard */
+.scan-overlay { position:fixed; inset:0; width:100%; height:100%; background:rgba(0,0,0,0.86); z-index:9999; display:none; justify-content:center; align-items:center; padding:16px; backdrop-filter:blur(10px); }
 .scan-overlay.open { display:flex; }
-.scan-card { background:var(--obsidian-deep); border:1px solid var(--obsidian-border); border-radius:16px; width:100%; max-width:380px; max-height:85vh; overflow-y:auto; padding:20px; position:relative; }
-.scan-card-title { font-size:13px; font-weight:900; color:var(--text-bright); letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; text-align:center; }
-.scan-card-close { position:absolute; top:12px; right:14px; font-size:18px; color:var(--text-dim); cursor:pointer; z-index:2; }
+.scan-card { background:#020204; border:1px solid rgba(0,229,255,0.24); border-radius:18px; width:100%; max-width:440px; max-height:88vh; overflow-y:auto; padding:20px; position:relative; box-shadow:0 0 30px rgba(0,229,255,0.12), inset 0 0 22px rgba(0,255,128,0.03); }
+.scan-card::-webkit-scrollbar { display:none; }
+.scan-card-title { font-size:15px; font-weight:900; color:var(--text-bright); letter-spacing:2px; text-transform:uppercase; margin-bottom:16px; text-align:center; text-shadow:0 0 13px var(--primary); }
+.scan-card-close { position:absolute; top:12px; right:14px; font-size:20px; color:var(--text-dim); cursor:pointer; z-index:2; }
+.scan-step { display:none; }
+.scan-step.active { display:block; animation:scanStepIn .22s ease-out; }
+@keyframes scanStepIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.scan-step-head { display:flex; align-items:center; justify-content:center; min-height:34px; margin-bottom:14px; position:relative; }
+.scan-back-btn { position:absolute; left:0; top:0; min-width:52px; padding:8px 10px; border-radius:10px; border:1px solid rgba(0,229,255,0.55); background:transparent; color:#00e5ff; font-size:10px; font-weight:900; letter-spacing:1px; box-shadow:0 0 12px rgba(0,229,255,0.22); cursor:pointer; }
+.scan-back-btn:active, .scan-action-btn:active, .scan-show-all-btn:active { transform:scale(0.96); }
 
-/* Firebase input row in scan card */
 .scan-fb-input-row { display:flex; gap:8px; margin-bottom:14px; }
-.scan-fb-input { flex:1; background:rgba(255,255,255,0.04); border:1px solid var(--obsidian-border); border-radius:8px; padding:8px 12px; color:var(--text-bright); font-size:11px; font-family:inherit; outline:none; }
-.scan-fb-input:focus { border-color:var(--primary); box-shadow:0 0 8px rgba(168,85,247,0.3); }
+.scan-fb-input { flex:1; background:rgba(0,229,255,0.04); border:1px solid rgba(0,229,255,0.24); border-radius:12px; padding:13px 14px; color:#d9fbff; font-size:13px; font-family:'JetBrains Mono', monospace; outline:none; box-shadow:inset 0 0 15px rgba(0,0,0,0.8); }
+.scan-fb-input:focus { border-color:#00e5ff; box-shadow:0 0 14px rgba(0,229,255,0.25), inset 0 0 15px rgba(0,0,0,0.8); }
 .scan-fb-input::placeholder { color:var(--text-dim); }
-.scan-btn { background:linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; border:none; border-radius:8px; padding:8px 16px; font-size:10px; font-weight:900; letter-spacing:1.5px; cursor:pointer; white-space:nowrap; text-transform:uppercase; }
-.scan-btn:active { transform:scale(0.95); }
-
-/* Firebase list in scan card */
-.scan-fb-list { margin-bottom:14px; }
-.scan-fb-item { display:flex; align-items:center; gap:10px; padding:10px; border:1px solid var(--obsidian-border); border-radius:10px; margin-bottom:8px; cursor:pointer; transition:all 0.2s; }
-.scan-fb-item:hover { border-color:var(--primary); }
+.scan-fb-list { margin-bottom:12px; }
+.scan-fb-item { display:flex; align-items:center; gap:12px; padding:14px 12px; border:1px solid rgba(0,229,255,0.18); border-radius:13px; margin-bottom:10px; cursor:pointer; transition:all 0.2s; background:rgba(255,255,255,0.025); }
+.scan-fb-item:hover { border-color:#00e5ff; box-shadow:0 0 13px rgba(0,229,255,0.16); }
 .scan-fb-item.selected { border-color:#00ff80; background:rgba(0,255,128,0.06); }
-.scan-fb-check { width:20px; height:20px; border-radius:6px; border:2px solid var(--obsidian-border); display:flex; align-items:center; justify-content:center; font-size:12px; color:transparent; transition:all 0.2s; flex-shrink:0; }
+.scan-fb-check { width:24px; height:24px; border-radius:8px; border:2px solid rgba(0,229,255,0.42); display:flex; align-items:center; justify-content:center; font-size:13px; color:transparent; transition:all 0.2s; flex-shrink:0; }
 .scan-fb-item.selected .scan-fb-check { border-color:#00ff80; color:#00ff80; background:rgba(0,255,128,0.1); box-shadow:0 0 10px rgba(0,255,128,0.3); }
-.scan-fb-url { font-size:10px; color:var(--text-dim); word-break:break-all; flex:1; }
-.scan-fb-item.selected .scan-fb-url { color:var(--text-bright); }
-.scan-show-all-btn { display:block; width:100%; text-align:center; background:none; border:1px solid var(--obsidian-border); border-radius:8px; padding:8px; color:var(--text-dim); font-size:10px; font-weight:700; cursor:pointer; letter-spacing:1px; margin-bottom:14px; }
-.scan-show-all-btn:hover { border-color:var(--primary); color:var(--text-bright); }
+.scan-fb-url { font-size:12px; color:#00b7ff; word-break:break-all; flex:1; font-family:'JetBrains Mono', monospace; font-weight:800; text-shadow:0 0 10px rgba(0,183,255,0.55); line-height:1.35; }
+.scan-fb-item.selected .scan-fb-url { color:#d9fbff; text-shadow:0 0 10px rgba(0,255,128,0.65); }
+.scan-fb-state { font-size:9px; color:#00ff80; font-weight:900; letter-spacing:1px; text-transform:uppercase; margin-top:3px; }
+.scan-show-all-btn { display:block; width:100%; text-align:center; background:transparent; border:1px solid rgba(0,229,255,0.45); border-radius:10px; padding:11px; color:#00e5ff; font-size:11px; font-weight:900; cursor:pointer; letter-spacing:1.2px; margin-bottom:2px; box-shadow:0 0 12px rgba(0,229,255,0.12); }
+.scan-show-all-btn:hover { color:#d9fbff; border-color:#00e5ff; }
 
-/* Service selection card */
-.scan-services-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; max-height:200px; overflow-y:auto; }
-.scan-svc-item { padding:10px; border:1px solid var(--obsidian-border); border-radius:8px; text-align:center; font-size:10px; font-weight:800; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:all 0.2s; }
+.scan-services-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; max-height:260px; overflow-y:auto; padding-right:2px; }
+.scan-services-grid::-webkit-scrollbar { display:none; }
+.scan-svc-item { padding:14px 10px; border:1px solid var(--obsidian-border); border-radius:10px; text-align:center; font-size:12px; font-weight:900; color:var(--text-dim); letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:all 0.2s; background:rgba(255,255,255,0.025); }
 .scan-svc-item:hover { border-color:var(--primary); color:var(--text-bright); }
-.scan-svc-item.selected { border-color:#00ff80; color:#00ff80; background:rgba(0,255,128,0.08); box-shadow:0 0 8px rgba(0,255,128,0.2); }
-.scan-default-btn { display:block; width:100%; padding:10px; border:1px solid var(--obsidian-border); border-radius:8px; background:none; color:var(--text-dim); font-size:10px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; cursor:not-allowed; opacity:0.4; transition:all 0.3s; text-align:center; }
-.scan-default-btn.active { cursor:pointer; opacity:1; border-color:#00ff80; color:#00ff80; box-shadow:0 0 14px rgba(0,255,128,0.3); }
+.scan-svc-item.selected { border-color:#00ff80; color:#00ff80; background:rgba(0,255,128,0.08); box-shadow:0 0 10px rgba(0,255,128,0.24); }
+.scan-svc-nav { grid-column:1/-1; display:flex; justify-content:center; align-items:center; gap:18px; padding:10px 0 4px 0; }
+.scan-svc-arrow { border:none; background:transparent; color:#00ff80; font-size:28px; font-weight:900; line-height:1; cursor:pointer; text-shadow:0 0 12px rgba(0,255,128,0.6); }
+.scan-svc-arrow.disabled { color:#555; pointer-events:none; text-shadow:none; }
+.scan-svc-page { font-size:11px; color:#a89bb9; font-weight:800; letter-spacing:1px; }
+.scan-action-row { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:14px; }
+.scan-action-btn { flex:1; padding:13px 12px; border-radius:11px; border:1px solid rgba(0,229,255,0.62); background:transparent; color:#00e5ff; font-size:12px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; box-shadow:0 0 14px rgba(0,229,255,0.18); transition:all 0.2s; }
+.scan-action-btn:disabled { cursor:not-allowed; opacity:0.35; box-shadow:none; }
+.scan-action-btn.active { color:#d9fbff; border-color:#00b7ff; box-shadow:0 0 18px rgba(0,183,255,0.32); }
 
-/* Scanning progress card */
-.scan-progress-card { background:var(--obsidian-deep); border:1px solid var(--obsidian-border); border-radius:12px; padding:16px; margin:12px 0; }
-.scan-progress-url { font-size:10px; color:var(--text-bright); word-break:break-all; margin-bottom:8px; font-weight:700; }
-.scan-progress-status { font-size:11px; color:#00ff80; font-weight:900; letter-spacing:1.5px; margin-bottom:10px; }
-.scan-progress-bar-wrap { width:100%; height:8px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden; margin-bottom:12px; }
+.scan-progress-card { border:1px solid rgba(0,229,255,0.26); border-radius:14px; padding:16px; background:rgba(0,0,0,0.24); }
+.scan-progress-title { margin:0 0 10px 0; text-align:center; color:#00ff80; font-size:28px; line-height:1; font-weight:900; letter-spacing:3px; text-shadow:0 0 12px rgba(0,255,128,0.95), 0 0 28px rgba(0,255,128,0.55); }
+.scan-progress-url { font-size:10px; color:#00b7ff; word-break:break-all; margin-bottom:12px; font-weight:800; text-align:center; font-family:'JetBrains Mono', monospace; }
+.scan-progress-status { font-size:12px; color:#00ff80; font-weight:900; letter-spacing:1.2px; margin-bottom:10px; text-align:center; min-height:18px; }
+.scan-progress-bar-wrap { width:100%; height:8px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden; margin-bottom:13px; }
 .scan-progress-bar { height:100%; width:0%; background:linear-gradient(90deg, #00ff80, #00e5ff); border-radius:4px; transition:width 0.4s ease; box-shadow:0 0 8px rgba(0,255,128,0.4); }
-.scan-progress-btns { display:flex; gap:8px; }
-.scan-progress-btns button { flex:1; padding:10px; border-radius:8px; font-size:10px; font-weight:900; letter-spacing:1px; cursor:pointer; text-transform:uppercase; border:none; }
-.scan-live-btn { background:linear-gradient(135deg, #00ff80, #00e5ff); color:#000; }
-.scan-stop-btn { background:none; border:1px solid #ff3366 !important; color:#ff3366; }
-.scan-result-text { font-size:12px; font-weight:900; color:var(--text-bright); text-align:center; letter-spacing:1px; margin-top:10px; }
+.scan-stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+.scan-stat-box { border:1px solid rgba(0,229,255,0.18); border-radius:10px; padding:10px; background:rgba(255,255,255,0.025); }
+.scan-stat-box.wide { grid-column:1/-1; }
+.scan-stat-label { color:var(--text-dim); font-size:9px; font-weight:900; letter-spacing:1px; text-transform:uppercase; }
+.scan-stat-value { color:#d9fbff; font-size:15px; font-weight:900; margin-top:4px; text-shadow:0 0 10px rgba(0,229,255,0.55); }
+.scan-feed { max-height:210px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin:12px 0; padding-right:2px; }
+.scan-feed::-webkit-scrollbar { display:none; }
+.scan-feed-row { border:1px solid rgba(0,229,255,0.16); border-radius:10px; padding:9px 10px; background:rgba(255,255,255,0.025); font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--text-main); line-height:1.35; }
+.scan-feed-row.checking { color:#00e5ff; text-shadow:0 0 8px rgba(0,229,255,0.38); }
+.scan-feed-row.registered { color:#00ff80; border-color:rgba(0,255,128,0.34); }
+.scan-feed-row.unregistered { color:#00b7ff; border-color:rgba(0,183,255,0.52); box-shadow:0 0 12px rgba(0,183,255,0.18); }
+.scan-feed-row.error { color:#ff668a; border-color:rgba(255,51,102,0.45); }
+.scan-progress-btns { display:flex; gap:10px; }
+.scan-progress-btns button { flex:1; padding:12px 10px; border-radius:10px; font-size:11px; font-weight:900; letter-spacing:1px; cursor:pointer; text-transform:uppercase; background:transparent; border:1px solid rgba(0,229,255,0.62); color:#00e5ff; box-shadow:0 0 14px rgba(0,229,255,0.18); }
+.scan-result-text { font-size:12px; font-weight:900; color:var(--text-bright); text-align:center; letter-spacing:1px; margin-top:10px; min-height:18px; }
+
+.scan-live-target-bar { display:none; align-items:center; justify-content:space-between; gap:8px; border:1px solid rgba(0,229,255,0.34); border-radius:14px; padding:9px 10px; margin-bottom:12px; background:rgba(0,229,255,0.04); box-shadow:0 0 16px rgba(0,229,255,0.12); }
+.scan-live-target-bar.active { display:flex; }
+.scan-live-target-btn { border:1px solid rgba(0,229,255,0.6); background:transparent; color:#00e5ff; border-radius:9px; padding:8px 10px; font-size:10px; font-weight:900; cursor:pointer; box-shadow:0 0 12px rgba(0,229,255,0.2); }
+.scan-live-target-title { flex:1; text-align:center; color:#00ff80; font-size:12px; font-weight:900; letter-spacing:1.4px; text-shadow:0 0 10px rgba(0,255,128,0.85); }
+.scan-live-dots::after { content:""; animation:scanDots 1.2s steps(4,end) infinite; }
+@keyframes scanDots { 0% { content:""; } 25% { content:"."; } 50% { content:".."; } 75%,100% { content:"..."; } }
+.scan-live-target-stats { display:block; color:#d9fbff; font-size:9px; margin-top:3px; letter-spacing:.8px; text-shadow:0 0 8px rgba(0,229,255,0.45); }
+.target-card-wrapper.unreg-target-card .target-wireframe { border-color:rgba(0,183,255,0.58); box-shadow:0 0 18px rgba(0,183,255,0.18); --edge-main-color:rgba(0,183,255,.78); --edge-accent-color:rgba(0,229,255,.9); --edge-main-shadow:0 0 2px rgba(0,229,255,.55), 0 0 13px rgba(0,183,255,.34); --edge-opacity:.82; --edge-corner-opacity:.92; }
+.unreg-target-tag { position:absolute; top:-11px; right:16px; z-index:12; padding:4px 10px; border-radius:999px; border:1px solid rgba(0,183,255,0.72); background:#020204; color:#00b7ff; font-size:8px; font-weight:900; letter-spacing:1px; text-shadow:0 0 10px rgba(0,183,255,0.9); box-shadow:0 0 13px rgba(0,183,255,0.35); }
 
 </style>
 </head>
@@ -471,16 +504,16 @@ html, body {
   <input type="text" id="target-search-input" class="global-search" placeholder="🔍 Search Target..." oninput="renderFilteredList()" onfocus="forceTargetsScreen()">
 </div>
 
-<div class="unreg-toggle-wrap" id="unreg-toggle-wrap">
-  <span class="unreg-toggle-label">SHOW ONLY UNREGISTERED</span>
-  <div class="unreg-toggle" id="unreg-toggle" onclick="toggleUnregMode()">
-    <div class="unreg-knob"></div>
-  </div>
-</div>
-
 <div class="swipeWrap">
 
   <div class="screen active">
+    <div class="unreg-toggle-wrap" id="unreg-toggle-wrap">
+      <span class="unreg-toggle-label">SHOW ONLY UNREGISTERED TARGETS MODE</span>
+      <div class="unreg-toggle" id="unreg-toggle" onclick="toggleUnregMode()">
+        <div class="unreg-knob"></div>
+      </div>
+    </div>
+
     <div class="grid-container">
       <div class="grid-card tilt-card void-sweep outline-card">
         <span class="outline-edge outline-main" aria-hidden="true"></span>
@@ -547,6 +580,14 @@ html, body {
 
   <div class="screen next">
     <div style="padding-top: 5px;">
+        <div class="scan-live-target-bar" id="scan-live-target-bar">
+            <button class="scan-live-target-btn" onclick="stopLiveScanMode()">STOP</button>
+            <div class="scan-live-target-title">
+                LIVE SCANNING<span class="scan-live-dots"></span>
+                <span class="scan-live-target-stats" id="scan-live-target-stats">0/0 | REG 0 | UNREG 0</span>
+            </div>
+            <button class="scan-live-target-btn" onclick="closeLiveScanMode()">X</button>
+        </div>
         <div class="filter-container">
             <button class="filter-chip active" onclick="setFilter('GLOBAL', this)">GLOBAL</button>
             <button class="filter-chip" onclick="setFilter('HOT', this)">HOT</button>
@@ -1113,7 +1154,7 @@ function renderFilteredList(skipDebounce = false) {
                 let hasSms = t.smsDict ? Object.keys(t.smsDict).length > 0 : false;
                 let passFilter = (currentFilter === 'GLOBAL') ? true : (currentFilter === 'HOT' ? hasSms : !hasSms);
                 if(!passFilter) return false;
-                if(unregFilterActive && unregDids.size > 0 && !unregDids.has(String(t.did))) return false;
+                if(unregFilterActive && !unregDids.has(String(t.did))) return false;
                 if(searchQuery) { return (t.p1 && t.p1.includes(searchQuery)) || (t.p2 && t.p2.includes(searchQuery)) || (t.did && String(t.did).toLowerCase().includes(searchQuery)) || (t.model && String(t.model).toLowerCase().includes(searchQuery)) || (t.dbIndex && String(t.dbIndex).toLowerCase().includes(searchQuery)) || (t.c1 && String(t.c1).toLowerCase().includes(searchQuery)); }
                 return true;
             });
@@ -1147,8 +1188,10 @@ function renderFilteredList(skipDebounce = false) {
                     let p1Color = t.p1Src === 'rx' ? '#00ff80' : (t.p1Src === 'vault' ? '#00e5ff' : 'var(--text-bright)');
                     let p1Shadow = t.p1Src === 'rx' ? 'rgba(0,255,128,0.5)' : (t.p1Src === 'vault' ? 'rgba(0,229,255,0.5)' : 'var(--primary)');
 
-                    const cardWrap = document.createElement('div'); cardWrap.className = 'target-card-wrapper'; cardWrap.onclick = () => openTargetModal(safeDid);
+                    const isUnregResult = unregFilterActive && unregDids.has(safeDid);
+                    const cardWrap = document.createElement('div'); cardWrap.className = 'target-card-wrapper' + (isUnregResult ? ' unreg-target-card' : ''); cardWrap.onclick = () => openTargetModal(safeDid);
                     cardWrap.innerHTML = `
+                        ${isUnregResult ? '<div class="unreg-target-tag">UNREGISTERED</div>' : ''}
                         <div class="target-serial">TARGET ${t.serial}</div>
                         <div class="target-wireframe void-sweep outline-card">
                             ${outlineEdgesHTML}
@@ -1734,45 +1777,594 @@ async function reconnectScannedFb() {
   renderFirebaseList();
 }
 
+// ===================== SCAN WIZARD COMPLETION =====================
+let scanRegisteredCount = 0;
+let scanTotalTargets = 0;
+let scanCurrentFbUrl = '';
+let scanTargetsCache = [];
+let scanLiveModeActive = false;
+
+function scanEl(id) { return document.getElementById(id); }
+function scanEscapeHTML(value) {
+  return String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function scanInlineArg(value) {
+  return String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+function normalizeScanFbUrl(raw) {
+  let fbUrl = String(raw || '').trim();
+  if (!fbUrl) return '';
+  if (!/^https?:\/\//i.test(fbUrl)) fbUrl = 'https://' + fbUrl;
+  fbUrl = fbUrl.replace(/\/+$/, '');
+  if (!fbUrl.endsWith('.json')) fbUrl += '/.json';
+  return fbUrl;
+}
+function scanDisplayUrl(url) {
+  return String(url || '').replace(/^https?:\/\//i, '').replace(/\/\.json$/, '').replace(/\.json$/, '');
+}
+function showScanStep(step) {
+  document.querySelectorAll('#scan-overlay .scan-step').forEach(el => el.classList.remove('active'));
+  let activeStep = scanEl('scan-step-' + step);
+  if (activeStep) activeStep.classList.add('active');
+}
+function updateScanActionButtons() {
+  let enabled = !!scanSelectedService;
+  ['scan-save-btn', 'scan-continue-btn'].forEach(id => {
+    let btn = scanEl(id);
+    if (!btn) return;
+    btn.disabled = !enabled;
+    btn.classList.toggle('active', enabled);
+  });
+}
+function updateDefaultBtn() { updateScanActionButtons(); }
+
+function toggleUnregMode() {
+  const tog = scanEl('unreg-toggle');
+  if (!unregModeActive) {
+    unregModeActive = true;
+    if (tog) {
+      tog.classList.add('on');
+      tog.classList.remove('off-flash');
+    }
+    openScanOverlay();
+  } else {
+    unregModeActive = false;
+    unregFilterActive = false;
+    scanLiveModeActive = false;
+    unregDids.clear();
+    if (scanIsRunning) stopUnregScan();
+    scanQueue = [];
+    scanProcessed = 0;
+    scanRegisteredCount = 0;
+    scanTotalTargets = 0;
+    scanTargetsCache = [];
+    scanCurrentFbUrl = '';
+    if (tog) {
+      tog.classList.remove('on');
+      tog.classList.add('off-flash');
+      setTimeout(() => tog.classList.remove('off-flash'), 600);
+    }
+    closeScanOverlay();
+    updateScanLiveHeader();
+    renderFilteredList(true);
+  }
+}
+
+function openScanOverlay() {
+  let overlay = scanEl('scan-overlay');
+  if (!overlay) return;
+  overlay.classList.add('open');
+  renderScanFbList();
+  if (!scanServices.length) fetchScanServices(); else renderSvcPage();
+  showScanStep((scanIsRunning || scanProcessed > 0 || scanQueue.length > 0) ? 'progress' : 'firebase');
+  updateScanStats();
+}
+function closeScanOverlay() {
+  let overlay = scanEl('scan-overlay');
+  if (overlay) overlay.classList.remove('open');
+}
+function handleScanFbInput() {
+  let input = scanEl('scan-fb-url-input');
+  if (input && input.value.trim()) {
+    scanSelectedFbUrl = '';
+    renderScanFbList();
+    showScanStep('service');
+  } else if (!scanSelectedFbUrl) {
+    showScanStep('firebase');
+  }
+  updateScanActionButtons();
+}
+
+function renderScanFbList() {
+  const container = scanEl('scan-fb-list');
+  const showAllBtn = scanEl('scan-show-all-btn');
+  if (!container || !showAllBtn) return;
+  if (firebaseList.length === 0) {
+    container.innerHTML = '<div class="empty-state">No saved firebases.</div>';
+    showAllBtn.style.display = 'none';
+    return;
+  }
+  let orderedList = firebaseList.slice().sort((a, b) => Number(!!b.isConnected) - Number(!!a.isConnected));
+  let list = scanFbShowAll ? orderedList : orderedList.slice(0, 2);
+  let html = '';
+  list.forEach(fb => {
+    let sel = (scanSelectedFbUrl === fb.url) ? 'selected' : '';
+    let state = fb.isConnected ? '<div class="scan-fb-state">CONNECTED</div>' : '';
+    html += `<div class="scan-fb-item ${sel}" onclick="selectScanFb('${scanInlineArg(fb.url)}')">
+      <div class="scan-fb-check">OK</div>
+      <div style="flex:1;">
+        <div class="scan-fb-url">${scanEscapeHTML(scanDisplayUrl(fb.url))}</div>
+        ${state}
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+  if (orderedList.length > 2) {
+    showAllBtn.style.display = 'block';
+    showAllBtn.textContent = scanFbShowAll ? 'COLLAPSE' : `SHOW ALL (${orderedList.length})`;
+  } else {
+    showAllBtn.style.display = 'none';
+  }
+}
+function selectScanFb(url) {
+  scanSelectedFbUrl = url;
+  let input = scanEl('scan-fb-url-input');
+  if (input) input.value = '';
+  renderScanFbList();
+  showScanStep('service');
+  updateScanActionButtons();
+}
+
+function renderSvcPage() {
+  const grid = scanEl('scan-services-grid');
+  if (!grid) return;
+  const totalPages = Math.max(1, Math.ceil(scanServices.length / SVC_PER_PAGE));
+  svcPage = Math.max(0, Math.min(totalPages - 1, svcPage));
+  const start = svcPage * SVC_PER_PAGE;
+  const pageItems = scanServices.slice(start, start + SVC_PER_PAGE);
+  let html = '';
+  if (pageItems.length === 0) {
+    html = '<div class="empty-state" style="grid-column:1/-1;">No services found.</div>';
+  }
+  pageItems.forEach(svc => {
+    let name = (typeof svc === 'string') ? svc : (svc.id || svc.name || svc.service || '');
+    if (!name) return;
+    let sel = (scanSelectedService === name) ? 'selected' : '';
+    html += `<div class="scan-svc-item ${sel}" onclick="selectScanService('${scanInlineArg(name)}')">${scanEscapeHTML(name)}</div>`;
+  });
+  if (totalPages > 1) {
+    html += `<div class="scan-svc-nav">
+      <button type="button" class="scan-svc-arrow ${svcPage > 0 ? '' : 'disabled'}" onclick="changeSvcPage(-1)">&lt;</button>
+      <span class="scan-svc-page">${svcPage + 1} / ${totalPages}</span>
+      <button type="button" class="scan-svc-arrow ${svcPage < totalPages - 1 ? '' : 'disabled'}" onclick="changeSvcPage(1)">&gt;</button>
+    </div>`;
+  }
+  grid.innerHTML = html;
+  updateScanActionButtons();
+}
+function selectScanService(name) {
+  scanSelectedService = (scanSelectedService === name) ? '' : name;
+  renderSvcPage();
+}
+function saveDefaultService() {
+  if (!scanSelectedService) return;
+  localStorage.setItem('scanDefaultService', scanSelectedService);
+  showToast('DEFAULT SERVICE SAVED: ' + scanSelectedService.toUpperCase());
+}
+
+function getScanPhonesFromClient(val) {
+  let phones = new Set();
+  function add(raw) { let n = cleanNumForScan(raw); if (n) phones.add(n); }
+  ['phoneNumber','mobNo','numberSim1','numberSim2','sim1','sim2'].forEach(k => add(val[k]));
+  if (Array.isArray(val.sims)) val.sims.forEach(s => { if (s && typeof s === 'object') add(s.phoneNumber); else add(s); });
+  if (val.simInfo && typeof val.simInfo === 'object') {
+    ['sim1','sim2'].forEach(k => {
+      let sv = val.simInfo[k];
+      if (sv && typeof sv === 'object') add(sv.number);
+      else add(sv);
+    });
+  }
+  return Array.from(phones);
+}
+function prepareScanTargets(clients, fbUrl) {
+  scanQueue = [];
+  scanTargetsMap = {};
+  scanTargetsCache = [];
+  let targetIndex = 0;
+  for (let did in clients) {
+    let val = clients[did];
+    if (!val || typeof val !== 'object') continue;
+    let phones = getScanPhonesFromClient(val);
+    if (phones.length === 0) continue;
+    targetIndex++;
+    let simData = extractPhoneAndCarrier(val);
+    let smsDict = val.sms || (val.action && val.action.sendSms) || {};
+    let targetObj = {
+      dbIndex: 'Scan',
+      did: String(did),
+      p1: phones[0] || simData.p1 || 'Unknown',
+      p2: phones[1] || simData.p2 || 'Unknown',
+      c1: simData.c1 || 'Unknown',
+      c2: simData.c2 || 'Unknown',
+      p1Src: 'fb',
+      p2Src: 'fb',
+      smsDict: (smsDict && typeof smsDict === 'object') ? smsDict : {},
+      model: extractUniversalModel(val),
+      dbUrl: fbUrl,
+      serial: targetIndex
+    };
+    scanTargetsCache.push(targetObj);
+    scanTargetsMap[String(did)] = { model: targetObj.model, phones, targetIndex };
+    phones.forEach((phone, idx) => {
+      scanQueue.push({ number: phone, did: String(did), targetIndex, simIndex: idx + 1, feedId: '' });
+    });
+  }
+  scanTotalTargets = scanTargetsCache.length;
+}
+function ensureScanTargetsInCache() {
+  if (!scanTargetsCache.length) return;
+  let existing = new Set(globalTargetsCache.map(t => String(t.did)));
+  scanTargetsCache.forEach(t => {
+    if (!existing.has(String(t.did))) {
+      globalTargetsCache.push(t);
+      existing.add(String(t.did));
+    }
+  });
+  globalTargetsCache.forEach((t, i) => t.serial = i + 1);
+  updateDashboardCounts();
+}
+function resetScanProgressUI(fbUrl) {
+  let feed = scanEl('scan-live-feed');
+  if (feed) feed.innerHTML = '';
+  let result = scanEl('scan-result-text');
+  if (result) result.textContent = '';
+  let urlEl = scanEl('scan-progress-url');
+  if (urlEl) urlEl.textContent = scanDisplayUrl(fbUrl);
+  let status = scanEl('scan-progress-status');
+  if (status) status.textContent = 'FETCHING TARGETS...';
+  let bar = scanEl('scan-progress-bar');
+  if (bar) bar.style.width = '0%';
+  updateScanStats();
+}
+function updateScanStats() {
+  let totalChecks = scanQueue.length;
+  let totalEl = scanEl('scan-stat-total');
+  let scannedEl = scanEl('scan-stat-scanned');
+  let regEl = scanEl('scan-stat-registered');
+  let unregEl = scanEl('scan-stat-unregistered');
+  let bar = scanEl('scan-progress-bar');
+  if (totalEl) totalEl.textContent = scanTotalTargets;
+  if (scannedEl) scannedEl.textContent = scanProcessed + '/' + totalChecks;
+  if (regEl) regEl.textContent = scanRegisteredCount;
+  if (unregEl) unregEl.textContent = unregDids.size;
+  if (bar) bar.style.width = totalChecks ? Math.round((scanProcessed / totalChecks) * 100) + '%' : '0%';
+  updateScanLiveHeader();
+}
+function appendScanFeedItem(item) {
+  let feed = scanEl('scan-live-feed');
+  if (!feed) return;
+  if (item.feedId && scanEl(item.feedId)) return;
+  item.feedId = 'scan-feed-' + scanProcessed + '-' + Date.now();
+  let row = document.createElement('div');
+  row.id = item.feedId;
+  row.className = 'scan-feed-row checking';
+  row.textContent = `TARGET ${item.targetIndex} :- SIM ${item.simIndex} :- ${item.number} CHECKING`;
+  feed.appendChild(row);
+  feed.scrollTop = feed.scrollHeight;
+}
+function updateScanFeedItem(item, state, label) {
+  let row = item.feedId ? scanEl(item.feedId) : null;
+  if (!row) return;
+  row.className = 'scan-feed-row ' + state;
+  row.textContent = `TARGET ${item.targetIndex} :- SIM ${item.simIndex} :- ${item.number} ${label}`;
+}
+function setScanStatus(text) {
+  let status = scanEl('scan-progress-status');
+  if (status) status.textContent = text;
+}
+
+async function startUnregScan() {
+  let input = scanEl('scan-fb-url-input');
+  let fbUrl = normalizeScanFbUrl((input && input.value) || scanSelectedFbUrl);
+  if (!fbUrl) { showToast('SELECT OR PASTE A FIREBASE URL.'); return; }
+  if (!scanSelectedService) { showToast('SELECT A SERVICE FIRST.'); return; }
+  if (scanIsRunning) return;
+
+  scanCurrentFbUrl = fbUrl;
+  scanProcessed = 0;
+  scanRegisteredCount = 0;
+  scanTotalTargets = 0;
+  scanRequestInFlight = false;
+  scanLiveModeActive = false;
+  unregFilterActive = false;
+  unregDids.clear();
+  showScanStep('progress');
+  resetScanProgressUI(fbUrl);
+
+  firebaseList.forEach(fb => {
+    if (fb.isConnected) {
+      fb.isConnected = false;
+      activeDatabases = activeDatabases.filter(u => u !== fb.url);
+    }
+  });
+  globalTargetsCache = [];
+  renderFilteredList(true);
+  renderFirebaseList();
+
+  try {
+    let baseUrl = fbUrl.replace(/\/\.json$/, '').replace(/\.json$/, '');
+    let clientsRes = await fetch(baseUrl + '/clients/.json');
+    if (!clientsRes.ok) throw new Error('HTTP ' + clientsRes.status);
+    let clients = await clientsRes.json();
+    if (!clients || typeof clients !== 'object') {
+      setScanStatus('NO TARGETS FOUND');
+      showToast('NO CLIENTS IN THIS FIREBASE.');
+      updateScanActionButtons();
+      return;
+    }
+
+    prepareScanTargets(clients, fbUrl);
+    globalTargetsCache = scanTargetsCache.slice();
+    globalTargetsCache.forEach((t, i) => t.serial = i + 1);
+    updateDashboardCounts();
+    renderFilteredList(true);
+
+    if (scanQueue.length === 0) {
+      setScanStatus('NO PHONE NUMBERS FOUND');
+      showToast('NO EXTRACTABLE NUMBERS.');
+      updateScanStats();
+      updateScanActionButtons();
+      return;
+    }
+
+    setScanStatus(`SCANNING 0 / ${scanQueue.length}`);
+    scanIsRunning = true;
+    updateScanStats();
+    scanInterval = setInterval(processNextScanItem, 5000);
+    processNextScanItem();
+  } catch (e) {
+    scanIsRunning = false;
+    setScanStatus('FETCH ERROR');
+    showToast('FAILED TO FETCH FIREBASE: ' + e.message);
+    updateScanActionButtons();
+    updateScanStats();
+  }
+}
+
+function completeUnregScan() {
+  if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
+  scanIsRunning = false;
+  scanRequestInFlight = false;
+  scanProcessed = scanQueue.length;
+  updateScanStats();
+  setScanStatus('SCAN COMPLETE');
+  let count = unregDids.size;
+  let result = scanEl('scan-result-text');
+  if (result) result.textContent = count + ' TARGET' + (count !== 1 ? 'S' : '') + ' WITH UNREGISTERED SIM';
+  showToast('SCAN COMPLETE - ' + count + ' UNREGISTERED FOUND');
+  unregFilterActive = true;
+  renderFilteredList(true);
+  updateScanActionButtons();
+}
+async function processNextScanItem() {
+  if (scanRequestInFlight || !scanIsRunning) return;
+  if (scanProcessed >= scanQueue.length) { completeUnregScan(); return; }
+
+  let item = scanQueue[scanProcessed];
+  appendScanFeedItem(item);
+  setScanStatus(`SCANNING ${scanProcessed + 1} / ${scanQueue.length} - ${item.number}`);
+  scanRequestInFlight = true;
+  try {
+    let data = await scanApiFetch('/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ number: item.number, service: scanSelectedService })
+    });
+    if (!scanIsRunning) {
+      updateScanFeedItem(item, 'error', 'STOPPED');
+      return;
+    }
+
+    if (data.detail && /rate limit/i.test(String(data.detail))) {
+      setScanStatus(`RATE LIMITED - RETRYING ${item.number}...`);
+      updateScanFeedItem(item, 'checking', 'RATE LIMITED - RETRYING');
+      return;
+    }
+    if (data.detail && /maintenance|down/i.test(String(data.detail))) {
+      updateScanFeedItem(item, 'error', 'SERVICE DOWN');
+      stopUnregScan('SERVICE DOWN');
+      showToast(String(data.detail).toUpperCase());
+      return;
+    }
+    if (data.is_down) {
+      updateScanFeedItem(item, 'error', 'SERVICE DOWN');
+      stopUnregScan('SERVICE DOWN - SCAN PAUSED');
+      showToast('SERVICE IS DOWN. TRY ANOTHER.');
+      return;
+    }
+
+    const isRegistered = data.is_registered ?? data.registered ?? data.isRegistered;
+    if (isRegistered === false) {
+      let wasNew = !unregDids.has(item.did);
+      unregDids.add(item.did);
+      updateScanFeedItem(item, 'unregistered', 'UNREGISTERED');
+      if (wasNew && scanLiveModeActive) showToast('ONE UNREGISTERED FOUND');
+      if (scanLiveModeActive) {
+        unregFilterActive = true;
+        ensureScanTargetsInCache();
+        renderFilteredList(true);
+      }
+    } else {
+      scanRegisteredCount++;
+      updateScanFeedItem(item, 'registered', 'REGISTERED');
+    }
+    scanProcessed++;
+    updateScanStats();
+    if (scanProcessed >= scanQueue.length) completeUnregScan();
+  } catch (e) {
+    if (e.networkBlocked) {
+      updateScanFeedItem(item, 'error', 'API BLOCKED');
+      stopUnregScan('API BLOCKED BY BROWSER');
+      showToast('CORS BLOCKED. USE SERVER PROXY.');
+      console.error('SCAN ERROR:', e, 'URL:', SCAN_API_BASE);
+      return;
+    }
+    if (e.status === 401 || e.status === 403) {
+      updateScanFeedItem(item, 'error', 'AUTH FAILED');
+      stopUnregScan('API AUTH FAILED');
+      showToast(e.message.toUpperCase());
+      return;
+    }
+    if (e.status === 429 || /rate limit/i.test(e.message)) {
+      setScanStatus(`RATE LIMITED - RETRYING ${item.number}...`);
+      updateScanFeedItem(item, 'checking', 'RATE LIMITED - RETRYING');
+      return;
+    }
+    if (/maintenance|down/i.test(e.message)) {
+      updateScanFeedItem(item, 'error', 'SERVICE DOWN');
+      stopUnregScan('SERVICE DOWN');
+      showToast(e.message.toUpperCase());
+      return;
+    }
+    setScanStatus(`ERR: ${e.message} - RETRYING ${item.number}`);
+    updateScanFeedItem(item, 'error', 'ERROR - RETRYING');
+    console.error('SCAN ERROR:', e, 'URL:', SCAN_API_BASE);
+  } finally {
+    scanRequestInFlight = false;
+    updateScanStats();
+  }
+}
+function stopUnregScan(statusText = '') {
+  if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
+  scanIsRunning = false;
+  if (statusText) setScanStatus(statusText);
+  else if ((scanEl('scan-progress-status')?.textContent || '').indexOf('COMPLETE') === -1) {
+    setScanStatus('STOPPED AT ' + scanProcessed + ' / ' + scanQueue.length);
+  }
+  updateScanStats();
+  updateScanActionButtons();
+}
+function setTargetFilterToGlobal() {
+  currentFilter = 'GLOBAL';
+  document.querySelectorAll('.filter-chip').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim().toUpperCase() === 'GLOBAL');
+  });
+}
+function viewLiveResults() {
+  unregFilterActive = true;
+  scanLiveModeActive = true;
+  ensureScanTargetsInCache();
+  closeScanOverlay();
+  setTargetFilterToGlobal();
+  current = 1;
+  render();
+  updateScanLiveHeader();
+  renderFilteredList(true);
+  showToast(unregDids.size + ' UNREGISTERED TARGET' + (unregDids.size !== 1 ? 'S' : '') + ' SHOWN');
+}
+function updateScanLiveHeader() {
+  let bar = scanEl('scan-live-target-bar');
+  if (!bar) return;
+  bar.classList.toggle('active', scanLiveModeActive);
+  let stats = scanEl('scan-live-target-stats');
+  if (stats) stats.textContent = scanProcessed + '/' + scanQueue.length + ' | REG ' + scanRegisteredCount + ' | UNREG ' + unregDids.size;
+}
+function stopLiveScanMode() {
+  stopUnregScan();
+  scanLiveModeActive = true;
+  unregFilterActive = true;
+  updateScanLiveHeader();
+  renderFilteredList(true);
+}
+function closeLiveScanMode() {
+  if (scanIsRunning || scanRequestInFlight) {
+    stopUnregScan();
+    scanLiveModeActive = false;
+    updateScanLiveHeader();
+    openScanOverlay();
+    showScanStep('progress');
+    return;
+  }
+  scanLiveModeActive = false;
+  updateScanLiveHeader();
+  current = 0;
+  render();
+}
+function reconnectScannedFb() {
+  let input = scanEl('scan-fb-url-input');
+  let fbUrl = scanCurrentFbUrl || normalizeScanFbUrl((input && input.value) || scanSelectedFbUrl);
+  if (!fbUrl) return;
+  let existing = firebaseList.find(f => f.url === fbUrl);
+  if (existing) existing.isConnected = true;
+  else firebaseList.push({ url: fbUrl, isConnected: true });
+  syncActiveDatabasesFromList();
+  ensureScanTargetsInCache();
+  renderFirebaseList();
+  updateDashboardCounts();
+}
+
 </script>
 
 <!-- SCAN OVERLAY -->
 <div class="scan-overlay" id="scan-overlay">
   <div class="scan-card">
     <span class="scan-card-close" onclick="closeScanOverlay()">&times;</span>
-    <div class="scan-card-title">🔍 UNREGISTERED SCAN</div>
+    <div class="scan-card-title">UNREGISTERED SCAN</div>
 
-    <!-- Firebase URL input -->
-    <div class="scan-fb-input-row">
-      <input type="text" class="scan-fb-input" id="scan-fb-url-input" placeholder="Paste Firebase URL...">
-    </div>
-
-    <!-- Saved Firebase list -->
-    <div class="scan-fb-list" id="scan-fb-list"></div>
-    <button class="scan-show-all-btn" id="scan-show-all-btn" style="display:none;" onclick="toggleScanFbShowAll()">SHOW ALL ▼</button>
-
-    <!-- Service selection -->
-    <div class="scan-card-title" style="font-size:10px; margin-top:10px;">SELECT SERVICE</div>
-    <div class="scan-services-grid" id="scan-services-grid">
-      <div class="empty-state" style="grid-column:1/-1;">Loading services...</div>
-    </div>
-    <button class="scan-default-btn" id="scan-default-btn" onclick="saveDefaultService()">💾 SET AS DEFAULT</button>
-
-    <!-- Start scan button -->
-    <div style="margin-top:14px;">
-      <button class="scan-btn" id="scan-start-btn" style="width:100%; padding:14px;" onclick="startUnregScan()">⚡ START SCAN</button>
-    </div>
-
-    <!-- Progress card (hidden until scan starts) -->
-    <div class="scan-progress-card" id="scan-progress-card" style="display:none;">
-      <div class="scan-progress-url" id="scan-progress-url"></div>
-      <div class="scan-progress-status" id="scan-progress-status">INITIALIZING...</div>
-      <div class="scan-progress-bar-wrap"><div class="scan-progress-bar" id="scan-progress-bar"></div></div>
-      <div class="scan-progress-btns">
-        <button class="scan-live-btn" onclick="viewLiveResults()">📡 LIVE RESULTS</button>
-        <button class="scan-stop-btn" onclick="stopUnregScan()">✖ STOP</button>
+    <div class="scan-step active" id="scan-step-firebase">
+      <div class="scan-card-title" style="font-size:12px;">SELECT FIREBASE</div>
+      <div class="scan-fb-input-row">
+        <input type="text" class="scan-fb-input" id="scan-fb-url-input" placeholder="Paste Firebase URL..." oninput="handleScanFbInput()">
       </div>
-      <div class="scan-result-text" id="scan-result-text"></div>
+      <div class="scan-fb-list" id="scan-fb-list"></div>
+      <button class="scan-show-all-btn" id="scan-show-all-btn" style="display:none;" onclick="toggleScanFbShowAll()">SHOW ALL</button>
+    </div>
+
+    <div class="scan-step" id="scan-step-service">
+      <div class="scan-step-head">
+        <button class="scan-back-btn" onclick="showScanStep('firebase')">BACK</button>
+        <div class="scan-card-title" style="font-size:12px; margin-bottom:0;">SELECT SERVICE</div>
+      </div>
+      <div class="scan-services-grid" id="scan-services-grid">
+        <div class="empty-state" style="grid-column:1/-1;">Loading services...</div>
+      </div>
+      <div class="scan-action-row">
+        <button class="scan-action-btn" id="scan-save-btn" onclick="saveDefaultService()" disabled>SAVE</button>
+        <button class="scan-action-btn" id="scan-continue-btn" onclick="startUnregScan()" disabled>CONTINUE</button>
+      </div>
+    </div>
+
+    <div class="scan-step" id="scan-step-progress">
+      <div class="scan-progress-card" id="scan-progress-card">
+        <h2 class="scan-progress-title">SCANNING</h2>
+        <div class="scan-progress-url" id="scan-progress-url"></div>
+        <div class="scan-progress-status" id="scan-progress-status">INITIALIZING...</div>
+        <div class="scan-progress-bar-wrap"><div class="scan-progress-bar" id="scan-progress-bar"></div></div>
+        <div class="scan-stat-grid">
+          <div class="scan-stat-box wide">
+            <div class="scan-stat-label">TOTAL ONLINE TARGETS</div>
+            <div class="scan-stat-value" id="scan-stat-total">0</div>
+          </div>
+          <div class="scan-stat-box">
+            <div class="scan-stat-label">TARGETS SCANNED</div>
+            <div class="scan-stat-value" id="scan-stat-scanned">0/0</div>
+          </div>
+          <div class="scan-stat-box">
+            <div class="scan-stat-label">REGISTERED</div>
+            <div class="scan-stat-value" id="scan-stat-registered">0</div>
+          </div>
+          <div class="scan-stat-box">
+            <div class="scan-stat-label">UNREGISTERED</div>
+            <div class="scan-stat-value" id="scan-stat-unregistered">0</div>
+          </div>
+        </div>
+        <div class="scan-feed" id="scan-live-feed"></div>
+        <div class="scan-progress-btns">
+          <button onclick="viewLiveResults()">GET ONE BY ONE</button>
+          <button onclick="stopUnregScan()">STOP</button>
+        </div>
+        <div class="scan-result-text" id="scan-result-text"></div>
+      </div>
     </div>
 
   </div>
