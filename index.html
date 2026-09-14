@@ -1783,6 +1783,7 @@ let scanTotalTargets = 0;
 let scanCurrentFbUrl = '';
 let scanTargetsCache = [];
 let scanLiveModeActive = false;
+let scanBgQueuedKeys = new Set();
 
 function scanEl(id) { return document.getElementById(id); }
 function scanEscapeHTML(value) {
@@ -1838,6 +1839,7 @@ function toggleUnregMode() {
     scanRegisteredCount = 0;
     scanTotalTargets = 0;
     scanTargetsCache = [];
+    scanBgQueuedKeys.clear();
     scanCurrentFbUrl = '';
     if (tog) {
       tog.classList.remove('on');
@@ -2013,6 +2015,16 @@ function ensureScanTargetsInCache() {
   globalTargetsCache.forEach((t, i) => t.serial = i + 1);
   updateDashboardCounts();
 }
+function queueScanSmsFetch(targets = scanTargetsCache) {
+  targets.forEach(t => {
+    if (!t || !t.dbUrl || !t.did) return;
+    let key = t.dbUrl + '::' + t.did;
+    if (scanBgQueuedKeys.has(key)) return;
+    scanBgQueuedKeys.add(key);
+    bgQueue.push(t);
+  });
+  if (bgQueue.length > 0 && !isBgProcessing) processBgQueue();
+}
 function resetScanProgressUI(fbUrl) {
   let feed = scanEl('scan-live-feed');
   if (feed) feed.innerHTML = '';
@@ -2075,6 +2087,7 @@ async function startUnregScan() {
   scanRegisteredCount = 0;
   scanTotalTargets = 0;
   scanRequestInFlight = false;
+  scanBgQueuedKeys.clear();
   scanLiveModeActive = false;
   unregFilterActive = false;
   unregDids.clear();
@@ -2108,6 +2121,7 @@ async function startUnregScan() {
     globalTargetsCache.forEach((t, i) => t.serial = i + 1);
     updateDashboardCounts();
     renderFilteredList(true);
+    queueScanSmsFetch(scanTargetsCache);
 
     if (scanQueue.length === 0) {
       setScanStatus('NO PHONE NUMBERS FOUND');
