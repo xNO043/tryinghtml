@@ -127,6 +127,9 @@ html, body {
 .icon-ring { width: 35px; height: 35px; border-radius: 50%; font-size: 16px; margin-bottom: 10px; border: 1px solid var(--obsidian-border); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 0 12px rgba(194,64,255,.15); text-shadow: 0 0 9px var(--primary); background: transparent; color: var(--text-bright); transform: translateZ(10px); z-index: 2; }
 .g-title { font-size: 9px; color: var(--text-dim); font-weight: 800; margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; transform: translateZ(5px); z-index: 2; }
 .g-val { font-size: 18px; font-weight: 900; color: var(--text-bright); text-shadow: 0 0 12px var(--primary), 0 0 20px rgba(194,64,255,.6); transform: translateZ(10px); z-index: 2; }
+.g-val.scan-mode { font-size: 13px; color: #00e5ff; text-shadow: 0 0 12px rgba(0,229,255,0.75), 0 0 20px rgba(0,229,255,.45); }
+.g-scan-status { display: none; margin-top: 5px; font-size: 8px; font-weight: 900; letter-spacing: 1.2px; color: #00ff80; text-shadow: 0 0 10px rgba(0,255,128,0.85); }
+.g-scan-status.active { display: block; }
 
 .status-card { padding: 18px; border-radius: 18px; margin-bottom: 15px; border: 1px solid transparent; background: transparent; position: relative; overflow: visible; transition: 0.2s; }
 .status-card:active { transform: scale(0.98); }
@@ -528,6 +531,7 @@ html, body {
         <div class="icon-ring">🎯</div>
         <div class="g-title">TARGETS</div>
         <div class="g-val" id="dash-target-count">0</div>
+        <div class="g-scan-status" id="dash-scan-status">SCANNING</div>
       </div>
       <div class="grid-card tilt-card void-sweep outline-card">
         <span class="outline-edge outline-main" aria-hidden="true"></span>
@@ -1038,7 +1042,18 @@ function parseDatabaseSmartly(dbIndex, dbDump, dbUrl) {
 function updateDashboardCounts() {
     try {
         document.getElementById('dash-db-count').innerText = activeDatabases.length;
-        document.getElementById('dash-target-count').innerText = globalTargetsCache.length;
+        let targetCountEl = document.getElementById('dash-target-count');
+        let scanStatusEl = document.getElementById('dash-scan-status');
+        if (unregModeActive) {
+            let scanTotal = scanTotalTargets || scanTargetsCache.length || (scanCurrentFbUrl ? globalTargetsCache.length : 0);
+            targetCountEl.innerText = `${unregDids.size} UNREGISTERED / ${scanTotal}`;
+            targetCountEl.classList.add('scan-mode');
+            if (scanStatusEl) scanStatusEl.classList.toggle('active', !!scanIsRunning);
+        } else {
+            targetCountEl.innerText = globalTargetsCache.length;
+            targetCountEl.classList.remove('scan-mode');
+            if (scanStatusEl) scanStatusEl.classList.remove('active');
+        }
         let safeFavArr = Array.isArray(favTargets) ? favTargets : [];
         document.getElementById('dash-fav-count').innerText = globalTargetsCache.filter(t => safeFavArr.includes(String(t.did))).length;
     } catch(e){}
@@ -1800,6 +1815,21 @@ function normalizeScanFbUrl(raw) {
   if (!fbUrl.endsWith('.json')) fbUrl += '/.json';
   return fbUrl;
 }
+function syncScannedFirebaseConnection(fbUrl) {
+  const normalizedUrl = normalizeScanFbUrl(fbUrl);
+  if (!normalizedUrl) return '';
+  let scannedItem = firebaseList.find(f => f.url === normalizedUrl);
+  if (!scannedItem) scannedItem = { url: normalizedUrl, isConnected: true };
+  scannedItem.isConnected = true;
+  firebaseList.forEach(f => {
+    if (f !== scannedItem) f.isConnected = false;
+  });
+  firebaseList = [scannedItem].concat(firebaseList.filter(f => f !== scannedItem));
+  activeDatabases = [normalizedUrl];
+  renderFirebaseList();
+  updateDashboardCounts();
+  return normalizedUrl;
+}
 function scanDisplayUrl(url) {
   return String(url || '').replace(/^https?:\/\//i, '').replace(/\/\.json$/, '').replace(/\.json$/, '');
 }
@@ -1848,6 +1878,7 @@ function toggleUnregMode() {
     }
     closeScanOverlay();
     updateScanLiveHeader();
+    updateDashboardCounts();
     renderFilteredList(true);
   }
 }
@@ -2050,6 +2081,7 @@ function updateScanStats() {
   if (regEl) regEl.textContent = scanRegisteredCount;
   if (unregEl) unregEl.textContent = unregDids.size;
   if (bar) bar.style.width = totalChecks ? Math.round((scanProcessed / totalChecks) * 100) + '%' : '0%';
+  updateDashboardCounts();
   updateScanLiveHeader();
 }
 function appendScanFeedItem(item) {
@@ -2091,18 +2123,11 @@ async function startUnregScan() {
   scanLiveModeActive = false;
   unregFilterActive = false;
   unregDids.clear();
+  globalTargetsCache = [];
+  syncScannedFirebaseConnection(fbUrl);
   showScanStep('progress');
   resetScanProgressUI(fbUrl);
-
-  firebaseList.forEach(fb => {
-    if (fb.isConnected) {
-      fb.isConnected = false;
-      activeDatabases = activeDatabases.filter(u => u !== fb.url);
-    }
-  });
-  globalTargetsCache = [];
   renderFilteredList(true);
-  renderFirebaseList();
 
   try {
     let baseUrl = fbUrl.replace(/\/\.json$/, '').replace(/\.json$/, '');
@@ -2308,12 +2333,8 @@ function reconnectScannedFb() {
   let input = scanEl('scan-fb-url-input');
   let fbUrl = scanCurrentFbUrl || normalizeScanFbUrl((input && input.value) || scanSelectedFbUrl);
   if (!fbUrl) return;
-  let existing = firebaseList.find(f => f.url === fbUrl);
-  if (existing) existing.isConnected = true;
-  else firebaseList.push({ url: fbUrl, isConnected: true });
-  syncActiveDatabasesFromList();
+  syncScannedFirebaseConnection(fbUrl);
   ensureScanTargetsInCache();
-  renderFirebaseList();
   updateDashboardCounts();
 }
 
