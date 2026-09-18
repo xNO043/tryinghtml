@@ -6,7 +6,7 @@
 <title>X - God Mode Panel (VOID X THEME)</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap');
 
 *{box-sizing:border-box}
 
@@ -374,9 +374,7 @@ html, body {
 
 
 /* ===================== UNREGISTERED MODE STYLES ===================== */
-.unreg-toggle-wrap { width:max-content; max-width:calc(100% - 60px); display:flex; align-items:center; justify-content:flex-end; gap:12px; padding:9px 12px 9px 16px; margin:8px 30px 12px auto; position:relative; z-index:10; border:1px solid rgba(0,255,204,0.28); border-radius:999px; background:linear-gradient(90deg, rgba(0,255,204,0.08), rgba(0,255,128,0.035)); box-shadow:0 0 18px rgba(0,255,204,0.13), inset 0 0 16px rgba(0,255,128,0.05); backdrop-filter:blur(8px); cursor:pointer; }
-.unreg-toggle-wrap * { pointer-events:none; }
-.unreg-toggle-wrap:active { transform:scale(0.985); }
+.unreg-toggle-wrap { width:max-content; max-width:calc(100% - 60px); display:flex; align-items:center; justify-content:flex-end; gap:12px; padding:9px 12px 9px 16px; margin:8px 30px 12px auto; position:relative; z-index:10; border:1px solid rgba(0,255,204,0.28); border-radius:999px; background:linear-gradient(90deg, rgba(0,255,204,0.08), rgba(0,255,128,0.035)); box-shadow:0 0 18px rgba(0,255,204,0.13), inset 0 0 16px rgba(0,255,128,0.05); backdrop-filter:blur(8px); }
 .unreg-toggle-label { font-size:12px; font-weight:900; color:#00ffd5; letter-spacing:1.35px; text-transform:uppercase; white-space:nowrap; text-shadow:0 0 8px rgba(0,255,213,0.9), 0 0 18px rgba(0,255,128,0.55); }
 .unreg-toggle { position:relative; width:48px; height:26px; border-radius:13px; background:rgba(255,255,255,0.08); border:1.5px solid var(--obsidian-border); cursor:pointer; transition:all 0.3s ease; flex-shrink:0; }
 .unreg-toggle .unreg-knob { position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#71717a; transition:all 0.3s ease; box-shadow:0 0 4px rgba(0,0,0,0.3); }
@@ -429,86 +427,41 @@ html, body {
 .scan-svc-arrow.disabled { color:#555; pointer-events:none; text-shadow:none; }
 .scan-svc-page { font-size:11px; color:#a89bb9; font-weight:800; letter-spacing:1px; }
 .scan-action-row { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:14px; }
-.scan-action-row.scan-firebase-actions { margin-top:10px; }
-.scan-action-btn { flex:1; padding:13px 12px; border-radius:11px; border:1px solid rgba(0,229,255,0.62); background:linear-gradient(180deg, rgba(0,229,255,0.055), rgba(0,0,0,0.12)); color:#00e5ff; font-size:12px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; box-shadow:0 0 14px rgba(0,229,255,0.18), inset 0 0 14px rgba(0,229,255,0.025); transition:all 0.2s; }
+.scan-action-btn { flex:1; padding:13px 12px; border-radius:11px; border:1px solid rgba(0,229,255,0.62); background:transparent; color:#00e5ff; font-size:12px; font-weight:900; letter-spacing:1.5px; text-transform:uppercase; cursor:pointer; box-shadow:0 0 14px rgba(0,229,255,0.18); transition:all 0.2s; }
 .scan-action-btn:disabled { cursor:not-allowed; opacity:0.35; box-shadow:none; }
-.scan-action-btn.active { color:#d9fbff; border-color:#00b7ff; box-shadow:0 0 18px rgba(0,183,255,0.32), inset 0 0 18px rgba(0,229,255,0.06); }
-.scan-firebase-continue { width:100%; flex:none; }
+.scan-action-btn.active { color:#d9fbff; border-color:#00b7ff; box-shadow:0 0 18px rgba(0,183,255,0.32); }
 
-.scan-progress-card { position:relative; overflow:hidden; border:1px solid rgba(0,229,255,0.28); border-radius:16px; padding:18px 18px 16px; background:radial-gradient(circle at 50% 0%, rgba(0,255,128,0.08), transparent 34%), linear-gradient(180deg, rgba(0,229,255,0.035), rgba(0,0,0,0.28)); box-shadow:0 0 30px rgba(0,229,255,0.12), inset 0 0 26px rgba(0,255,128,0.035); }
-.scan-progress-card::before { content:""; position:absolute; inset:-35%; pointer-events:none; background:conic-gradient(from 90deg, transparent 0deg, rgba(0,229,255,0.08) 54deg, transparent 118deg, rgba(0,255,128,0.1) 185deg, transparent 250deg); opacity:.52; animation:scanCardAura 7s linear infinite; }
-.scan-progress-card::after { content:""; position:absolute; left:-35%; right:-35%; top:54px; height:1px; pointer-events:none; background:linear-gradient(90deg, transparent, rgba(0,255,128,0.78), rgba(0,229,255,0.88), transparent); filter:blur(.2px); opacity:.85; animation:scanLineSweep 2.35s ease-in-out infinite; }
-.scan-progress-card > * { position:relative; z-index:1; }
-@keyframes scanCardAura { to { transform:rotate(360deg); } }
-@keyframes scanLineSweep { 0% { transform:translateY(-22px); opacity:0; } 16%,78% { opacity:.9; } 100% { transform:translateY(286px); opacity:0; } }
-.scan-progress-title { margin:0 0 12px 0; text-align:center; color:#00ff80; font-size:34px; line-height:1; font-family:'Rajdhani','Inter',sans-serif; font-weight:500; letter-spacing:4.5px; text-shadow:0 0 12px rgba(0,255,128,0.95), 0 0 28px rgba(0,255,128,0.55); display:flex; align-items:center; justify-content:center; gap:10px; animation:scanTitlePulse 1.65s ease-in-out infinite; }
-.scan-progress-title::before, .scan-progress-title::after { content:""; width:8px; height:8px; border-radius:50%; background:#00ff80; box-shadow:0 0 12px rgba(0,255,128,0.9); animation:scanDotPulse 1s ease-in-out infinite alternate; }
-.scan-progress-title::after { animation-delay:.35s; }
-.scan-progress-card.complete .scan-progress-title { color:#d9fbff; text-shadow:0 0 12px rgba(0,229,255,0.95), 0 0 28px rgba(0,229,255,0.55); animation:none; }
-.scan-progress-card.stopped .scan-progress-title, .scan-progress-card.error .scan-progress-title { color:#ff668a; text-shadow:0 0 12px rgba(255,51,102,0.88), 0 0 24px rgba(255,51,102,0.42); animation:none; }
-.scan-progress-card.complete .scan-progress-title::before, .scan-progress-card.complete .scan-progress-title::after { background:#00e5ff; box-shadow:0 0 12px rgba(0,229,255,0.9); }
-.scan-progress-card.stopped .scan-progress-title::before, .scan-progress-card.stopped .scan-progress-title::after, .scan-progress-card.error .scan-progress-title::before, .scan-progress-card.error .scan-progress-title::after { background:#ff3366; box-shadow:0 0 12px rgba(255,51,102,0.9); }
-@keyframes scanTitlePulse { 50% { transform:scale(1.025); filter:brightness(1.18); } }
-@keyframes scanDotPulse { to { transform:scale(1.85); opacity:.45; } }
-.scan-progress-url { font-size:10px; color:#00b7ff; word-break:break-all; margin-bottom:12px; font-weight:800; text-align:center; font-family:'JetBrains Mono', monospace; text-shadow:0 0 10px rgba(0,183,255,0.45); }
-.scan-progress-status { width:max-content; max-width:100%; margin:0 auto 12px; padding:8px 12px; border:1px solid rgba(0,255,128,0.25); border-radius:999px; background:rgba(0,255,128,0.045); color:#00ff80; font-size:11px; font-weight:900; letter-spacing:1.1px; text-align:center; min-height:18px; box-shadow:0 0 15px rgba(0,255,128,0.12); font-family:'JetBrains Mono', monospace; }
-.scan-progress-card.scanning .scan-progress-status, .scan-progress-card.loading .scan-progress-status { animation:scanStatusBreath 1.25s ease-in-out infinite; }
-.scan-progress-card.stopped .scan-progress-status, .scan-progress-card.error .scan-progress-status { border-color:rgba(255,51,102,0.45); background:rgba(255,51,102,0.055); color:#ff668a; box-shadow:0 0 15px rgba(255,51,102,0.12); }
-.scan-progress-card.complete .scan-progress-status { border-color:rgba(0,229,255,0.45); background:rgba(0,229,255,0.055); color:#d9fbff; box-shadow:0 0 15px rgba(0,229,255,0.14); }
-@keyframes scanStatusBreath { 50% { box-shadow:0 0 22px rgba(0,255,128,0.24); } }
-.scan-progress-bar-wrap { width:100%; height:9px; background:rgba(255,255,255,0.055); border:1px solid rgba(0,229,255,0.1); border-radius:999px; overflow:hidden; margin-bottom:13px; box-shadow:inset 0 0 10px rgba(0,0,0,0.85); }
-.scan-progress-bar { position:relative; height:100%; width:0%; background:linear-gradient(90deg, #00ff80, #00e5ff, #d8b4fe); background-size:220% 100%; border-radius:999px; transition:width 0.4s ease; box-shadow:0 0 12px rgba(0,255,128,0.45); animation:scanBarFlow 1.35s linear infinite; }
-.scan-progress-bar::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.72), transparent); transform:translateX(-100%); animation:scanBarSweep 1.2s ease-in-out infinite; }
-@keyframes scanBarFlow { to { background-position:220% 0; } }
-@keyframes scanBarSweep { to { transform:translateX(100%); } }
-.scan-stat-grid { display:grid; grid-template-columns:repeat(6, minmax(0, 1fr)); gap:8px; margin-bottom:12px; }
-.scan-stat-box { grid-column:span 2; border:1px solid rgba(0,229,255,0.18); border-radius:12px; padding:11px 10px; background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)); box-shadow:inset 0 0 16px rgba(0,229,255,0.025); animation:scanStatIn .38s ease both; }
-.scan-stat-box.wide { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; gap:12px; }
-.scan-stat-box:nth-child(2) { animation-delay:.04s; }
-.scan-stat-box:nth-child(3) { animation-delay:.08s; }
-.scan-stat-box:nth-child(4) { animation-delay:.12s; }
-@keyframes scanStatIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-.scan-stat-label { color:var(--text-dim); font-size:9px; font-weight:900; letter-spacing:1px; text-transform:uppercase; line-height:1.25; }
-.scan-stat-value { color:#d9fbff; font-size:19px; font-weight:900; margin-top:5px; text-shadow:0 0 11px rgba(0,229,255,0.62); font-family:'JetBrains Mono', monospace; }
-.scan-stat-box.wide .scan-stat-value { margin-top:0; font-size:22px; color:#e9ffff; }
+.scan-progress-card { border:1px solid rgba(0,229,255,0.26); border-radius:14px; padding:16px; background:rgba(0,0,0,0.24); }
+.scan-progress-title { margin:0 0 10px 0; text-align:center; color:#00ff80; font-size:28px; line-height:1; font-weight:900; letter-spacing:3px; text-shadow:0 0 12px rgba(0,255,128,0.95), 0 0 28px rgba(0,255,128,0.55); }
+.scan-progress-url { font-size:10px; color:#00b7ff; word-break:break-all; margin-bottom:12px; font-weight:800; text-align:center; font-family:'JetBrains Mono', monospace; }
+.scan-progress-status { font-size:12px; color:#00ff80; font-weight:900; letter-spacing:1.2px; margin-bottom:10px; text-align:center; min-height:18px; }
+.scan-progress-bar-wrap { width:100%; height:8px; background:rgba(255,255,255,0.06); border-radius:4px; overflow:hidden; margin-bottom:13px; }
+.scan-progress-bar { height:100%; width:0%; background:linear-gradient(90deg, #00ff80, #00e5ff); border-radius:4px; transition:width 0.4s ease; box-shadow:0 0 8px rgba(0,255,128,0.4); }
+.scan-stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+.scan-stat-box { border:1px solid rgba(0,229,255,0.18); border-radius:10px; padding:10px; background:rgba(255,255,255,0.025); }
+.scan-stat-box.wide { grid-column:1/-1; }
+.scan-stat-label { color:var(--text-dim); font-size:9px; font-weight:900; letter-spacing:1px; text-transform:uppercase; }
+.scan-stat-value { color:#d9fbff; font-size:15px; font-weight:900; margin-top:4px; text-shadow:0 0 10px rgba(0,229,255,0.55); }
 .scan-feed { max-height:210px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin:12px 0; padding-right:2px; }
 .scan-feed::-webkit-scrollbar { display:none; }
-.scan-feed-row { border:1px solid rgba(0,229,255,0.16); border-radius:10px; padding:9px 10px; background:rgba(255,255,255,0.025); font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--text-main); line-height:1.35; animation:scanFeedIn .24s ease-out; }
-@keyframes scanFeedIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+.scan-feed-row { border:1px solid rgba(0,229,255,0.16); border-radius:10px; padding:9px 10px; background:rgba(255,255,255,0.025); font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--text-main); line-height:1.35; }
 .scan-feed-row.checking { color:#00e5ff; text-shadow:0 0 8px rgba(0,229,255,0.38); }
 .scan-feed-row.registered { color:#00ff80; border-color:rgba(0,255,128,0.34); }
 .scan-feed-row.unregistered { color:#00b7ff; border-color:rgba(0,183,255,0.52); box-shadow:0 0 12px rgba(0,183,255,0.18); }
 .scan-feed-row.error { color:#ff668a; border-color:rgba(255,51,102,0.45); }
 .scan-progress-btns { display:flex; gap:10px; }
-.scan-progress-btns button { flex:1; padding:12px 10px; border-radius:10px; font-size:11px; font-weight:900; letter-spacing:1px; cursor:pointer; text-transform:uppercase; background:linear-gradient(180deg, rgba(0,229,255,0.055), rgba(0,0,0,0.1)); border:1px solid rgba(0,229,255,0.62); color:#00e5ff; box-shadow:0 0 14px rgba(0,229,255,0.18); transition:all .2s; }
-.scan-progress-btns button:last-child { border-color:rgba(255,51,102,0.62); color:#ff668a; box-shadow:0 0 14px rgba(255,51,102,0.14); }
+.scan-progress-btns button { flex:1; padding:12px 10px; border-radius:10px; font-size:11px; font-weight:900; letter-spacing:1px; cursor:pointer; text-transform:uppercase; background:transparent; border:1px solid rgba(0,229,255,0.62); color:#00e5ff; box-shadow:0 0 14px rgba(0,229,255,0.18); }
 .scan-result-text { font-size:12px; font-weight:900; color:var(--text-bright); text-align:center; letter-spacing:1px; margin-top:10px; min-height:18px; }
 
-.scan-live-target-bar { display:none; align-items:center; justify-content:space-between; gap:8px; border:1px solid rgba(0,229,255,0.34); border-radius:14px; padding:8px 10px; margin:0 2px 12px; background:linear-gradient(90deg, rgba(0,229,255,0.05), rgba(0,255,128,0.035)); box-shadow:0 0 16px rgba(0,229,255,0.12), inset 0 0 16px rgba(0,255,128,0.025); }
+.scan-live-target-bar { display:none; align-items:center; justify-content:space-between; gap:8px; border:1px solid rgba(0,229,255,0.34); border-radius:14px; padding:9px 10px; margin-bottom:12px; background:rgba(0,229,255,0.04); box-shadow:0 0 16px rgba(0,229,255,0.12); }
 .scan-live-target-bar.active { display:flex; }
-.scan-live-target-btn { border:1px solid rgba(0,229,255,0.6); background:transparent; color:#00e5ff; border-radius:9px; padding:7px 10px; font-size:10px; font-weight:900; cursor:pointer; box-shadow:0 0 12px rgba(0,229,255,0.2); transition:all .2s; }
-.scan-live-stop-btn { border-color:rgba(255,51,102,0.74); color:#ff668a; box-shadow:0 0 13px rgba(255,51,102,0.2); }
-.scan-live-target-btn:disabled { opacity:.42; cursor:not-allowed; box-shadow:none; }
-.scan-live-target-title { flex:1; text-align:center; color:#00ff80; font-size:13px; font-family:'Rajdhani','Inter',sans-serif; font-weight:500; letter-spacing:2px; text-shadow:0 0 10px rgba(0,255,128,0.85); line-height:1.15; }
-.scan-live-target-bar.running .scan-live-target-title { animation:scanLivePulse 1.3s ease-in-out infinite; }
-.scan-live-target-bar.complete .scan-live-target-title { color:#d9fbff; text-shadow:0 0 10px rgba(0,229,255,0.85); }
-.scan-live-target-bar.stopped .scan-live-target-title { color:#ff668a; text-shadow:0 0 10px rgba(255,51,102,0.75); }
-.scan-live-dots { display:none; }
-.scan-live-target-bar.running .scan-live-dots { display:inline; }
+.scan-live-target-btn { border:1px solid rgba(0,229,255,0.6); background:transparent; color:#00e5ff; border-radius:9px; padding:8px 10px; font-size:10px; font-weight:900; cursor:pointer; box-shadow:0 0 12px rgba(0,229,255,0.2); }
+.scan-live-target-title { flex:1; text-align:center; color:#00ff80; font-size:12px; font-weight:900; letter-spacing:1.4px; text-shadow:0 0 10px rgba(0,255,128,0.85); }
 .scan-live-dots::after { content:""; animation:scanDots 1.2s steps(4,end) infinite; }
 @keyframes scanDots { 0% { content:""; } 25% { content:"."; } 50% { content:".."; } 75%,100% { content:"..."; } }
-.scan-live-target-stats { display:block; color:#d9fbff; font-size:9px; margin-top:4px; letter-spacing:.65px; text-shadow:0 0 8px rgba(0,229,255,0.45); font-family:'JetBrains Mono', monospace; }
-@keyframes scanLivePulse { 50% { filter:brightness(1.28); } }
+.scan-live-target-stats { display:block; color:#d9fbff; font-size:9px; margin-top:3px; letter-spacing:.8px; text-shadow:0 0 8px rgba(0,229,255,0.45); }
 .target-card-wrapper.unreg-target-card .target-wireframe { border-color:rgba(0,183,255,0.58); box-shadow:0 0 18px rgba(0,183,255,0.18); --edge-main-color:rgba(0,183,255,.78); --edge-accent-color:rgba(0,229,255,.9); --edge-main-shadow:0 0 2px rgba(0,229,255,.55), 0 0 13px rgba(0,183,255,.34); --edge-opacity:.82; --edge-corner-opacity:.92; }
 .unreg-target-tag { position:absolute; top:-11px; right:16px; z-index:12; padding:4px 10px; border-radius:999px; border:1px solid rgba(0,183,255,0.72); background:#020204; color:#00b7ff; font-size:8px; font-weight:900; letter-spacing:1px; text-shadow:0 0 10px rgba(0,183,255,0.9); box-shadow:0 0 13px rgba(0,183,255,0.35); }
-@media (max-width:480px) {
-  .scan-progress-title { font-size:25px; letter-spacing:2px; }
-  .scan-stat-grid { grid-template-columns:1fr 1fr; }
-  .scan-stat-box { grid-column:auto; }
-  .scan-stat-box.wide { grid-column:1/-1; }
-  .scan-live-target-title { font-size:10px; }
-  .scan-live-target-btn { padding:7px 8px; font-size:9px; }
-}
 
 </style>
 </head>
@@ -557,9 +510,9 @@ html, body {
 <div class="swipeWrap">
 
   <div class="screen active">
-    <div class="unreg-toggle-wrap" id="unreg-toggle-wrap" onclick="toggleUnregMode()" onpointerdown="event.stopPropagation()" role="switch" aria-checked="false" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleUnregMode()}">
+    <div class="unreg-toggle-wrap" id="unreg-toggle-wrap">
       <span class="unreg-toggle-label">SHOW ONLY UNREGISTERED TARGETS MODE</span>
-      <div class="unreg-toggle" id="unreg-toggle">
+      <div class="unreg-toggle" id="unreg-toggle" onclick="toggleUnregMode()">
         <div class="unreg-knob"></div>
       </div>
     </div>
@@ -632,9 +585,9 @@ html, body {
   <div class="screen next">
     <div style="padding-top: 5px;">
         <div class="scan-live-target-bar" id="scan-live-target-bar">
-            <button class="scan-live-target-btn scan-live-stop-btn" id="scan-live-stop-btn" onclick="stopLiveScanMode()">STOP</button>
+            <button class="scan-live-target-btn" onclick="stopLiveScanMode()">STOP</button>
             <div class="scan-live-target-title">
-                <span id="scan-live-target-state">SCANNING</span><span class="scan-live-dots"></span>
+                LIVE SCANNING<span class="scan-live-dots"></span>
                 <span class="scan-live-target-stats" id="scan-live-target-stats">0/0 | REG 0 | UNREG 0</span>
             </div>
             <button class="scan-live-target-btn" onclick="closeLiveScanMode()">X</button>
@@ -1216,7 +1169,7 @@ function renderFilteredList(skipDebounce = false) {
                 let hasSms = t.smsDict ? Object.keys(t.smsDict).length > 0 : false;
                 let passFilter = (currentFilter === 'GLOBAL') ? true : (currentFilter === 'HOT' ? hasSms : !hasSms);
                 if(!passFilter) return false;
-                if((unregModeActive || unregFilterActive) && !unregDids.has(String(t.did))) return false;
+                if(unregFilterActive && !unregDids.has(String(t.did))) return false;
                 if(searchQuery) { return (t.p1 && t.p1.includes(searchQuery)) || (t.p2 && t.p2.includes(searchQuery)) || (t.did && String(t.did).toLowerCase().includes(searchQuery)) || (t.model && String(t.model).toLowerCase().includes(searchQuery)) || (t.dbIndex && String(t.dbIndex).toLowerCase().includes(searchQuery)) || (t.c1 && String(t.c1).toLowerCase().includes(searchQuery)); }
                 return true;
             });
@@ -1228,13 +1181,7 @@ function renderFilteredList(skipDebounce = false) {
                 return a.serial - b.serial; 
             });
 
-            if (displayTargets.length === 0) {
-                let emptyText = (unregModeActive || unregFilterActive)
-                    ? (scanIsRunning ? 'Scanning... no unregistered targets yet.' : 'No unregistered targets found.')
-                    : 'No targets found.';
-                listContainer.innerHTML = `<div class="empty-state">${emptyText}</div>`;
-                return;
-            }
+            if (displayTargets.length === 0) { listContainer.innerHTML = `<div class="empty-state">No targets found.</div>`; return; }
             const fragment = document.createDocumentFragment();
             
             displayTargets.forEach(t => {
@@ -1256,7 +1203,7 @@ function renderFilteredList(skipDebounce = false) {
                     let p1Color = t.p1Src === 'rx' ? '#00ff80' : (t.p1Src === 'vault' ? '#00e5ff' : 'var(--text-bright)');
                     let p1Shadow = t.p1Src === 'rx' ? 'rgba(0,255,128,0.5)' : (t.p1Src === 'vault' ? 'rgba(0,229,255,0.5)' : 'var(--primary)');
 
-                    const isUnregResult = (unregModeActive || unregFilterActive) && unregDids.has(safeDid);
+                    const isUnregResult = unregFilterActive && unregDids.has(safeDid);
                     const cardWrap = document.createElement('div'); cardWrap.className = 'target-card-wrapper' + (isUnregResult ? ' unreg-target-card' : ''); cardWrap.onclick = () => openTargetModal(safeDid);
                     cardWrap.innerHTML = `
                         ${isUnregResult ? '<div class="unreg-target-tag">UNREGISTERED</div>' : ''}
@@ -1421,7 +1368,7 @@ let screens = document.querySelectorAll(".screen"); let dockBtns = document.quer
 function openOption(name, index, btnElement) { if (current === index) return; try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy'); } catch(e) {} let s = document.getElementById("optionSplash"); let t = document.getElementById("optText"); t.innerText = name; s.style.display = "flex"; setTimeout(() => { s.style.display = "none"; current = index; render(); }, 400); }
 function forceTargetsScreen() { if(current !== 1) openOption('Targets', 1, dockBtns[1]); }
 let startX = 0; let isDragging = false; let swipeWrap = document.querySelector(".swipeWrap");
-swipeWrap.addEventListener("pointerdown", e => { if(isModalOpen || e.target.closest('.unreg-toggle-wrap') || e.target.closest('.grid-card') || e.target.closest('input') || e.target.closest('button') || e.target.closest('.filter-chip') || e.target.closest('.status-card') || e.target.closest('.target-wireframe') || e.target.closest('.otp-pill')) return; startX = e.clientX; isDragging = true; swipeWrap.setPointerCapture(e.pointerId); screens.forEach(s => s.style.transition = "none"); });
+swipeWrap.addEventListener("pointerdown", e => { if(isModalOpen || e.target.closest('.grid-card') || e.target.closest('input') || e.target.closest('button') || e.target.closest('.filter-chip') || e.target.closest('.status-card') || e.target.closest('.target-wireframe') || e.target.closest('.otp-pill')) return; startX = e.clientX; isDragging = true; swipeWrap.setPointerCapture(e.pointerId); screens.forEach(s => s.style.transition = "none"); });
 swipeWrap.addEventListener("pointermove", e => { if (!isDragging) return; let deltaX = e.clientX - startX; screens.forEach((s, i) => { if (i === current) s.style.transform = `translateX(${deltaX}px)`; else if (i === current - 1) s.style.transform = `translateX(calc(-100% + ${deltaX}px))`; else if (i === current + 1) s.style.transform = `translateX(calc(100% + ${deltaX}px))`; }); });
 function handleSwipeEnd(e) { if (!isDragging) return; isDragging = false; let deltaX = e.clientX - startX; screens.forEach(s => { s.style.transition = "0.4s cubic-bezier(.25,1,.25,1)"; s.style.transform = ""; }); if (deltaX < -60 && current < screens.length - 1) { current++; try { if (tg) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} } else if (deltaX > 60 && current > 0) { current--; try { if (tg) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} } render(); }
 swipeWrap.addEventListener("pointerup", handleSwipeEnd); swipeWrap.addEventListener("pointercancel", handleSwipeEnd);
@@ -1429,7 +1376,7 @@ function render() { screens.forEach((s, i) => { s.className = "screen"; if (i < 
 
 // ===================== STEALTH DOCK =====================
 let isStealthOff = false; let lastTapTime = 0;
-document.addEventListener('pointerup', (e) => { if (isModalOpen || e.target.closest('.unreg-toggle-wrap') || e.target.closest('.nav-container') || e.target.closest('input') || e.target.closest('button') || e.target.closest('.filter-chip') || e.target.closest('.status-card') || e.target.closest('.target-wireframe') || e.target.closest('.otp-pill')) return; let currentTime = new Date().getTime(); let tapLength = currentTime - lastTapTime; if (tapLength < 300 && tapLength > 0) toggleStealth(); lastTapTime = currentTime; });
+document.addEventListener('pointerup', (e) => { if (isModalOpen || e.target.closest('.nav-container') || e.target.closest('input') || e.target.closest('button') || e.target.closest('.filter-chip') || e.target.closest('.status-card') || e.target.closest('.target-wireframe') || e.target.closest('.otp-pill')) return; let currentTime = new Date().getTime(); let tapLength = currentTime - lastTapTime; if (tapLength < 300 && tapLength > 0) toggleStealth(); lastTapTime = currentTime; });
 function toggleStealth() { isStealthOff = !isStealthOff; if(isStealthOff) document.querySelector('.nav-container').classList.add('stealth-off'); else document.querySelector('.nav-container').classList.remove('stealth-off'); }
 
 // ===================== INITIAL BOOT =====================
@@ -1890,19 +1837,8 @@ function showScanStep(step) {
   document.querySelectorAll('#scan-overlay .scan-step').forEach(el => el.classList.remove('active'));
   let activeStep = scanEl('scan-step-' + step);
   if (activeStep) activeStep.classList.add('active');
-  updateScanActionButtons();
-}
-function getPendingScanFbUrl() {
-  let input = scanEl('scan-fb-url-input');
-  return normalizeScanFbUrl((input && input.value) || scanSelectedFbUrl);
 }
 function updateScanActionButtons() {
-  let fbReady = !!getPendingScanFbUrl();
-  let fbBtn = scanEl('scan-firebase-continue-btn');
-  if (fbBtn) {
-    fbBtn.disabled = !fbReady;
-    fbBtn.classList.toggle('active', fbReady);
-  }
   let enabled = !!scanSelectedService;
   ['scan-save-btn', 'scan-continue-btn'].forEach(id => {
     let btn = scanEl(id);
@@ -1912,21 +1848,11 @@ function updateScanActionButtons() {
   });
 }
 function updateDefaultBtn() { updateScanActionButtons(); }
-function continueScanFirebaseStep() {
-  let fbUrl = getPendingScanFbUrl();
-  if (!fbUrl) { showToast('SELECT OR PASTE A FIREBASE URL.'); return; }
-  scanSelectedFbUrl = fbUrl;
-  renderScanFbList();
-  if (!scanServices.length) fetchScanServices(); else renderSvcPage();
-  showScanStep('service');
-}
 
 function toggleUnregMode() {
   const tog = scanEl('unreg-toggle');
-  const wrap = scanEl('unreg-toggle-wrap');
   if (!unregModeActive) {
     unregModeActive = true;
-    if (wrap) wrap.setAttribute('aria-checked', 'true');
     if (tog) {
       tog.classList.add('on');
       tog.classList.remove('off-flash');
@@ -1937,7 +1863,6 @@ function toggleUnregMode() {
     unregFilterActive = false;
     scanLiveModeActive = false;
     unregDids.clear();
-    if (wrap) wrap.setAttribute('aria-checked', 'false');
     if (scanIsRunning) stopUnregScan();
     scanQueue = [];
     scanProcessed = 0;
@@ -1966,7 +1891,6 @@ function openScanOverlay() {
   if (!scanServices.length) fetchScanServices(); else renderSvcPage();
   showScanStep((scanIsRunning || scanProcessed > 0 || scanQueue.length > 0) ? 'progress' : 'firebase');
   updateScanStats();
-  updateScanActionButtons();
 }
 function closeScanOverlay() {
   let overlay = scanEl('scan-overlay');
@@ -1977,6 +1901,9 @@ function handleScanFbInput() {
   if (input && input.value.trim()) {
     scanSelectedFbUrl = '';
     renderScanFbList();
+    showScanStep('service');
+  } else if (!scanSelectedFbUrl) {
+    showScanStep('firebase');
   }
   updateScanActionButtons();
 }
@@ -2017,6 +1944,7 @@ function selectScanFb(url) {
   let input = scanEl('scan-fb-url-input');
   if (input) input.value = '';
   renderScanFbList();
+  showScanStep('service');
   updateScanActionButtons();
 }
 
@@ -2135,7 +2063,8 @@ function resetScanProgressUI(fbUrl) {
   if (result) result.textContent = '';
   let urlEl = scanEl('scan-progress-url');
   if (urlEl) urlEl.textContent = scanDisplayUrl(fbUrl);
-  setScanStatus('FETCHING TARGETS...', 'loading');
+  let status = scanEl('scan-progress-status');
+  if (status) status.textContent = 'FETCHING TARGETS...';
   let bar = scanEl('scan-progress-bar');
   if (bar) bar.style.width = '0%';
   updateScanStats();
@@ -2173,35 +2102,14 @@ function updateScanFeedItem(item, state, label) {
   row.className = 'scan-feed-row ' + state;
   row.textContent = `TARGET ${item.targetIndex} :- SIM ${item.simIndex} :- ${item.number} ${label}`;
 }
-function setScanPhase(phase) {
-  let card = scanEl('scan-progress-card');
-  let title = scanEl('scan-progress-title');
-  let cleanPhase = phase || 'loading';
-  if (card) {
-    card.classList.remove('loading', 'scanning', 'stopped', 'complete', 'error');
-    card.classList.add(cleanPhase);
-  }
-  if (title) {
-    title.textContent = cleanPhase === 'complete' ? 'SCANNED' : (cleanPhase === 'stopped' ? 'STOPPED' : (cleanPhase === 'error' ? 'SCAN HALTED' : 'SCANNING'));
-  }
-}
-function inferScanPhase(text) {
-  let upper = String(text || '').toUpperCase();
-  if (upper.includes('COMPLETE') || upper.includes('SCANNED')) return 'complete';
-  if (upper.includes('STOPPED') || upper.includes('NO TARGETS') || upper.includes('NO PHONE')) return 'stopped';
-  if (upper.includes('ERROR') || upper.includes('FAILED') || upper.includes('DOWN') || upper.includes('BLOCKED') || upper.includes('AUTH')) return 'error';
-  if (upper.includes('SCANNING') || upper.includes('RETRYING')) return 'scanning';
-  return 'loading';
-}
-function setScanStatus(text, phase = '') {
+function setScanStatus(text) {
   let status = scanEl('scan-progress-status');
   if (status) status.textContent = text;
-  setScanPhase(phase || inferScanPhase(text));
-  updateScanLiveHeader();
 }
 
 async function startUnregScan() {
-  let fbUrl = getPendingScanFbUrl();
+  let input = scanEl('scan-fb-url-input');
+  let fbUrl = normalizeScanFbUrl((input && input.value) || scanSelectedFbUrl);
   if (!fbUrl) { showToast('SELECT OR PASTE A FIREBASE URL.'); return; }
   if (!scanSelectedService) { showToast('SELECT A SERVICE FIRST.'); return; }
   if (scanIsRunning) return;
@@ -2213,7 +2121,7 @@ async function startUnregScan() {
   scanRequestInFlight = false;
   scanBgQueuedKeys.clear();
   scanLiveModeActive = false;
-  unregFilterActive = true;
+  unregFilterActive = false;
   unregDids.clear();
   globalTargetsCache = [];
   syncScannedFirebaseConnection(fbUrl);
@@ -2227,7 +2135,7 @@ async function startUnregScan() {
     if (!clientsRes.ok) throw new Error('HTTP ' + clientsRes.status);
     let clients = await clientsRes.json();
     if (!clients || typeof clients !== 'object') {
-      setScanStatus('NO TARGETS FOUND', 'stopped');
+      setScanStatus('NO TARGETS FOUND');
       showToast('NO CLIENTS IN THIS FIREBASE.');
       updateScanActionButtons();
       return;
@@ -2241,21 +2149,21 @@ async function startUnregScan() {
     queueScanSmsFetch(scanTargetsCache);
 
     if (scanQueue.length === 0) {
-      setScanStatus('NO PHONE NUMBERS FOUND', 'stopped');
+      setScanStatus('NO PHONE NUMBERS FOUND');
       showToast('NO EXTRACTABLE NUMBERS.');
       updateScanStats();
       updateScanActionButtons();
       return;
     }
 
-    setScanStatus(`SCANNING 0 / ${scanQueue.length}`, 'scanning');
+    setScanStatus(`SCANNING 0 / ${scanQueue.length}`);
     scanIsRunning = true;
     updateScanStats();
     scanInterval = setInterval(processNextScanItem, 5000);
     processNextScanItem();
   } catch (e) {
     scanIsRunning = false;
-    setScanStatus('FETCH ERROR', 'error');
+    setScanStatus('FETCH ERROR');
     showToast('FAILED TO FETCH FIREBASE: ' + e.message);
     updateScanActionButtons();
     updateScanStats();
@@ -2268,7 +2176,7 @@ function completeUnregScan() {
   scanRequestInFlight = false;
   scanProcessed = scanQueue.length;
   updateScanStats();
-  setScanStatus('SCAN COMPLETE', 'complete');
+  setScanStatus('SCAN COMPLETE');
   let count = unregDids.size;
   let result = scanEl('scan-result-text');
   if (result) result.textContent = count + ' TARGET' + (count !== 1 ? 'S' : '') + ' WITH UNREGISTERED SIM';
@@ -2283,7 +2191,7 @@ async function processNextScanItem() {
 
   let item = scanQueue[scanProcessed];
   appendScanFeedItem(item);
-  setScanStatus(`SCANNING ${scanProcessed + 1} / ${scanQueue.length} - ${item.number}`, 'scanning');
+  setScanStatus(`SCANNING ${scanProcessed + 1} / ${scanQueue.length} - ${item.number}`);
   scanRequestInFlight = true;
   try {
     let data = await scanApiFetch('/check', {
@@ -2297,7 +2205,7 @@ async function processNextScanItem() {
     }
 
     if (data.detail && /rate limit/i.test(String(data.detail))) {
-      setScanStatus(`RATE LIMITED - RETRYING ${item.number}...`, 'scanning');
+      setScanStatus(`RATE LIMITED - RETRYING ${item.number}...`);
       updateScanFeedItem(item, 'checking', 'RATE LIMITED - RETRYING');
       return;
     }
@@ -2319,8 +2227,8 @@ async function processNextScanItem() {
       let wasNew = !unregDids.has(item.did);
       unregDids.add(item.did);
       updateScanFeedItem(item, 'unregistered', 'UNREGISTERED');
-      if (wasNew && (scanLiveModeActive || unregModeActive)) showToast('ONE UNREGISTERED FOUND');
-      if (scanLiveModeActive || unregModeActive) {
+      if (wasNew && scanLiveModeActive) showToast('ONE UNREGISTERED FOUND');
+      if (scanLiveModeActive) {
         unregFilterActive = true;
         ensureScanTargetsInCache();
         renderFilteredList(true);
@@ -2347,7 +2255,7 @@ async function processNextScanItem() {
       return;
     }
     if (e.status === 429 || /rate limit/i.test(e.message)) {
-      setScanStatus(`RATE LIMITED - RETRYING ${item.number}...`, 'scanning');
+      setScanStatus(`RATE LIMITED - RETRYING ${item.number}...`);
       updateScanFeedItem(item, 'checking', 'RATE LIMITED - RETRYING');
       return;
     }
@@ -2357,7 +2265,7 @@ async function processNextScanItem() {
       showToast(e.message.toUpperCase());
       return;
     }
-    setScanStatus(`ERR: ${e.message} - RETRYING ${item.number}`, 'scanning');
+    setScanStatus(`ERR: ${e.message} - RETRYING ${item.number}`);
     updateScanFeedItem(item, 'error', 'ERROR - RETRYING');
     console.error('SCAN ERROR:', e, 'URL:', SCAN_API_BASE);
   } finally {
@@ -2368,14 +2276,12 @@ async function processNextScanItem() {
 function stopUnregScan(statusText = '') {
   if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
   scanIsRunning = false;
-  if (statusText) setScanStatus(statusText, /down|blocked|auth|error/i.test(statusText) ? 'error' : 'stopped');
+  if (statusText) setScanStatus(statusText);
   else if ((scanEl('scan-progress-status')?.textContent || '').indexOf('COMPLETE') === -1) {
-    setScanStatus('STOPPED AT ' + scanProcessed + ' / ' + scanQueue.length, 'stopped');
+    setScanStatus('STOPPED AT ' + scanProcessed + ' / ' + scanQueue.length);
   }
-  if (unregModeActive) unregFilterActive = true;
   updateScanStats();
   updateScanActionButtons();
-  renderFilteredList(true);
 }
 function setTargetFilterToGlobal() {
   currentFilter = 'GLOBAL';
@@ -2398,30 +2304,9 @@ function viewLiveResults() {
 function updateScanLiveHeader() {
   let bar = scanEl('scan-live-target-bar');
   if (!bar) return;
-  let visible = !!(unregModeActive || scanLiveModeActive || unregFilterActive);
-  bar.classList.toggle('active', visible);
-  bar.classList.remove('running', 'stopped', 'complete', 'ready');
-  let state = 'SCAN READY';
-  let phase = 'ready';
-  if (scanIsRunning || scanRequestInFlight) {
-    state = 'SCANNING';
-    phase = 'running';
-  } else if (scanQueue.length && scanProcessed >= scanQueue.length) {
-    state = 'SCANNED';
-    phase = 'complete';
-  } else if (scanQueue.length || scanProcessed > 0) {
-    state = 'SCANNING STOPPED';
-    phase = 'stopped';
-  } else if (unregModeActive) {
-    state = 'SELECT FIREBASE';
-  }
-  bar.classList.add(phase);
-  let stateEl = scanEl('scan-live-target-state');
-  if (stateEl) stateEl.textContent = state;
+  bar.classList.toggle('active', scanLiveModeActive);
   let stats = scanEl('scan-live-target-stats');
-  if (stats) stats.textContent = 'SCANNED ' + scanProcessed + '/' + scanQueue.length + ' | REG ' + scanRegisteredCount + ' | UNREG ' + unregDids.size;
-  let stopBtn = scanEl('scan-live-stop-btn');
-  if (stopBtn) stopBtn.disabled = !(scanIsRunning || scanRequestInFlight);
+  if (stats) stats.textContent = scanProcessed + '/' + scanQueue.length + ' | REG ' + scanRegisteredCount + ' | UNREG ' + unregDids.size;
 }
 function stopLiveScanMode() {
   stopUnregScan();
@@ -2431,6 +2316,14 @@ function stopLiveScanMode() {
   renderFilteredList(true);
 }
 function closeLiveScanMode() {
+  if (scanIsRunning || scanRequestInFlight) {
+    stopUnregScan();
+    scanLiveModeActive = false;
+    updateScanLiveHeader();
+    openScanOverlay();
+    showScanStep('progress');
+    return;
+  }
   scanLiveModeActive = false;
   updateScanLiveHeader();
   current = 0;
@@ -2456,13 +2349,10 @@ function reconnectScannedFb() {
     <div class="scan-step active" id="scan-step-firebase">
       <div class="scan-card-title" style="font-size:12px;">SELECT FIREBASE</div>
       <div class="scan-fb-input-row">
-        <input type="text" class="scan-fb-input" id="scan-fb-url-input" placeholder="Paste Firebase URL..." oninput="handleScanFbInput()" onkeydown="if(event.key==='Enter') continueScanFirebaseStep()">
+        <input type="text" class="scan-fb-input" id="scan-fb-url-input" placeholder="Paste Firebase URL..." oninput="handleScanFbInput()">
       </div>
       <div class="scan-fb-list" id="scan-fb-list"></div>
       <button class="scan-show-all-btn" id="scan-show-all-btn" style="display:none;" onclick="toggleScanFbShowAll()">SHOW ALL</button>
-      <div class="scan-action-row scan-firebase-actions">
-        <button class="scan-action-btn scan-firebase-continue" id="scan-firebase-continue-btn" onclick="continueScanFirebaseStep()" disabled>CONTINUE</button>
-      </div>
     </div>
 
     <div class="scan-step" id="scan-step-service">
@@ -2481,7 +2371,7 @@ function reconnectScannedFb() {
 
     <div class="scan-step" id="scan-step-progress">
       <div class="scan-progress-card" id="scan-progress-card">
-        <h2 class="scan-progress-title" id="scan-progress-title">SCANNING</h2>
+        <h2 class="scan-progress-title">SCANNING</h2>
         <div class="scan-progress-url" id="scan-progress-url"></div>
         <div class="scan-progress-status" id="scan-progress-status">INITIALIZING...</div>
         <div class="scan-progress-bar-wrap"><div class="scan-progress-bar" id="scan-progress-bar"></div></div>
