@@ -1,4 +1,4 @@
-import { proxySuperassets } from '../../../lib/superassets-proxy.mjs';
+import { proxySuperassets } from '../../../lib/tubesave-proxy.mjs';
 
 export default {
   fetch(request) {
