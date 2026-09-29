@@ -1473,6 +1473,7 @@ let scanIsRunning = false;
 let scanRequestInFlight = false;
 let scanPendingItems = [];
 let scanParallelism = 1;
+let scanActiveSlots = [0];
 let scanIntervalMs = 5000;
 let scanTargetsMap = {};
 
@@ -1575,6 +1576,9 @@ async function scanApiFetch(path, options = {}) {
     const msg = data.detail || data.message || data.error || `HTTP ${res.status}`;
     const err = new Error(Array.isArray(msg) ? JSON.stringify(msg) : String(msg));
     err.status = res.status;
+    err.keyRejected = res.headers.get('x-scan-key-rejected') === '1';
+    const invalidSlot = Number(res.headers.get('x-invalid-scan-slot'));
+    err.invalidSlot = Number.isInteger(invalidSlot) ? invalidSlot : null;
     throw err;
   }
 
@@ -1586,7 +1590,11 @@ async function fetchScanCapacity() {
   const parallelism = Number(data.parallelism);
   const intervalMs = Number(data.minIntervalMs);
   if (!Number.isInteger(parallelism) || parallelism < 1) throw new Error('NO ACTIVE API KEYS');
-  scanParallelism = parallelism;
+  const slots = Array.isArray(data.slots)
+    ? data.slots.filter(slot => Number.isInteger(slot) && slot >= 0)
+    : Array.from({ length: parallelism }, (_, index) => index);
+  scanActiveSlots = Array.from(new Set(slots));
+  scanParallelism = scanActiveSlots.length || parallelism;
   scanIntervalMs = Number.isFinite(intervalMs) && intervalMs >= 0 ? intervalMs : 5000;
 }
 
@@ -2335,6 +2343,7 @@ async function startUnregScan() {
   scanTotalTargets = 0;
   scanRequestInFlight = false;
   scanPendingItems = [];
+  scanActiveSlots = [0];
   scanBgQueuedKeys.clear();
   scanLiveModeActive = false;
   unregFilterActive = true;
@@ -2417,12 +2426,17 @@ function completeUnregScan() {
 async function processNextScanBatch() {
   if (scanRequestInFlight || !scanIsRunning) return;
   if (scanPendingItems.length === 0) { completeUnregScan(); return; }
+  if (scanActiveSlots.length === 0) {
+    stopUnregScan('NO VALID API KEYS');
+    showToast('ALL API KEYS WERE REJECTED.');
+    return;
+  }
 
-  const batch = scanPendingItems.splice(0, scanParallelism);
+  const batch = scanPendingItems.splice(0, scanActiveSlots.length);
   scanRequestInFlight = true;
   setScanStatus(`SCANNING ${scanProcessed + 1}-${Math.min(scanProcessed + batch.length, scanQueue.length)} / ${scanQueue.length} (${batch.length} PARALLEL)`, 'scanning');
   try {
-    await Promise.all(batch.map((item, slot) => processScanItem(item, slot)));
+    await Promise.all(batch.map((item, index) => processScanItem(item, scanActiveSlots[index])));
   } finally {
     scanRequestInFlight = false;
     updateScanStats();
@@ -2492,6 +2506,14 @@ async function processScanItem(item, slot) {
       stopUnregScan('API BLOCKED BY BROWSER');
       showToast('CORS BLOCKED. USE SERVER PROXY.');
       console.error('SCAN ERROR:', e, 'URL:', SCAN_API_BASE);
+      return;
+    }
+    if (e.keyRejected && e.invalidSlot !== null) {
+      scanActiveSlots = scanActiveSlots.filter(slot => slot !== e.invalidSlot);
+      scanParallelism = scanActiveSlots.length;
+      scanPendingItems.push(item);
+      updateScanFeedItem(item, 'error', 'INVALID KEY - RETRYING');
+      showToast('INVALID API KEY REMOVED. ' + scanActiveSlots.length + ' SLOT' + (scanActiveSlots.length === 1 ? '' : 'S') + ' LEFT.');
       return;
     }
     if (e.status === 401 || e.status === 403) {
