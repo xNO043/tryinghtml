@@ -1471,6 +1471,9 @@ let scanInterval = null;
 let scanProcessed = 0;
 let scanIsRunning = false;
 let scanRequestInFlight = false;
+let scanPendingItems = [];
+let scanParallelism = 1;
+let scanIntervalMs = 5000;
 let scanTargetsMap = {};
 
 function toggleUnregMode() {
@@ -1576,6 +1579,15 @@ async function scanApiFetch(path, options = {}) {
   }
 
   return data;
+}
+
+async function fetchScanCapacity() {
+  const data = await scanApiFetch('/capacity');
+  const parallelism = Number(data.parallelism);
+  const intervalMs = Number(data.minIntervalMs);
+  if (!Number.isInteger(parallelism) || parallelism < 1) throw new Error('NO ACTIVE API KEYS');
+  scanParallelism = parallelism;
+  scanIntervalMs = Number.isFinite(intervalMs) && intervalMs >= 0 ? intervalMs : 5000;
 }
 
 async function fetchScanServices() {
@@ -1960,6 +1972,7 @@ function toggleUnregMode() {
     if (wrap) wrap.setAttribute('aria-checked', 'false');
     if (scanIsRunning) stopUnregScan();
     scanQueue = [];
+    scanPendingItems = [];
     scanProcessed = 0;
     scanRegisteredCount = 0;
     scanTotalTargets = 0;
@@ -2321,6 +2334,7 @@ async function startUnregScan() {
   scanRegisteredCount = 0;
   scanTotalTargets = 0;
   scanRequestInFlight = false;
+  scanPendingItems = [];
   scanBgQueuedKeys.clear();
   scanLiveModeActive = false;
   unregFilterActive = true;
@@ -2366,11 +2380,13 @@ async function startUnregScan() {
       return;
     }
 
+    await fetchScanCapacity();
+    scanPendingItems = scanQueue.slice();
     setScanStatus(`SCANNING 0 / ${scanQueue.length}`, 'scanning');
     scanIsRunning = true;
     updateScanStats();
-    scanInterval = setInterval(processNextScanItem, 5000);
-    processNextScanItem();
+    scanInterval = setInterval(processNextScanBatch, scanIntervalMs);
+    processNextScanBatch();
   } catch (e) {
     scanIsRunning = false;
     setScanStatus('FETCH ERROR', 'error');
@@ -2384,7 +2400,6 @@ function completeUnregScan() {
   if (scanInterval) { clearInterval(scanInterval); scanInterval = null; }
   scanIsRunning = false;
   scanRequestInFlight = false;
-  scanProcessed = scanQueue.length;
   updateScanStats();
   setScanStatus('SCAN COMPLETE', 'complete');
   let count = unregDids.size;
@@ -2395,18 +2410,28 @@ function completeUnregScan() {
   renderFilteredList(true);
   updateScanActionButtons();
 }
-async function processNextScanItem() {
+async function processNextScanBatch() {
   if (scanRequestInFlight || !scanIsRunning) return;
-  if (scanProcessed >= scanQueue.length) { completeUnregScan(); return; }
+  if (scanPendingItems.length === 0) { completeUnregScan(); return; }
 
-  let item = scanQueue[scanProcessed];
-  appendScanFeedItem(item);
-  setScanStatus(`SCANNING ${scanProcessed + 1} / ${scanQueue.length} - ${item.number}`, 'scanning');
+  const batch = scanPendingItems.splice(0, scanParallelism);
   scanRequestInFlight = true;
+  setScanStatus(`SCANNING ${scanProcessed + 1}-${Math.min(scanProcessed + batch.length, scanQueue.length)} / ${scanQueue.length} (${batch.length} PARALLEL)`, 'scanning');
+  try {
+    await Promise.all(batch.map((item, slot) => processScanItem(item, slot)));
+  } finally {
+    scanRequestInFlight = false;
+    updateScanStats();
+    if (scanIsRunning && scanPendingItems.length === 0) completeUnregScan();
+  }
+}
+
+async function processScanItem(item, slot) {
+  appendScanFeedItem(item);
   try {
     let data = await scanApiFetch('/check', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Scan-Slot': String(slot) },
       body: JSON.stringify({ number: item.number, service: scanSelectedService })
     });
     if (!scanIsRunning) {
@@ -2415,8 +2440,8 @@ async function processNextScanItem() {
     }
 
     if (data.detail && /rate limit/i.test(String(data.detail))) {
-      setScanStatus(`RATE LIMITED - RETRYING ${item.number}...`, 'scanning');
       updateScanFeedItem(item, 'checking', 'RATE LIMITED - RETRYING');
+      scanPendingItems.push(item);
       return;
     }
     if (data.detail && /maintenance|down/i.test(String(data.detail))) {
@@ -2457,8 +2482,6 @@ async function processNextScanItem() {
       updateScanFeedItem(item, 'registered', 'REGISTERED');
     }
     scanProcessed++;
-    updateScanStats();
-    if (scanProcessed >= scanQueue.length) completeUnregScan();
   } catch (e) {
     if (e.networkBlocked) {
       updateScanFeedItem(item, 'error', 'API BLOCKED');
@@ -2474,8 +2497,8 @@ async function processNextScanItem() {
       return;
     }
     if (e.status === 429 || /rate limit/i.test(e.message)) {
-      setScanStatus(`RATE LIMITED - RETRYING ${item.number}...`, 'scanning');
       updateScanFeedItem(item, 'checking', 'RATE LIMITED - RETRYING');
+      scanPendingItems.push(item);
       return;
     }
     if (/maintenance|down/i.test(e.message)) {
@@ -2484,12 +2507,9 @@ async function processNextScanItem() {
       showToast(e.message.toUpperCase());
       return;
     }
-    setScanStatus(`ERR: ${e.message} - RETRYING ${item.number}`, 'scanning');
     updateScanFeedItem(item, 'error', 'ERROR - RETRYING');
+    scanPendingItems.push(item);
     console.error('SCAN ERROR:', e, 'URL:', SCAN_API_BASE);
-  } finally {
-    scanRequestInFlight = false;
-    updateScanStats();
   }
 }
 function stopUnregScan(statusText = '') {
