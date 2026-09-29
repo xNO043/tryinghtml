@@ -2345,6 +2345,7 @@ async function startUnregScan() {
   resetScanProgressUI(fbUrl);
   renderFilteredList(true);
 
+  let scanStage = 'FIREBASE';
   try {
     let dbDump = await fetchDatabaseSmart(fbUrl);
     if (!dbDump || (!dbDump.clients && !dbDump.user_data)) {
@@ -2364,6 +2365,7 @@ async function startUnregScan() {
     }
 
     setScanStatus('EXTRACTING REGEX NUMBERS...', 'loading');
+    scanStage = 'SMS DATA';
     await hydrateScanTargetsWithSms(parsedTargets, fbUrl);
     prepareScanTargets(parsedTargets, fbUrl);
     globalTargetsCache = scanTargetsCache.slice();
@@ -2380,6 +2382,7 @@ async function startUnregScan() {
       return;
     }
 
+    scanStage = 'SCAN API';
     await fetchScanCapacity();
     scanPendingItems = scanQueue.slice();
     setScanStatus(`SCANNING 0 / ${scanQueue.length}`, 'scanning');
@@ -2389,8 +2392,9 @@ async function startUnregScan() {
     processNextScanBatch();
   } catch (e) {
     scanIsRunning = false;
-    setScanStatus('FETCH ERROR', 'error');
-    showToast('FAILED TO FETCH FIREBASE: ' + e.message);
+    const isApiFailure = scanStage === 'SCAN API';
+    setScanStatus(isApiFailure ? 'SCAN API ERROR' : 'FETCH ERROR', 'error');
+    showToast((isApiFailure ? 'SCAN API FAILED: ' : 'FAILED TO FETCH FIREBASE: ') + e.message);
     updateScanActionButtons();
     updateScanStats();
   }
