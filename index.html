@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>X - God Mode Panel (VOID X THEME)</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
@@ -27,7 +27,7 @@
 
 html, body { 
   background-color: var(--bg-dark); 
-  margin: 0; padding: 0; height: 100%; overflow: hidden;
+  margin: 0; padding: 0; height: 100%; min-height: 100dvh; overflow: hidden;
   font-family: 'Inter', sans-serif; color: var(--text-main);
   -webkit-tap-highlight-color: transparent; user-select: none;
 }
@@ -108,8 +108,8 @@ html, body {
 .global-search:focus { box-shadow: 0 0 20px var(--obsidian-glow-strong); border-color: #3f3f46; }
 .global-search::placeholder { color: var(--text-dim); font-weight: 400;}
 
-.swipeWrap { position: relative; height: calc(100vh - 250px); width: 100%; touch-action: pan-y; z-index: 10; } 
-.screen { position: absolute; width: 100%; height: 100%; padding: 0 20px; box-sizing: border-box; transition: 0.4s cubic-bezier(.25,1,.25,1); will-change: transform, opacity; overflow-y: auto; padding-bottom: 120px; }
+.swipeWrap { position: relative; height: calc(100dvh - 250px); width: 100%; touch-action: pan-y; z-index: 10; } 
+.screen { position: absolute; width: 100%; height: 100%; padding: 0 20px; box-sizing: border-box; transition: 0.4s cubic-bezier(.25,1,.25,1); will-change: transform, opacity; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding-bottom: calc(120px + env(safe-area-inset-bottom)); }
 .screen::-webkit-scrollbar { display: none; }
 .active { transform: translateX(0); opacity: 1; z-index: 5; }
 .next { transform: translateX(100%); opacity: 0; z-index: 1; }
@@ -166,7 +166,7 @@ html, body {
 .target-list { height: auto; }
 .empty-state { text-align: center; color: var(--text-dim); margin-top: 30px; font-size: 13px; font-style: italic; }
 
-.target-card-wrapper { position: relative; margin-top: 15px; margin-bottom: 20px; }
+.target-card-wrapper { position: relative; margin-top: 15px; margin-bottom: 20px; content-visibility: auto; contain-intrinsic-size: auto 156px; }
 .target-serial { position: absolute; top: -10px; left: 15px; font-size: 9px; padding: 4px 12px; background: #020204; border: 1px solid var(--obsidian-border); border-radius: 10px; color: var(--text-bright); font-weight: 900; box-shadow: 0 0 10px var(--obsidian-glow); letter-spacing: 1px; z-index: 10; }
 .target-wireframe { padding: 18px 15px 12px 15px; border-radius: 15px; border: 1px solid transparent; background: transparent; position: relative; overflow: visible; cursor: pointer; transition: 0.3s; z-index: 1; }
 .target-card-wrapper:hover .target-wireframe { transform: translateY(-2px); }
@@ -362,7 +362,7 @@ html, body {
 .status-card.loading.outline-card { overflow: hidden; }
 
 /* ================= DOCK ================= */
-.nav-container { position: fixed; bottom: 20px; width: 100%; display: flex; justify-content: center; z-index: 1000; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1); }
+.nav-container { position: fixed; bottom: calc(20px + env(safe-area-inset-bottom)); width: 100%; display: flex; justify-content: center; z-index: 1000; transform: translateY(150%); transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1); }
 .nav-container.stealth-off { transform: translateY(0); }
 .stealth-indicator { position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%); width: 40px; height: 4px; background: var(--obsidian-border); box-shadow: 0 0 10px var(--obsidian-glow-strong); border-radius: 10px; transition: 0.3s; z-index: 999; pointer-events: none; }
 .nav-container.stealth-off ~ .stealth-indicator { opacity: 0; transform: translate(-50%, 20px); }
@@ -483,6 +483,22 @@ html, body {
 .scan-progress-btns button { flex:1; padding:12px 10px; border-radius:10px; font-size:11px; font-weight:900; letter-spacing:1px; cursor:pointer; text-transform:uppercase; background:linear-gradient(180deg, rgba(0,229,255,0.055), rgba(0,0,0,0.1)); border:1px solid rgba(0,229,255,0.62); color:#00e5ff; box-shadow:0 0 14px rgba(0,229,255,0.18); transition:all .2s; }
 .scan-progress-btns button:last-child { border-color:rgba(255,51,102,0.62); color:#ff668a; box-shadow:0 0 14px rgba(255,51,102,0.14); }
 .scan-result-text { font-size:12px; font-weight:900; color:var(--text-bright); text-align:center; letter-spacing:1px; margin-top:10px; min-height:18px; }
+
+/* Mobile performance: visual style is preserved while offscreen work is paused. */
+body.app-background-paused .fog1,
+body.app-background-paused .fog2,
+body.app-background-paused .fog3,
+body.app-background-paused #obsidian-core-glow,
+body.app-background-paused .p,
+body.app-background-paused .void-sweep::after,
+body.app-background-paused .scan-progress-card::before,
+body.app-background-paused .scan-progress-card::after {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
 
 .scan-live-target-bar { display:none; align-items:center; justify-content:space-between; gap:8px; border:1px solid rgba(0,229,255,0.34); border-radius:14px; padding:8px 10px; margin:0 2px 12px; background:linear-gradient(90deg, rgba(0,229,255,0.05), rgba(0,255,128,0.035)); box-shadow:0 0 16px rgba(0,229,255,0.12), inset 0 0 16px rgba(0,255,128,0.025); }
 .scan-live-target-bar.active { display:flex; }
@@ -656,7 +672,7 @@ html, body {
   </div>
 
   <div class="screen next">
-    <div class="status-card void-sweep outline-card" style="height: calc(100vh - 350px); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+    <div class="status-card void-sweep outline-card" style="height: calc(100dvh - 350px); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
       <span class="outline-edge outline-main" aria-hidden="true"></span>
       <span class="outline-edge outline-micro" aria-hidden="true"></span>
       <h3>Store</h3><h2 style="font-size:24px;">Coming Soon</h2><p>Your tools & scripts will appear here.</p>
@@ -1107,6 +1123,7 @@ function updateDashboardCounts() {
 }
 
 async function fetchAndRenderTargets(silent = false) {
+    if (silent && document.hidden) return;
     if(isScanning) return; 
     const listContainer = document.getElementById("targetList");
     if(activeDatabases.length === 0) { if(!silent) listContainer.innerHTML = `<div class="empty-state">No active firebase connections.</div>`; return; }
@@ -1175,7 +1192,7 @@ async function fetchAndRenderTargets(silent = false) {
         else if (allTargets.length === 0 && globalTargetsCache.length === 0) { listContainer.innerHTML = `<div class="empty-state">No online targets found.</div>`; } 
         else { renderFilteredList(true); } 
     } else { 
-        renderFilteredList(true); 
+        if (current === 1 || isModalOpen || scanLiveModeActive) renderFilteredList(true); 
         if(isModalOpen && currentModalDid) updateModalLive(currentModalDid); 
     }
 
@@ -1186,6 +1203,7 @@ async function fetchAndRenderTargets(silent = false) {
 }
 
 async function processBgQueue() {
+    if (document.hidden) { setTimeout(processBgQueue, 4000); return; }
     if (bgQueue.length === 0) { isBgProcessing = false; let ind = document.getElementById("bg-sync-indicator"); if(ind && !ind.innerText.includes("NEW DEVICE")) ind.style.display = 'none'; return; }
     isBgProcessing = true; let batch = bgQueue.splice(0, 3); 
     let ind = document.getElementById("bg-sync-indicator"); if(ind) { ind.style.display = "block"; ind.innerText = `> DECRYPTING BACKGROUND PAYLOADS [Remaining: ${bgQueue.length}]... ⏳`; }
@@ -1213,10 +1231,13 @@ async function processBgQueue() {
 
 // ===================== RENDER & FILTERS =====================
 let renderTimeout = null;
+let renderFrame = 0;
 function renderFilteredList(skipDebounce = false) {
     clearTimeout(renderTimeout);
+    if (renderFrame) { cancelAnimationFrame(renderFrame); renderFrame = 0; }
     const doRender = () => {
         try {
+            if (current !== 1 && !isModalOpen && !scanLiveModeActive) return;
             if ((unregModeActive || unregFilterActive || scanLiveModeActive) && scanTargetsCache.length) {
                 ensureScanTargetsInCache(false);
             }
@@ -1292,7 +1313,8 @@ function renderFilteredList(skipDebounce = false) {
             listContainer.innerHTML = ''; listContainer.appendChild(fragment);
         } catch(err) { document.getElementById("targetList").innerHTML = `<div class="empty-state" style="color:#ff3366;">UI Engine rebooting... Render bypassed.</div>`; }
     };
-    if (skipDebounce) doRender(); else renderTimeout = setTimeout(doRender, 200);
+    const queueRender = () => { renderFrame = requestAnimationFrame(() => { renderFrame = 0; doRender(); }); };
+    if (skipDebounce) queueRender(); else renderTimeout = setTimeout(queueRender, 220);
 }
 
 function setFilter(filterType, btnElement) { try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} document.querySelectorAll('.filter-chip').forEach(el => el.classList.remove('active')); btnElement.classList.add('active'); currentFilter = filterType; renderFilteredList(true); }
@@ -1430,12 +1452,17 @@ function updateModalLive(did) {
 let screens = document.querySelectorAll(".screen"); let dockBtns = document.querySelectorAll(".dock button"); let current = 0; let isModalOpen = false;
 function openOption(name, index, btnElement) { if (current === index) return; try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy'); } catch(e) {} let s = document.getElementById("optionSplash"); let t = document.getElementById("optText"); t.innerText = name; s.style.display = "flex"; setTimeout(() => { s.style.display = "none"; current = index; render(); }, 400); }
 function forceTargetsScreen() { if(current !== 1) openOption('Targets', 1, dockBtns[1]); }
-let startX = 0; let isDragging = false; let swipeWrap = document.querySelector(".swipeWrap");
+let startX = 0; let isDragging = false; let swipeWrap = document.querySelector(".swipeWrap"); let swipeFrame = 0; let pendingSwipeDelta = 0;
 swipeWrap.addEventListener("pointerdown", e => { if(isModalOpen || e.target.closest('.unreg-toggle-wrap') || e.target.closest('.grid-card') || e.target.closest('input') || e.target.closest('button') || e.target.closest('.filter-chip') || e.target.closest('.status-card') || e.target.closest('.target-wireframe') || e.target.closest('.otp-pill')) return; startX = e.clientX; isDragging = true; swipeWrap.setPointerCapture(e.pointerId); screens.forEach(s => s.style.transition = "none"); });
-swipeWrap.addEventListener("pointermove", e => { if (!isDragging) return; let deltaX = e.clientX - startX; screens.forEach((s, i) => { if (i === current) s.style.transform = `translateX(${deltaX}px)`; else if (i === current - 1) s.style.transform = `translateX(calc(-100% + ${deltaX}px))`; else if (i === current + 1) s.style.transform = `translateX(calc(100% + ${deltaX}px))`; }); });
-function handleSwipeEnd(e) { if (!isDragging) return; isDragging = false; let deltaX = e.clientX - startX; screens.forEach(s => { s.style.transition = "0.4s cubic-bezier(.25,1,.25,1)"; s.style.transform = ""; }); if (deltaX < -60 && current < screens.length - 1) { current++; try { if (tg) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} } else if (deltaX > 60 && current > 0) { current--; try { if (tg) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} } render(); }
+swipeWrap.addEventListener("pointermove", e => { if (!isDragging) return; pendingSwipeDelta = e.clientX - startX; if (swipeFrame) return; swipeFrame = requestAnimationFrame(() => { swipeFrame = 0; let deltaX = pendingSwipeDelta; screens.forEach((s, i) => { if (i === current) s.style.transform = `translateX(${deltaX}px)`; else if (i === current - 1) s.style.transform = `translateX(calc(-100% + ${deltaX}px))`; else if (i === current + 1) s.style.transform = `translateX(calc(100% + ${deltaX}px))`; }); }); });
+function handleSwipeEnd(e) { if (!isDragging) return; isDragging = false; let deltaX = e.clientX - startX; if (swipeFrame) { cancelAnimationFrame(swipeFrame); swipeFrame = 0; } screens.forEach(s => { s.style.transition = "0.4s cubic-bezier(.25,1,.25,1)"; s.style.transform = ""; }); if (deltaX < -60 && current < screens.length - 1) { current++; try { if (tg) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} } else if (deltaX > 60 && current > 0) { current--; try { if (tg) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} } render(); }
 swipeWrap.addEventListener("pointerup", handleSwipeEnd); swipeWrap.addEventListener("pointercancel", handleSwipeEnd);
-function render() { screens.forEach((s, i) => { s.className = "screen"; if (i < current) s.classList.add("out"); else if (i === current) s.classList.add("active"); else s.classList.add("next"); }); dockBtns.forEach(b => b.classList.remove("active-btn")); if (dockBtns[current]) dockBtns[current].classList.add("active-btn"); }
+function render() { screens.forEach((s, i) => { s.className = "screen"; if (i < current) s.classList.add("out"); else if (i === current) s.classList.add("active"); else s.classList.add("next"); }); dockBtns.forEach(b => b.classList.remove("active-btn")); if (dockBtns[current]) dockBtns[current].classList.add("active-btn"); if (current === 1) renderFilteredList(true); }
+
+document.addEventListener('visibilitychange', () => {
+  document.body.classList.toggle('app-background-paused', document.hidden);
+  if (!document.hidden && current === 1) renderFilteredList(true);
+});
 
 // ===================== STEALTH DOCK =====================
 let isStealthOff = false; let lastTapTime = 0;
