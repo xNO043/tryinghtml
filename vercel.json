@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/s/:token",
+      "destination": "/CHECKINGUNREGISTERED.HTML"
+    },
+    {
+      "source": "/",
+      "destination": "/CHECKINGUNREGISTERED.HTML"
+    }
+  ]
+}
