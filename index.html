@@ -6,7 +6,7 @@
 <title>X - God Mode Panel (VOID X THEME)</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 
 *{box-sizing:border-box}
 
@@ -425,17 +425,130 @@ body.targets-screen-active .swipeWrap { height: calc(100dvh - 78px); }
 .backup-recovery-block p { margin:0 0 8px; color:var(--text-dim); font-size:10px; line-height:1.45; }
 .backup-recovery-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; margin-top:8px; }
 .backup-divider { margin:18px 0; border:0; border-top:1px solid var(--obsidian-border); }
-.account-summary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:12px 0 16px; }
-.account-stat { min-width:0; padding:12px; border:1px solid var(--obsidian-border); border-radius:8px; background:rgba(255,255,255,.018); }
-.account-stat span { display:block; color:var(--text-dim); font:800 8px/1.3 'JetBrains Mono',monospace; letter-spacing:.8px; }
-.account-stat strong { display:block; margin-top:6px; color:var(--text-bright); font:900 16px/1 'JetBrains Mono',monospace; overflow:hidden; text-overflow:ellipsis; }
+.account-identity { position:relative; display:flex; align-items:center; gap:13px; min-height:74px; margin:0 0 16px; padding:13px; overflow:hidden; border:1px solid rgba(var(--primary-rgb),.38); border-radius:8px; background:linear-gradient(105deg,rgba(var(--primary-rgb),.12),rgba(255,255,255,.015) 48%,rgba(0,255,128,.05)); }
+.account-identity::after { content:""; position:absolute; top:0; right:-22px; width:95px; height:100%; border-left:1px solid rgba(var(--primary-rgb),.35); transform:skewX(-22deg); opacity:.75; }
+.account-avatar { position:relative; z-index:1; width:48px; height:48px; flex:0 0 auto; display:grid; place-items:center; border:1px solid var(--primary); border-radius:50%; color:var(--text-bright); background:rgba(0,0,0,.5); box-shadow:0 0 16px rgba(var(--primary-rgb),.44),inset 0 0 14px rgba(var(--primary-rgb),.12); font:900 20px/1 'JetBrains Mono',monospace; }
+.account-identity-copy { position:relative; z-index:1; min-width:0; }
+.account-identity-kicker { margin:0 0 4px; color:var(--text-dim); font:800 8px/1.2 'JetBrains Mono',monospace; letter-spacing:1.3px; }
+.account-identity-name { margin:0; overflow:hidden; color:var(--text-bright); font:900 20px/1.1 'JetBrains Mono',monospace; text-overflow:ellipsis; white-space:nowrap; }
+.account-identity-state { display:flex; align-items:center; gap:7px; margin:6px 0 0; color:#00ff80; font:900 8px/1 'JetBrains Mono',monospace; letter-spacing:1px; }
+.account-sync-bars { display:inline-flex; align-items:flex-end; gap:2px; height:10px; }
+.account-sync-bars i { width:2px; border-radius:3px; background:#00ff80; box-shadow:0 0 6px rgba(0,255,128,.85); animation:accountSyncBars .9s ease-in-out infinite alternate; }
+.account-sync-bars i:nth-child(1) { height:4px; animation-delay:.1s; }.account-sync-bars i:nth-child(2) { height:8px; animation-delay:.35s; }.account-sync-bars i:nth-child(3) { height:6px; animation-delay:.58s; }
+.account-sync-bars.is-paused i { animation-play-state:paused; opacity:.32; }
+.account-summary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin:0 0 14px; }
+.account-stat { min-width:0; min-height:74px; padding:11px; border:1px solid var(--obsidian-border); border-radius:7px; background:rgba(255,255,255,.018); }
+.account-stat:nth-child(2) { border-color:rgba(0,255,128,.28); }
+.account-stat:nth-child(3) { border-color:rgba(var(--primary-rgb),.34); }
+.account-stat span { display:block; color:var(--text-dim); font:800 7px/1.3 'JetBrains Mono',monospace; letter-spacing:.7px; }
+.account-stat strong { display:block; margin-top:9px; color:var(--text-bright); font:900 18px/1 'JetBrains Mono',monospace; overflow:hidden; text-overflow:ellipsis; }
+.account-stat strong.account-stat-state { font-size:10px; color:#00ff80; line-height:1.2; }
 .account-auth-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
 .account-auth-note { margin:0 0 14px; color:var(--text-dim); font-size:11px; line-height:1.55; }
-.account-status-line { margin:12px 0; padding:10px; border-left:2px solid #00ff80; background:rgba(0,255,128,.045); color:var(--text-main); font:700 10px/1.5 'JetBrains Mono',monospace; }
-.account-vault-panel { margin-top:14px; padding:14px; border:1px solid rgba(0,255,128,.3); border-radius:8px; background:rgba(0,255,128,.022); }
+.account-auth-header { margin:0 0 16px; padding:14px; border-left:2px solid var(--primary); background:rgba(var(--primary-rgb),.055); }
+.account-auth-header h3 { margin:0 0 5px; color:var(--text-bright); font-size:17px; }
+.account-auth-header p { margin:0; color:var(--text-dim); font-size:11px; line-height:1.45; }
+.account-status-line { margin:0 0 12px; padding:10px 12px; border-left:2px solid #00ff80; background:rgba(0,255,128,.045); color:var(--text-main); font:700 10px/1.5 'JetBrains Mono',monospace; }
+.account-vault-panel { position:relative; margin-top:12px; padding:14px; border:1px solid rgba(0,255,128,.3); border-radius:8px; background:linear-gradient(110deg,rgba(0,255,128,.055),rgba(255,255,255,.012)); }
+.account-vault-title { margin:0 0 7px; color:#00ff80; font:900 10px/1 'JetBrains Mono',monospace; letter-spacing:1.1px; }
 .account-vault-panel p { margin:0 0 10px; color:var(--text-dim); font-size:10px; line-height:1.45; }
 .account-vault-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 .account-logout { margin-top:12px; width:100%; border-color:rgba(255,51,102,.65); color:#ff668a; }
+.account-perks { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin:0 0 18px; }
+.account-perk { min-height:104px; padding:13px; border:1px solid rgba(255,255,255,.1); border-radius:8px; background:rgba(255,255,255,.018); }
+.account-perk-mark { display:block; margin-bottom:12px; color:#00ff80; font:900 16px/1 'JetBrains Mono',monospace; text-shadow:0 0 12px rgba(0,255,128,.45); }
+.account-perk strong { display:block; color:var(--text-bright); font-size:13px; line-height:1.15; }
+.account-perk span { display:block; margin-top:6px; color:var(--text-dim); font-size:10px; line-height:1.4; }
+.account-field { display:grid; gap:7px; margin-top:12px; }
+.account-field label { color:var(--text-dim); font:900 9px/1 'JetBrains Mono',monospace; letter-spacing:1.1px; }
+.account-field { position:relative; }
+.account-field::after { content:""; position:absolute; left:0; right:100%; bottom:0; height:1px; pointer-events:none; background:linear-gradient(90deg,#00ff80,var(--primary),transparent); box-shadow:0 0 8px rgba(var(--primary-rgb),.7); }
+.account-field:focus-within::after { animation:accountInputTrace .52s cubic-bezier(.2,1,.2,1) both; }
+.account-password-meter { display:flex; align-items:center; gap:10px; margin-top:10px; min-height:16px; }
+.account-password-meter-bars { display:grid; grid-template-columns:repeat(4,1fr); gap:4px; flex:1; }
+.account-password-meter-bars i { height:3px; border-radius:4px; background:rgba(255,255,255,.12); transition:background .22s ease,box-shadow .22s ease,transform .22s ease; }
+.account-password-meter span { width:94px; color:var(--text-dim); font:800 8px/1 'JetBrains Mono',monospace; letter-spacing:.9px; text-align:right; }
+.account-password-meter[data-level="1"] i:nth-child(-n+1) { background:#ff668a; box-shadow:0 0 7px rgba(255,102,138,.6); }
+.account-password-meter[data-level="2"] i:nth-child(-n+2) { background:#ffd166; box-shadow:0 0 7px rgba(255,209,102,.6); }
+.account-password-meter[data-level="3"] i:nth-child(-n+3) { background:#8cffc2; box-shadow:0 0 7px rgba(140,255,194,.5); }
+.account-password-meter[data-level="4"] i { background:#00ff80; box-shadow:0 0 8px rgba(0,255,128,.7); }
+.account-password-meter[data-level="4"] i:nth-child(4) { animation:accountMeterPulse 1.3s ease-in-out infinite; }
+.account-meta { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:0 0 12px; }
+.account-meta-item { padding:11px 12px; border:1px solid rgba(255,255,255,.08); border-radius:7px; background:rgba(255,255,255,.015); }
+.account-meta-item span { display:block; color:var(--text-dim); font:800 8px/1.2 'JetBrains Mono',monospace; letter-spacing:.8px; }
+.account-meta-item strong { display:block; margin-top:6px; color:var(--text-main); font:800 11px/1.3 'Inter',sans-serif; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#accountModal .share-card { position:relative; width:min(100%,760px); max-height:min(86vh,760px); border-color:rgba(var(--primary-rgb),.34); box-shadow:0 0 48px rgba(0,0,0,.85),0 0 30px rgba(var(--primary-rgb),.2),inset 0 0 32px rgba(var(--primary-rgb),.035); animation:accountConsoleBreathe 5s ease-in-out infinite; }
+#accountModal .share-card::before { content:""; position:absolute; z-index:4; left:0; right:0; top:-2px; height:1px; pointer-events:none; opacity:0; background:linear-gradient(90deg,transparent,rgba(0,255,128,.2),#00ff80,rgba(var(--primary-rgb),.9),transparent); box-shadow:0 0 11px rgba(0,255,128,.6); animation:accountScanner 7s 1.4s linear infinite; }
+#accountModal .modal-header { padding:24px 26px 18px; background:linear-gradient(100deg,rgba(var(--primary-rgb),.1),transparent 55%); }
+#accountModal .modal-title { font-size:28px; letter-spacing:.4px; }
+#accountModal .share-step-copy { margin-top:5px; font-size:14px; }
+#accountModal .bulk-modal-body { padding:24px 26px 26px; }
+#accountModal .share-stage-kicker { margin:0 0 10px; font-size:10px; }
+#accountModal .account-auth-header { position:relative; margin-bottom:14px; padding:16px 20px; overflow:hidden; border-left-width:3px; border-radius:0 8px 8px 0; background:linear-gradient(105deg,rgba(var(--primary-rgb),.14),rgba(255,255,255,.02)); }
+#accountModal .account-auth-header::before { content:""; position:absolute; z-index:1; left:0; bottom:0; width:36%; height:1px; background:linear-gradient(90deg,#00ff80,transparent); box-shadow:0 0 10px rgba(0,255,128,.7); animation:accountHeaderSignal 2.8s ease-in-out infinite; }
+#accountModal .account-auth-header::after { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.12) 50%,transparent 70%); transform:translateX(-125%); }
+#accountModal .account-auth-header h3 { position:relative; z-index:1; display:flex; align-items:center; gap:9px; margin:0 0 6px; color:#f0ddff; font:700 19px/1.1 'Rajdhani',sans-serif; letter-spacing:.55px; text-shadow:0 0 14px rgba(var(--primary-rgb),.26); }
+#accountModal .account-live-dot { width:7px; height:7px; flex:0 0 auto; border-radius:50%; background:#00ff80; box-shadow:0 0 0 3px rgba(0,255,128,.08),0 0 10px rgba(0,255,128,.95); animation:accountLiveBlink 1.5s ease-in-out infinite; }
+#accountModal .account-auth-header p { position:relative; z-index:1; font-size:12px; line-height:1.45; max-width:610px; }
+#accountModal .share-large-input { min-height:62px; padding:0 18px; font-size:15px; border-radius:9px; }
+#accountModal .account-auth-actions { grid-template-columns:1fr; gap:10px; margin-top:16px; }
+#accountModal .account-auth-actions .cyber-btn, #accountModal .account-vault-actions .cyber-btn, #accountModal .account-logout { min-height:54px; font-size:12px; }
+#accountModal .account-auth-actions .cyber-btn:first-child:not(.is-ready) { border-color:rgba(255,255,255,.13); color:rgba(233,213,255,.38); background:rgba(255,255,255,.012); box-shadow:none; }
+#accountModal .account-auth-actions .cyber-btn:first-child.is-ready { border-color:#00ff80; color:#00ff80; background:rgba(0,255,128,.06); box-shadow:0 0 16px rgba(0,255,128,.16); animation:accountActionPulse 3.2s ease-in-out infinite; }
+#accountModal .account-perks { gap:0; margin:0 0 16px; border:1px solid rgba(255,255,255,.1); border-radius:8px; overflow:hidden; background:rgba(255,255,255,.015); }
+#accountModal .account-perk { position:relative; min-height:0; padding:12px 14px; overflow:hidden; border:0; border-right:1px solid rgba(255,255,255,.1); border-radius:0; background:transparent; }
+#accountModal .account-perk::after { content:""; position:absolute; right:12px; top:14px; width:4px; height:4px; border-radius:50%; background:#00ff80; box-shadow:0 0 8px #00ff80; opacity:.55; animation:accountSignalBlink 1.8s ease-in-out infinite; }
+#accountModal .account-perk:nth-child(2)::after { animation-delay:.35s; }
+#accountModal .account-perk:nth-child(3)::after { animation-delay:.7s; }
+#accountModal .account-perk:last-child { border-right:0; }
+#accountModal .account-perk-mark { display:inline; margin:0 7px 0 0; font-size:12px; }
+#accountModal .account-perk strong { display:inline; font-size:11px; }
+#accountModal .account-perk span { margin-top:6px; font-size:9px; line-height:1.3; }
+#accountModal.open #account-guest-panel .account-auth-header { animation:accountHeaderIn .38s cubic-bezier(.2,1,.2,1) both; }
+#accountModal.open #account-guest-panel .account-auth-header::after { animation:accountSweep 1.1s .18s ease-out both; }
+#accountModal.open #account-guest-panel .account-perk { animation:accountPerkIn .34s cubic-bezier(.2,1,.2,1) both; }
+#accountModal.open #account-guest-panel .account-perk:nth-child(1) { animation-delay:.08s; }
+#accountModal.open #account-guest-panel .account-perk:nth-child(2) { animation-delay:.15s; }
+#accountModal.open #account-guest-panel .account-perk:nth-child(3) { animation-delay:.22s; }
+#accountModal.open #account-guest-panel .account-field { animation:accountPerkIn .32s .2s cubic-bezier(.2,1,.2,1) both; }
+#accountModal.open #account-guest-panel .account-auth-actions { animation:accountPerkIn .32s .28s cubic-bezier(.2,1,.2,1) both; }
+@keyframes accountHeaderIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+@keyframes accountPerkIn { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } }
+@keyframes accountSweep { to { transform:translateX(125%); } }
+@keyframes accountLiveBlink { 0%,100% { opacity:.45; transform:scale(.82); } 50% { opacity:1; transform:scale(1); } }
+@keyframes accountConsoleBreathe { 0%,100% { border-color:rgba(var(--primary-rgb),.3); box-shadow:0 0 48px rgba(0,0,0,.85),0 0 24px rgba(var(--primary-rgb),.15),inset 0 0 32px rgba(var(--primary-rgb),.025); } 50% { border-color:rgba(var(--primary-rgb),.62); box-shadow:0 0 48px rgba(0,0,0,.85),0 0 38px rgba(var(--primary-rgb),.27),inset 0 0 36px rgba(var(--primary-rgb),.05); } }
+@keyframes accountScanner { 0%,8% { top:-2px; opacity:0; } 12%,86% { opacity:.42; } 92%,100% { top:100%; opacity:0; } }
+@keyframes accountHeaderSignal { 0%,100% { width:22%; opacity:.4; } 50% { width:68%; opacity:1; } }
+@keyframes accountSignalBlink { 0%,100% { opacity:.2; transform:scale(.8); } 50% { opacity:1; transform:scale(1.15); } }
+@keyframes accountActionPulse { 0%,100% { box-shadow:0 0 14px rgba(0,255,128,.14); } 50% { box-shadow:0 0 24px rgba(0,255,128,.31),inset 0 0 16px rgba(0,255,128,.045); } }
+@keyframes accountStatScan { 0%,100% { transform:scaleX(.22); transform-origin:left; opacity:.22; } 50% { transform:scaleX(1); opacity:.86; } }
+@keyframes accountInputTrace { from { right:100%; opacity:.15; } to { right:0; opacity:1; } }
+@keyframes accountMeterPulse { 50% { transform:scaleY(1.7); } }
+@keyframes accountSyncBars { from { transform:scaleY(.5); opacity:.35; } to { transform:scaleY(1.25); opacity:1; } }
+.account-secure-flash { position:absolute; z-index:8; top:50%; left:50%; display:flex; align-items:center; gap:8px; padding:10px 14px; border:1px solid rgba(0,255,128,.85); border-radius:8px; color:#00ff80; background:rgba(0,8,4,.94); box-shadow:0 0 24px rgba(0,255,128,.34); font:900 10px/1 'JetBrains Mono',monospace; letter-spacing:1px; opacity:0; pointer-events:none; transform:translate(-50%,-30%) scale(.92); }
+.account-secure-flash::before { content:""; width:7px; height:7px; border-radius:50%; background:#00ff80; box-shadow:0 0 10px #00ff80; }
+#accountModal.account-secure-sequence .account-secure-flash { animation:accountSecureFlash 1.35s cubic-bezier(.2,1,.2,1) both; }
+#accountModal.account-secure-sequence .account-identity { animation:accountIdentityLock .75s .08s cubic-bezier(.2,1,.2,1) both; }
+@keyframes accountSecureFlash { 0% { opacity:0; transform:translate(-50%,-18%) scale(.84); } 20%,72% { opacity:1; transform:translate(-50%,-50%) scale(1); } 100% { opacity:0; transform:translate(-50%,-68%) scale(.98); } }
+@keyframes accountIdentityLock { 0% { filter:brightness(1); } 42% { border-color:#00ff80; box-shadow:0 0 30px rgba(0,255,128,.32); filter:brightness(1.25); } 100% { filter:brightness(1); } }
+#accountModal .account-identity { min-height:92px; padding:18px; margin-bottom:18px; }
+#accountModal .account-avatar { width:60px; height:60px; font-size:26px; }
+#accountModal .account-identity-kicker { font-size:9px; }
+#accountModal .account-identity-name { font-size:25px; }
+#accountModal .account-identity-state { font-size:9px; }
+#accountModal .account-summary { gap:10px; margin-bottom:14px; }
+#accountModal .account-stat { position:relative; min-height:88px; padding:14px; overflow:hidden; }
+#accountModal .account-stat::after { content:""; position:absolute; left:0; right:0; bottom:0; height:1px; background:var(--primary); opacity:.35; animation:accountStatScan 3.5s ease-in-out infinite; }
+#accountModal .account-stat:nth-child(2)::after { background:#00ff80; animation-delay:.5s; }
+#accountModal .account-stat:nth-child(3)::after { animation-delay:1s; }
+#accountModal .account-stat span { font-size:8px; }
+#accountModal .account-stat strong { margin-top:12px; font-size:23px; }
+#accountModal .account-stat strong.account-stat-state { font-size:12px; }
+#accountModal .account-status-line { padding:13px 14px; font-size:11px; }
+#accountModal .account-vault-panel { padding:18px; }
+#accountModal .account-vault-title { font-size:11px; }
+#accountModal .account-vault-panel p { font-size:12px; line-height:1.5; }
+@media (max-width:560px) { #accountModal .share-card { max-height:88vh; } #accountModal .modal-header { padding:20px 18px 14px; } #accountModal .modal-title { font-size:23px; } #accountModal .share-step-copy { font-size:12px; } #accountModal .bulk-modal-body { padding:18px; } #accountModal .account-auth-header { padding:15px 16px; } #accountModal .account-auth-header h3 { font-size:18px; } #accountModal .account-perks { grid-template-columns:1fr; } #accountModal .account-perk { min-height:0; display:grid; grid-template-columns:28px 1fr; column-gap:10px; border-right:0; border-bottom:1px solid rgba(255,255,255,.1); } #accountModal .account-perk:last-child { border-bottom:0; } #accountModal .account-perk-mark { grid-row:span 2; margin:2px 0 0; } #accountModal .account-perk span { margin-top:4px; } #accountModal .account-summary { grid-template-columns:1fr; } #accountModal .account-stat { min-height:0; display:grid; grid-template-columns:1fr auto; align-items:center; } #accountModal .account-stat strong { margin:0; } #accountModal .account-meta { grid-template-columns:1fr; } }
 .account-notice { position:fixed; inset:0; z-index:100120; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(0,0,0,.73); backdrop-filter:blur(9px); }
 .account-notice.open { display:flex; animation:noticeFade .24s ease both; }
 .account-notice-card { width:min(510px,100%); padding:22px; border:1px solid rgba(255,209,77,.82); border-radius:10px; background:linear-gradient(145deg,rgba(30,24,5,.99),rgba(3,3,5,.99)); box-shadow:0 0 0 1px rgba(255,209,77,.14),0 0 34px rgba(255,186,0,.22); animation:noticeLift .34s cubic-bezier(.2,1,.2,1) both; }
@@ -448,12 +561,37 @@ body.targets-screen-active .swipeWrap { height: calc(100dvh - 78px); }
 .account-notice-close { min-height:34px; padding:0 12px; font-size:8px; }
 @keyframes noticeFade { from { opacity:0; } to { opacity:1; } }
 @keyframes noticeLift { from { opacity:0; transform:translateY(18px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
-.owner-message-card { padding:24px 20px; text-align:center; }
-.owner-message-kicker { margin:0 0 14px; color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:900; letter-spacing:1.2px; }
-.owner-message-link { color:var(--primary-glow); font-weight:900; text-decoration:none; }
-.owner-message-body { margin:0; color:var(--text-bright); font-size:16px; font-weight:800; line-height:1.5; overflow-wrap:anywhere; }
-.owner-message-timer { margin:18px 0 0; color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:1px; }
-@media (prefers-reduced-motion:reduce) { .share-flow-stage.is-active { animation:none; } .share-notice-option { transition:none; } }
+#ownerMessageModal { z-index:100070; padding:0; background:#0a0a12; overflow:hidden; }
+#ownerMessageModal .owner-message-shell { width:100%; max-width:none; height:100%; max-height:none; border:0; border-radius:0; background:#0a0a12; box-shadow:none; }
+.owner-transmission { position:relative; z-index:1; display:flex; align-items:center; justify-content:center; width:100%; height:100%; overflow:hidden; padding:42px 22px; font-family:'JetBrains Mono',monospace; text-align:center; }
+.owner-transmission-grid, .owner-transmission-scanlines { position:absolute; inset:0; pointer-events:none; }
+.owner-transmission-grid { z-index:-2; opacity:.72; background-image:linear-gradient(rgba(0,217,232,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(0,217,232,.055) 1px,transparent 1px); background-size:56px 56px; transform:perspective(560px) rotateX(59deg) translateY(21%); transform-origin:center bottom; animation:ownerGridMove 8s linear infinite; }
+.owner-transmission-scanlines { z-index:4; opacity:.54; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.12) 2px,rgba(0,0,0,.12) 4px); }
+.owner-transmission-scanlines::after { content:""; position:absolute; inset:0; background:linear-gradient(transparent 50%,rgba(0,0,0,.12) 50%); background-size:100% 4px; animation:ownerScanFlicker .12s infinite; }
+.owner-transmission-content { position:relative; z-index:2; width:min(100%,760px); }
+.owner-transmission-tag { margin:0 0 15px; color:#05d9e8; font:700 12px/1 'Orbitron',sans-serif; letter-spacing:6px; opacity:0; animation:ownerFadeSlide .65s .18s forwards; }
+.owner-transmission-badge { display:inline-block; position:relative; margin-bottom:26px; padding:9px 25px; border:2px solid #ff2a6d; color:#ff2a6d; background:rgba(255,42,109,.1); font:700 11px/1 'Orbitron',sans-serif; letter-spacing:5px; opacity:0; animation:ownerBadgeIn .75s .52s forwards; }
+.owner-transmission-badge::before, .owner-transmission-badge::after { content:""; position:absolute; width:13px; height:13px; border-color:#ff2a6d; border-style:solid; }
+.owner-transmission-badge::before { top:-5px; left:-5px; border-width:2px 0 0 2px; }.owner-transmission-badge::after { right:-5px; bottom:-5px; border-width:0 2px 2px 0; }
+.owner-transmission-title { min-height:88px; margin:0 auto 28px; color:#e0e0ff; font:900 clamp(18px,3vw,29px)/1.5 'Orbitron',sans-serif; }
+.owner-transmission-title .owner-word { display:inline-block; margin:0 4px; opacity:0; transform:translateY(25px) scale(.84); filter:blur(4px); animation:ownerWordDrop .42s forwards; }
+.owner-transmission-title .cyan { color:#05d9e8; text-shadow:0 0 12px #05d9e8,0 0 28px rgba(5,217,232,.55); }.owner-transmission-title .pink { color:#ff2a6d; text-shadow:0 0 12px #ff2a6d,0 0 28px rgba(255,42,109,.55); }
+.owner-message-card { position:relative; padding:34px 28px 25px; overflow:hidden; border:1px solid rgba(5,217,232,.27); border-radius:2px; background:rgba(10,10,25,.9); opacity:0; transform:translateY(18px); clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,24px 100%,0 calc(100% - 24px)); }
+.owner-message-card.visible { animation:ownerCardReveal .62s forwards; }
+.owner-message-card::before { content:""; position:absolute; z-index:-1; inset:-2px; background:linear-gradient(135deg,#05d9e8,#d300c5,#ff2a6d,#05d9e8); background-size:400% 400%; clip-path:inherit; animation:ownerBorderGlow 4s ease infinite; }
+.owner-message-kicker { display:flex; align-items:center; justify-content:center; gap:10px; margin:0 0 18px; color:#d300c5; font:700 10px/1 'Orbitron',sans-serif; letter-spacing:4px; }
+.owner-message-kicker::before,.owner-message-kicker::after { content:""; width:34px; height:1px; background:#d300c5; }.owner-message-link { color:#05d9e8; text-decoration:none; }
+.owner-message-body { min-height:54px; margin:0; color:#e8e8ff; font:500 clamp(20px,3.4vw,31px)/1.55 'Rajdhani',sans-serif; letter-spacing:2px; overflow-wrap:anywhere; }
+.owner-message-char { display:inline-block; color:#f9f002; text-shadow:0 0 8px #f9f002,0 0 20px rgba(249,240,2,.28); opacity:0; animation:ownerTypeChar .05s forwards; }.owner-message-char.typed { color:#e8e8ff; text-shadow:0 0 5px rgba(232,232,255,.2); }
+.owner-message-cursor { display:inline-block; width:3px; height:1em; margin-left:3px; vertical-align:text-bottom; background:#05d9e8; box-shadow:0 0 8px #05d9e8,0 0 15px #05d9e8; animation:ownerCursorBlink .6s step-end infinite; }
+.owner-message-visualizer { display:flex; align-items:flex-end; justify-content:center; gap:3px; height:29px; margin-top:23px; opacity:0; transition:opacity .4s; }.owner-message-visualizer.visible { opacity:1; }.owner-message-visualizer i { width:4px; height:5px; border-radius:2px; background:linear-gradient(to top,#ff2a6d,#05d9e8); animation:ownerBarDance .8s ease-in-out infinite alternate; }
+.owner-message-footer { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:18px; opacity:0; transition:opacity .6s; }.owner-message-footer.visible { opacity:1; }.owner-message-footer i { width:6px; height:6px; border-radius:50%; background:#ff2a6d; box-shadow:0 0 8px #ff2a6d; animation:ownerDotPulse 2s ease-in-out infinite; }.owner-message-footer i:nth-child(2) { background:#05d9e8; box-shadow:0 0 8px #05d9e8; animation-delay:.3s; }.owner-message-footer i:nth-child(3) { background:#d300c5; box-shadow:0 0 8px #d300c5; animation-delay:.6s; }
+.owner-message-timer { margin:15px 0 0; min-height:13px; color:rgba(5,217,232,.6); font:700 10px/1 'JetBrains Mono',monospace; letter-spacing:2px; opacity:0; transition:opacity .6s; }.owner-message-timer.visible { opacity:1; }
+.owner-transmission-close { position:absolute; z-index:8; top:22px; right:24px; width:42px; height:42px; border:1px solid rgba(255,42,109,.55); border-radius:2px; color:#ff2a6d; background:rgba(255,42,109,.05); cursor:pointer; font:700 22px/1 'Orbitron',sans-serif; box-shadow:0 0 12px rgba(255,42,109,.14); }
+.owner-transmission-corner { position:absolute; z-index:5; width:66px; height:66px; opacity:0; animation:ownerFadeIn .7s .1s forwards; }.owner-transmission-corner.tl { top:22px; left:22px; border-top:2px solid #05d9e8; border-left:2px solid #05d9e8; }.owner-transmission-corner.tr { top:22px; right:22px; border-top:2px solid #ff2a6d; border-right:2px solid #ff2a6d; }.owner-transmission-corner.bl { bottom:22px; left:22px; border-bottom:2px solid #ff2a6d; border-left:2px solid #ff2a6d; }.owner-transmission-corner.br { right:22px; bottom:22px; border-right:2px solid #05d9e8; border-bottom:2px solid #05d9e8; }
+@keyframes ownerGridMove { to { transform:perspective(560px) rotateX(59deg) translateY(calc(21% + 56px)); } } @keyframes ownerScanFlicker { 0%,100% { opacity:.75; } 50% { opacity:1; } } @keyframes ownerFadeIn { to { opacity:1; } } @keyframes ownerFadeSlide { from { opacity:0; transform:translateY(-14px); } to { opacity:1; transform:translateY(0); } } @keyframes ownerBadgeIn { 0% { opacity:0; transform:scale(.82); } 60% { opacity:1; transform:scale(1.04); } 100% { opacity:1; transform:scale(1); box-shadow:0 0 20px rgba(255,42,109,.3),inset 0 0 20px rgba(255,42,109,.1); } } @keyframes ownerWordDrop { 60% { transform:translateY(-4px) scale(1.04); } 100% { opacity:1; transform:translateY(0) scale(1); filter:blur(0); } } @keyframes ownerCardReveal { to { opacity:1; transform:translateY(0); } } @keyframes ownerBorderGlow { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } } @keyframes ownerTypeChar { 0% { opacity:0; transform:translateY(-10px); color:#05d9e8; } 50% { color:#f9f002; } 100% { opacity:1; transform:translateY(0); } } @keyframes ownerCursorBlink { 0%,100% { opacity:1; } 50% { opacity:0; } } @keyframes ownerBarDance { from { height:5px; } to { height:25px; } } @keyframes ownerDotPulse { 0%,100% { transform:scale(1); opacity:1; } 50% { transform:scale(1.7); opacity:.5; } }
+@media (max-width:560px) { .owner-transmission { padding:42px 16px; }.owner-transmission-tag { font-size:9px; letter-spacing:3px; }.owner-transmission-badge { padding:8px 14px; font-size:8px; letter-spacing:3px; }.owner-transmission-title { min-height:74px; margin-bottom:20px; font-size:17px; }.owner-message-card { padding:26px 18px 20px; }.owner-message-kicker { font-size:8px; letter-spacing:2px; }.owner-message-kicker::before,.owner-message-kicker::after { width:21px; }.owner-message-body { font-size:21px; letter-spacing:1.2px; }.owner-transmission-corner { width:42px; height:42px; }.owner-transmission-close { top:14px; right:14px; width:36px; height:36px; font-size:18px; } }
+@media (prefers-reduced-motion:reduce) { .share-flow-stage.is-active, #accountModal .share-card, #accountModal .share-card::before, #accountModal.open #account-guest-panel .account-auth-header, #accountModal.open #account-guest-panel .account-perk, #accountModal.open #account-guest-panel .account-field, #accountModal.open #account-guest-panel .account-auth-actions, #accountModal .account-live-dot, #accountModal .account-auth-header::before, #accountModal .account-auth-header::after, #accountModal .account-perk::after, #accountModal .account-auth-actions .cyber-btn:first-child, #accountModal .account-stat::after, #accountModal .account-password-meter-bars i, #accountModal .account-sync-bars i, #accountModal.account-secure-sequence .account-secure-flash, #accountModal.account-secure-sequence .account-identity, .owner-transmission-grid, .owner-transmission-scanlines::after, .owner-transmission-tag, .owner-transmission-badge, .owner-transmission-title .owner-word, .owner-message-card, .owner-message-card::before, .owner-message-char, .owner-message-cursor, .owner-message-visualizer i, .owner-message-footer i, .owner-transmission-corner { animation:none; } .share-notice-option { transition:none; } }
 @media (max-width:480px) { .firebase-panel-head { align-items:flex-start; } .firebase-toolbar { gap:4px; } .firebase-command { padding:0 8px; font-size:8px; } .firebase-menu-toggle { width:28px; } .share-control-grid { grid-template-columns:1fr; } .managed-link-stats { grid-template-columns:repeat(2,1fr); } .managed-link-message { grid-template-columns:1fr; } .managed-link-message .cyber-btn { min-height:36px; } .managed-links-head { align-items:flex-start; } .managed-links-tools { flex-wrap:wrap; justify-content:flex-end; } .link-editor-add, .backup-recovery-row, .account-auth-actions, .account-vault-actions { grid-template-columns:1fr; } .link-editor-add .cyber-btn { min-height:38px; } .account-notice-card { padding:19px; } }
 
 .target-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px); z-index: 10001; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1); opacity: 0; pointer-events: none; }
@@ -1293,20 +1431,21 @@ body.app-scrolling .scan-progress-card::after {
     <div class="modal-header"><div class="modal-title-row"><div class="modal-title-area"><h2 class="modal-title" id="account-title">YOUR PROFILE</h2><p class="share-step-copy" id="account-subtitle">Create an account to protect your Firebase workspace.</p></div><button class="close-modal" type="button" onclick="closeAccountModal()">&times;</button></div></div>
     <div class="bulk-modal-body">
       <div id="account-guest-panel">
-        <p class="share-stage-kicker">SECURE WORKSPACE</p>
-        <p class="account-auth-note">Your username opens the same workspace on another browser. Your Firebase list is encrypted before backup.</p>
-        <input class="share-large-input" id="account-username" autocomplete="username" maxlength="32" placeholder="Username">
-        <input class="share-large-input" id="account-password" type="password" autocomplete="current-password" maxlength="128" placeholder="Password (8+ characters)" style="margin-top:8px;" onkeydown="if(event.key==='Enter') loginAccount()">
-        <div class="account-auth-actions"><button class="cyber-btn" type="button" onclick="signupAccount()">CREATE ACCOUNT</button><button class="cyber-btn" type="button" onclick="loginAccount()">LOG IN</button></div>
+        <div class="account-auth-header"><p class="share-stage-kicker">SECURE ACCOUNT</p><h3><span class="account-live-dot" aria-hidden="true"></span>Vault access, anywhere.</h3><p>Sign in from any browser and restore your saved Firebase workspace when you need it.</p></div>
+        <div class="account-perks"><div class="account-perk"><b class="account-perk-mark">01</b><strong>Private account</strong><span>One identity for every browser you use.</span></div><div class="account-perk"><b class="account-perk-mark">02</b><strong>Encrypted vault</strong><span>Firebase URLs are encrypted before sync.</span></div><div class="account-perk"><b class="account-perk-mark">03</b><strong>Restore anytime</strong><span>Bring your saved workspace back after data clear.</span></div></div>
+        <div class="account-field"><label for="account-username">CHOOSE A USERNAME</label><input class="share-large-input" id="account-username" autocomplete="username" maxlength="32" placeholder="e.g. void-operator" oninput="updateAccountCreateReadiness()"></div>
+        <div class="account-field"><label for="account-password">SET YOUR PASSWORD</label><input class="share-large-input" id="account-password" type="password" autocomplete="current-password" maxlength="128" placeholder="Minimum 8 characters" oninput="updateAccountPasswordStrength(); updateAccountCreateReadiness()" onkeydown="if(event.key==='Enter') loginAccount()"><div class="account-password-meter" id="account-password-meter" data-level="0"><div class="account-password-meter-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></div><span id="account-password-strength">PASSWORD STRENGTH</span></div></div>
+        <div class="account-auth-actions"><button class="cyber-btn" id="account-create-button" type="button" onclick="signupAccount()" disabled>CREATE ACCOUNT</button><button class="cyber-btn" type="button" onclick="loginAccount()">LOG IN</button></div>
       </div>
       <div id="account-user-panel" style="display:none;">
-        <p class="share-stage-kicker">SIGNED IN AS</p>
-        <h3 class="share-form-title" id="account-username-display">...</h3>
-        <div class="account-summary"><div class="account-stat"><span>FIREBASES HERE</span><strong id="account-local-count">0</strong></div><div class="account-stat"><span>VAULT BACKUP</span><strong id="account-backup-count">0</strong></div></div>
+        <div class="account-identity"><div class="account-avatar" id="account-avatar">X</div><div class="account-identity-copy"><p class="account-identity-kicker">IDENTITY CONFIRMED</p><h3 class="account-identity-name" id="account-username-display">...</h3><p class="account-identity-state"><span class="account-sync-bars is-paused" id="account-sync-bars" aria-hidden="true"><i></i><i></i><i></i></span><span id="account-session-state">VAULT LOCKED</span></p></div></div>
+        <div class="account-summary"><div class="account-stat"><span>LOCAL NODES</span><strong id="account-local-count">0</strong></div><div class="account-stat"><span>VAULT NODES</span><strong id="account-backup-count">0</strong></div><div class="account-stat"><span>VAULT STATE</span><strong class="account-stat-state" id="account-vault-state">LOCKED</strong></div></div>
+        <div class="account-meta"><div class="account-meta-item"><span>ACCOUNT CREATED</span><strong id="account-created-at">-</strong></div><div class="account-meta-item"><span>LAST VAULT SYNC</span><strong id="account-last-sync">Not synced yet</strong></div></div>
         <div class="account-status-line" id="account-status-line">Account session is active.</div>
-        <div class="account-vault-panel"><p>Enter your account password in this session to unlock encrypted backup and restore.</p><input class="share-large-input" id="account-vault-password" type="password" autocomplete="current-password" maxlength="128" placeholder="Account password"><div class="account-vault-actions" style="margin-top:8px;"><button class="cyber-btn" type="button" onclick="unlockAccountVault()">UNLOCK VAULT</button><button class="cyber-btn" type="button" onclick="openBackupVaultModal()">OPEN VAULT</button></div></div>
+        <div class="account-vault-panel"><h4 class="account-vault-title">ENCRYPTED VAULT CHANNEL</h4><p>Enter your account password in this session to unlock encrypted backup and restore.</p><input class="share-large-input" id="account-vault-password" type="password" autocomplete="current-password" maxlength="128" placeholder="Account password"><div class="account-vault-actions" style="margin-top:8px;"><button class="cyber-btn" type="button" onclick="unlockAccountVault()">UNLOCK VAULT</button><button class="cyber-btn" type="button" onclick="openBackupVaultModal()">OPEN VAULT</button></div></div>
         <button class="cyber-btn account-logout" type="button" onclick="logoutAccount()">LOG OUT</button>
       </div>
+      <div class="account-secure-flash" aria-live="polite">ACCOUNT SECURED</div>
     </div>
   </div>
 </div>
@@ -1340,20 +1479,24 @@ body.app-scrolling .scan-progress-card::after {
 
 <!-- OWNER MESSAGE -->
 <div class="scan-overlay share-overlay" id="ownerMessageModal" role="dialog" aria-modal="true" aria-labelledby="owner-message-title">
-  <div class="share-card" style="max-width:520px;">
-    <div class="modal-header">
-      <div class="modal-title-row">
-        <div class="modal-title-area">
-          <h2 class="modal-title" id="owner-message-title">OWNER MESSAGE</h2>
-          <p class="share-step-copy">A message from the owner of this share.</p>
-        </div>
-        <button class="close-modal" type="button" onclick="closeOwnerMessage()">&times;</button>
-      </div>
-    </div>
-    <div class="owner-message-card">
-      <p class="owner-message-kicker">OWNER OF <a class="owner-message-link" id="owner-message-link" href="#" target="_blank" rel="noopener">THIS LINK</a> DROPPED A MESSAGE FOR YOU</p>
-      <p class="owner-message-body" id="owner-message-body"></p>
-      <p class="owner-message-timer" id="owner-message-timer">CLOSING IN 30S</p>
+  <div class="share-card owner-message-shell">
+    <div class="owner-transmission">
+      <div class="owner-transmission-grid"></div><div class="owner-transmission-scanlines"></div>
+      <span class="owner-transmission-corner tl"></span><span class="owner-transmission-corner tr"></span><span class="owner-transmission-corner bl"></span><span class="owner-transmission-corner br"></span>
+      <button class="owner-transmission-close" type="button" onclick="closeOwnerMessage()" aria-label="Close message">&times;</button>
+      <main class="owner-transmission-content">
+        <p class="owner-transmission-tag">// SYSTEM NOTIFICATION //</p>
+        <p class="owner-transmission-badge">MESSAGE DROPPED</p>
+        <h2 class="owner-transmission-title" id="owner-message-title" aria-live="polite"></h2>
+        <section class="owner-message-card" id="owner-message-card">
+          <p class="owner-message-kicker"><span></span>INCOMING TRANSMISSION<span></span></p>
+          <p class="owner-message-body" id="owner-message-body"></p>
+          <div class="owner-message-visualizer" id="owner-message-visualizer" aria-hidden="true"></div>
+          <div class="owner-message-footer" id="owner-message-footer" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p class="owner-message-timer" id="owner-message-timer">CLOSING IN 30S</p>
+          <a class="owner-message-link" id="owner-message-link" href="#" target="_blank" rel="noopener" hidden>Open shared link</a>
+        </section>
+      </main>
     </div>
   </div>
 </div>
@@ -1844,11 +1987,14 @@ let secureShareToken = '';
 const SHARE_MANAGED_STORAGE_KEY = 'xcore-managed-share-links-v1';
 const SHARE_BROWSER_ID_STORAGE_KEY = 'xcore-share-browser-id-v1';
 const SHARE_NOTICE_STORAGE_KEY = 'xcore-share-notice-links-v1';
+const SHARE_NOTICE_SEEN_STORAGE_KEY = 'xcore-share-notice-seen-v1';
 let managedShareRows = [];
 let editingManagedIndex = -1;
 let editingLinkUrls = new Set();
 let editingLinkOptionUrls = [];
 let ownerMessageTimer = null;
+let ownerMessageTypeTimer = null;
+let ownerMessageSequenceTimers = [];
 let shareAnnouncementTimer = null;
 let shareAnnouncementRequestInFlight = false;
 const shownOwnerMessageUpdates = new Set();
@@ -2369,6 +2515,7 @@ let accountProfile = null;
 let accountVaultPassword = '';
 let accountNoticeTimer = null;
 let accountNoticeSeconds = 30;
+const accountCountFrames = {};
 
 function base64UrlFromBytes(bytes) {
   let binary = '';
@@ -2494,6 +2641,62 @@ function queueFirebaseBackupSync() {
   }, 1800);
 }
 
+function animateAccountCount(id, value) {
+  const element = document.getElementById(id);
+  const target = Math.max(0, Number(value) || 0);
+  if (!element) return;
+  const isOpen = document.getElementById('accountModal').classList.contains('open');
+  if (!isOpen) { element.textContent = target; return; }
+  if (accountCountFrames[id]) cancelAnimationFrame(accountCountFrames[id]);
+  const from = Math.max(0, Number(element.textContent) || 0);
+  const started = performance.now();
+  const duration = 480;
+  const tick = now => {
+    const progress = Math.min(1, (now - started) / duration);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    element.textContent = Math.round(from + (target - from) * eased);
+    if (progress < 1) accountCountFrames[id] = requestAnimationFrame(tick);
+    else delete accountCountFrames[id];
+  };
+  accountCountFrames[id] = requestAnimationFrame(tick);
+}
+
+function updateAccountPasswordStrength() {
+  const input = document.getElementById('account-password');
+  const meter = document.getElementById('account-password-meter');
+  const label = document.getElementById('account-password-strength');
+  if (!input || !meter || !label) return;
+  const value = input.value;
+  let level = 0;
+  if (value.length) level = 1;
+  if (value.length >= 8 && /[A-Za-z]/.test(value) && /\d/.test(value)) level = 2;
+  if (value.length >= 10 && /[A-Z]/.test(value) && /[a-z]/.test(value) && /\d/.test(value)) level = 3;
+  if (value.length >= 12 && /[^A-Za-z0-9]/.test(value) && /[A-Z]/.test(value) && /[a-z]/.test(value) && /\d/.test(value)) level = 4;
+  const labels = ['PASSWORD STRENGTH', 'TOO SHORT', 'FAIR', 'STRONG', 'SECURE'];
+  meter.dataset.level = String(level);
+  label.textContent = labels[level];
+}
+
+function updateAccountCreateReadiness() {
+  const username = document.getElementById('account-username');
+  const password = document.getElementById('account-password');
+  const button = document.getElementById('account-create-button');
+  if (!username || !password || !button) return;
+  const validUsername = /^[a-z0-9][a-z0-9_-]{2,31}$/i.test(username.value.trim());
+  const ready = validUsername && password.value.length >= 8;
+  button.disabled = !ready;
+  button.classList.toggle('is-ready', ready);
+}
+
+function playAccountSecureSequence() {
+  const modal = document.getElementById('accountModal');
+  modal.classList.remove('account-secure-sequence');
+  requestAnimationFrame(() => {
+    modal.classList.add('account-secure-sequence');
+    setTimeout(() => modal.classList.remove('account-secure-sequence'), 1500);
+  });
+}
+
 function updateAccountPanel() {
   const guest = document.getElementById('account-guest-panel');
   const user = document.getElementById('account-user-panel');
@@ -2505,8 +2708,18 @@ function updateAccountPanel() {
   subtitle.textContent = signedIn ? 'Your account workspace and encrypted Firebase backup.' : 'Create an account to protect your Firebase workspace.';
   if (!signedIn) return;
   document.getElementById('account-username-display').textContent = accountProfile.username;
-  document.getElementById('account-local-count').textContent = firebaseList.length;
-  document.getElementById('account-backup-count').textContent = accountProfile.backup ? accountProfile.backup.firebaseCount : '0';
+  document.getElementById('account-avatar').textContent = String(accountProfile.username || 'X').slice(0, 1).toUpperCase();
+  animateAccountCount('account-local-count', firebaseList.length);
+  animateAccountCount('account-backup-count', accountProfile.backup ? accountProfile.backup.firebaseCount : 0);
+  document.getElementById('account-created-at').textContent = accountProfile.createdAt ? formatShareDate(accountProfile.createdAt) : '-';
+  document.getElementById('account-last-sync').textContent = accountProfile.backup && accountProfile.backup.updatedAt ? formatShareDate(accountProfile.backup.updatedAt) : 'Not synced yet';
+  const vaultState = document.getElementById('account-vault-state');
+  vaultState.textContent = accountVaultPassword ? 'UNLOCKED' : 'LOCKED';
+  vaultState.style.color = accountVaultPassword ? '#00ff80' : 'var(--primary-glow)';
+  const syncBars = document.getElementById('account-sync-bars');
+  const sessionState = document.getElementById('account-session-state');
+  syncBars.classList.toggle('is-paused', !accountVaultPassword);
+  sessionState.textContent = accountVaultPassword ? 'VAULT SYNC LIVE' : 'VAULT LOCKED';
   document.getElementById('account-status-line').textContent = accountVaultPassword
     ? 'VAULT UNLOCKED FOR THIS SESSION. Firebase changes will sync automatically.'
     : 'Account session active. Enter your password to unlock encrypted vault backup.';
@@ -2537,6 +2750,7 @@ async function refreshAccountProfile() {
 
 function openAccountModal(mode = '') {
   updateAccountPanel();
+  updateAccountCreateReadiness();
   document.getElementById('accountModal').classList.add('open');
   const username = document.getElementById('account-username');
   const vaultPassword = document.getElementById('account-vault-password');
@@ -2552,7 +2766,10 @@ async function signupAccount() {
     accountProfile = data.account;
     accountVaultPassword = password;
     document.getElementById('account-password').value = '';
+    updateAccountPasswordStrength();
+    updateAccountCreateReadiness();
     updateAccountPanel();
+    playAccountSecureSequence();
     showToast('ACCOUNT CREATED. VAULT IS UNLOCKED.');
     queueFirebaseBackupSync();
   } catch (error) { showToast(error.message || 'ACCOUNT CREATION FAILED.'); }
@@ -2566,6 +2783,8 @@ async function loginAccount() {
     accountProfile = data.account;
     accountVaultPassword = password;
     document.getElementById('account-password').value = '';
+    updateAccountPasswordStrength();
+    updateAccountCreateReadiness();
     updateAccountPanel();
     showToast('LOGGED IN. VAULT IS UNLOCKED.');
     if (accountProfile.backup) lastBackupFingerprint = getFirebaseBackupPayload();
@@ -2671,8 +2890,38 @@ function rememberShareNoticeSubscription(identifier) {
   try { localStorage.setItem(SHARE_NOTICE_STORAGE_KEY, JSON.stringify(saved.slice(0, 30))); } catch {}
 }
 
+function getSeenOwnerMessageMarkers() {
+  try {
+    const entries = JSON.parse(localStorage.getItem(SHARE_NOTICE_SEEN_STORAGE_KEY) || '[]');
+    return Array.isArray(entries) ? entries.filter(item => typeof item === 'string' && item.length <= 700).slice(0, 120) : [];
+  } catch { return []; }
+}
+
+function hasSeenOwnerMessage(marker) {
+  return shownOwnerMessageUpdates.has(marker) || getSeenOwnerMessageMarkers().includes(marker);
+}
+
+function markOwnerMessageSeen(marker) {
+  if (!marker) return;
+  shownOwnerMessageUpdates.add(marker);
+  const entries = getSeenOwnerMessageMarkers().filter(item => item !== marker);
+  entries.unshift(marker);
+  try { localStorage.setItem(SHARE_NOTICE_SEEN_STORAGE_KEY, JSON.stringify(entries.slice(0, 120))); } catch {}
+}
+
 function closeOwnerMessage() {
   if (ownerMessageTimer) { clearInterval(ownerMessageTimer); ownerMessageTimer = null; }
+  if (ownerMessageTypeTimer) { clearInterval(ownerMessageTypeTimer); ownerMessageTypeTimer = null; }
+  ownerMessageSequenceTimers.forEach(timer => clearTimeout(timer));
+  ownerMessageSequenceTimers = [];
+  const card = document.getElementById('owner-message-card');
+  const visualizer = document.getElementById('owner-message-visualizer');
+  const footer = document.getElementById('owner-message-footer');
+  const timer = document.getElementById('owner-message-timer');
+  if (card) card.classList.remove('visible');
+  if (visualizer) visualizer.classList.remove('visible');
+  if (footer) footer.classList.remove('visible');
+  if (timer) timer.classList.remove('visible');
   document.getElementById('ownerMessageModal').classList.remove('open');
 }
 
@@ -2683,11 +2932,61 @@ function showOwnerMessage(ownerMessage, url) {
   const body = document.getElementById('owner-message-body');
   const link = document.getElementById('owner-message-link');
   const timer = document.getElementById('owner-message-timer');
-  body.textContent = ownerMessage.text;
+  const title = document.getElementById('owner-message-title');
+  const card = document.getElementById('owner-message-card');
+  const visualizer = document.getElementById('owner-message-visualizer');
+  const footer = document.getElementById('owner-message-footer');
+  const message = String(ownerMessage.text).slice(0, 500);
+  const typingDelay = Math.max(24, Math.min(58, Math.floor(19000 / Math.max(message.length, 1))));
+  const words = [
+    ['LINK', 'cyan'], ['OWNER', 'cyan'], ['DROPPED', 'pink'],
+    ['A', ''], ['MESSAGE', 'pink'], ['FOR', ''], ['YOU', 'cyan']
+  ];
+  title.textContent = '';
+  body.textContent = '';
+  visualizer.textContent = '';
+  for (let i = 0; i < 20; i += 1) {
+    const bar = document.createElement('i');
+    bar.style.animationDelay = `${i * .07}s`;
+    bar.style.animationDuration = `${.42 + Math.random() * .55}s`;
+    visualizer.appendChild(bar);
+  }
+  words.forEach(([word, className], index) => {
+    const span = document.createElement('span');
+    span.className = `owner-word ${className}`;
+    span.textContent = word;
+    span.style.animationDelay = `${1050 + index * 190}ms`;
+    title.appendChild(span);
+  });
   link.href = url || window.location.href;
   let seconds = 30;
   timer.textContent = `CLOSING IN ${seconds}S`;
   modal.classList.add('open');
+  const beginTransmission = () => {
+    card.classList.add('visible');
+    const cursor = document.createElement('span');
+    cursor.className = 'owner-message-cursor';
+    body.appendChild(cursor);
+    let index = 0;
+    ownerMessageTypeTimer = setInterval(() => {
+      if (index >= message.length) {
+        clearInterval(ownerMessageTypeTimer);
+        ownerMessageTypeTimer = null;
+        visualizer.classList.add('visible');
+        footer.classList.add('visible');
+        timer.classList.add('visible');
+        return;
+      }
+      const char = document.createElement('span');
+      char.className = 'owner-message-char';
+      char.textContent = message[index] === ' ' ? '\u00a0' : message[index];
+      body.insertBefore(char, cursor);
+      const typedTimer = setTimeout(() => char.classList.add('typed'), 260);
+      ownerMessageSequenceTimers.push(typedTimer);
+      index += 1;
+    }, typingDelay);
+  };
+  ownerMessageSequenceTimers.push(setTimeout(beginTransmission, 3250));
   ownerMessageTimer = setInterval(() => {
     seconds -= 1;
     if (seconds <= 0) { closeOwnerMessage(); return; }
@@ -2709,8 +3008,8 @@ async function pollShareAnnouncements() {
         const response = await fetch(`/api/shares/${encodeURIComponent(identifier)}/notice`);
         const data = await response.json().catch(() => ({}));
         const marker = ownerMessageMarker(identifier, data.ownerMessage);
-        if (response.ok && data.ownerMessage && !shownOwnerMessageUpdates.has(marker)) {
-          shownOwnerMessageUpdates.add(marker);
+        if (response.ok && data.ownerMessage && !hasSeenOwnerMessage(marker)) {
+          markOwnerMessageSeen(marker);
           showOwnerMessage(data.ownerMessage, data.url);
           return;
         }
@@ -2730,8 +3029,11 @@ function startShareAnnouncementPolling() {
 function importSecureShareUrls(urls, label, ownerMessage, identifier) {
   if (identifier) rememberShareNoticeSubscription(identifier);
   if (ownerMessage) {
-    shownOwnerMessageUpdates.add(ownerMessageMarker(identifier || label, ownerMessage));
-    showOwnerMessage(ownerMessage, identifier ? `${window.location.origin}/s/${encodeURIComponent(identifier)}` : window.location.href);
+    const marker = ownerMessageMarker(identifier || label, ownerMessage);
+    if (!hasSeenOwnerMessage(marker)) {
+      markOwnerMessageSeen(marker);
+      showOwnerMessage(ownerMessage, identifier ? `${window.location.origin}/s/${encodeURIComponent(identifier)}` : window.location.href);
+    }
   }
   let addedCount = 0;
   (Array.isArray(urls) ? urls : []).forEach(url => {
