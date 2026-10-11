@@ -370,6 +370,26 @@ body.targets-screen-active .swipeWrap { height: calc(100dvh - 78px); }
 .share-result-label { margin:0 0 10px; color:#00ff80; font-family:'JetBrains Mono', monospace; font-size:10px; font-weight:900; letter-spacing:1px; }
 .share-footer { padding:14px 20px calc(14px + env(safe-area-inset-bottom)); border-top:1px solid var(--obsidian-border); display:flex; gap:8px; }
 .share-footer .cyber-btn { flex:1; min-height:44px; }
+.managed-links-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.managed-links-count { color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:9px; font-weight:900; letter-spacing:1px; }
+.managed-link-list { display:grid; gap:10px; }
+.managed-link-card { position:relative; padding:14px; border:1px solid var(--obsidian-border); border-radius:8px; background:rgba(255,255,255,.018); overflow:hidden; }
+.managed-link-card.revoked { border-color:rgba(255,51,102,.5); background:rgba(255,51,102,.025); }
+.managed-link-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.managed-link-status { display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono', monospace; font-size:8px; font-weight:900; letter-spacing:1px; color:#00ff80; }
+.managed-link-card.revoked .managed-link-status { color:#ff668a; }
+.managed-link-dot { width:7px; height:7px; border-radius:50%; background:currentColor; box-shadow:0 0 9px currentColor; }
+.managed-link-name { margin:0; color:var(--text-bright); font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:900; word-break:break-all; }
+.managed-link-meta { margin:5px 0 0; color:var(--text-dim); font-size:9px; line-height:1.4; }
+.managed-link-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin:13px 0; }
+.managed-link-stat { min-width:0; padding:9px 8px; border:1px solid rgba(255,255,255,.08); border-radius:6px; background:rgba(0,0,0,.22); }
+.managed-link-stat-label { display:block; color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:7px; font-weight:800; letter-spacing:.8px; }
+.managed-link-stat-value { display:block; margin-top:4px; color:var(--text-bright); font-size:12px; font-weight:900; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.managed-link-actions { display:flex; gap:8px; }
+.managed-link-actions .cyber-btn { flex:1; min-height:36px; padding:0 10px; font-size:9px; }
+.managed-link-revoke { border-color:rgba(255,51,102,.62); color:#ff668a; box-shadow:0 0 12px rgba(255,51,102,.14); }
+.managed-link-revive { border-color:rgba(0,255,128,.62); color:#00ff80; box-shadow:0 0 12px rgba(0,255,128,.14); }
+.managed-link-empty { padding:24px 12px; border:1px dashed var(--obsidian-border); border-radius:8px; color:var(--text-dim); text-align:center; font-size:11px; line-height:1.5; }
 @media (prefers-reduced-motion:reduce) { .share-flow-stage.is-active { animation:none; } .share-notice-option { transition:none; } }
 @media (max-width:480px) { .firebase-panel-head { align-items:flex-start; } .firebase-toolbar { gap:4px; } .firebase-command { padding:0 8px; font-size:8px; } .firebase-menu-toggle { width:28px; } }
 
@@ -1087,6 +1107,28 @@ body.app-scrolling .scan-progress-card::after {
   </div>
 </div>
 
+<!-- YOUR LINKS -->
+<div class="scan-overlay share-overlay" id="shareLinksModal" role="dialog" aria-modal="true" aria-labelledby="share-links-title">
+  <div class="share-card">
+    <div class="modal-header">
+      <div class="modal-title-row">
+        <div class="modal-title-area">
+          <h2 class="modal-title" id="share-links-title">YOUR LINKS</h2>
+          <p class="share-step-copy">Links created from this browser. Revoke access anytime.</p>
+        </div>
+        <button class="close-modal" type="button" onclick="closeShareLinksModal()">&times;</button>
+      </div>
+    </div>
+    <div class="bulk-modal-body">
+      <div class="managed-links-head">
+        <span class="managed-links-count" id="managed-links-count">LOADING LINKS...</span>
+        <button class="cyber-btn" type="button" style="min-height:32px; padding:0 10px; font-size:9px;" onclick="loadManagedShares()">REFRESH</button>
+      </div>
+      <div class="managed-link-list" id="managed-link-list"></div>
+    </div>
+  </div>
+</div>
+
 <!-- SHARE UNLOCK MODAL -->
 <div class="target-modal" id="shareUnlockModal">
     <div class="modal-header">
@@ -1569,6 +1611,8 @@ let shareSelectedUrls = new Set();
 let shareLinkType = '';
 let shareProtectionMode = 'public';
 let secureShareToken = '';
+const SHARE_MANAGED_STORAGE_KEY = 'xcore-managed-share-links-v1';
+let managedShareRows = [];
 
 function toggleShareMenu(event) {
   if (event) event.stopPropagation();
@@ -1726,6 +1770,7 @@ async function createSecureShareLink(triggerButton) {
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.detail || 'Unable to create secure link');
+    rememberManagedShare(data);
     document.getElementById('share-link-out').value = data.url;
     document.getElementById('share-result-label').textContent = data.protected ? 'PASSWORD-PROTECTED LINK CREATED' : 'PUBLIC LINK CREATED';
     document.getElementById('share-modal-title').textContent = 'LINK READY';
@@ -1741,6 +1786,134 @@ async function createSecureShareLink(triggerButton) {
   }
 }
 function copyShareLink() { navigator.clipboard.writeText(document.getElementById('share-link-out').value); showToast("LINK COPIED TO CLIPBOARD!"); }
+
+function getManagedShareReferences() {
+  try {
+    const data = JSON.parse(localStorage.getItem(SHARE_MANAGED_STORAGE_KEY) || '[]');
+    return Array.isArray(data) ? data.filter(item => item && typeof item.identifier === 'string' && typeof item.managementKey === 'string').slice(0, 80) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveManagedShareReferences(items) {
+  try { localStorage.setItem(SHARE_MANAGED_STORAGE_KEY, JSON.stringify(items.slice(0, 80))); } catch {}
+}
+
+function getShareIdentifierFromUrl(url) {
+  try {
+    const parts = new URL(url).pathname.split('/').filter(Boolean);
+    return parts.length === 2 && parts[0] === 's' ? parts[1] : '';
+  } catch {
+    return '';
+  }
+}
+
+function rememberManagedShare(share) {
+  const identifier = getShareIdentifierFromUrl(share.url);
+  if (!identifier || !share.managementKey) return;
+  const saved = getManagedShareReferences().filter(item => item.identifier !== identifier);
+  saved.unshift({ identifier, managementKey: share.managementKey });
+  saveManagedShareReferences(saved);
+}
+
+function escapeShareText(value) {
+  const element = document.createElement('div');
+  element.textContent = String(value || '');
+  return element.innerHTML;
+}
+
+function formatShareDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'UNKNOWN';
+  return date.toLocaleString([], { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+function renderManagedShares(shares) {
+  const list = document.getElementById('managed-link-list');
+  const count = document.getElementById('managed-links-count');
+  if (!list || !count) return;
+  managedShareRows = Array.isArray(shares) ? shares : [];
+  count.textContent = `${managedShareRows.length} LINK${managedShareRows.length === 1 ? '' : 'S'} SAVED IN THIS BROWSER`;
+  if (!managedShareRows.length) {
+    list.innerHTML = '<div class="managed-link-empty">No managed links in this browser yet.<br>Create a new share link to see it here.</div>';
+    return;
+  }
+  list.innerHTML = managedShareRows.map((share, index) => {
+    const revoked = Boolean(share.revoked);
+    const label = share.protected ? 'PASS PROTECTED' : 'PUBLIC LINK';
+    return `<article class="managed-link-card ${revoked ? 'revoked' : ''}">
+      <div class="managed-link-top">
+        <div><p class="managed-link-name">LINK ${String(index + 1).padStart(2, '0')} · ${escapeShareText(share.identifier)}</p><p class="managed-link-meta">${label} · CREATED ${formatShareDate(share.createdAt)}</p></div>
+        <div class="managed-link-status"><span class="managed-link-dot"></span>${revoked ? 'REVOKED' : 'ACTIVE'}</div>
+      </div>
+      <div class="managed-link-stats">
+        <div class="managed-link-stat"><span class="managed-link-stat-label">FIREBASES</span><span class="managed-link-stat-value">${Number(share.firebaseCount || 0)}</span></div>
+        <div class="managed-link-stat"><span class="managed-link-stat-label">OPENS</span><span class="managed-link-stat-value">${Number(share.accessCount || 0)}</span></div>
+        <div class="managed-link-stat"><span class="managed-link-stat-label">EXPIRES</span><span class="managed-link-stat-value">${formatShareDate(share.expiresAt)}</span></div>
+      </div>
+      <div class="managed-link-actions">
+        <button class="cyber-btn" type="button" onclick="copyManagedShareLink(${index})">COPY</button>
+        <button class="cyber-btn ${revoked ? 'managed-link-revive' : 'managed-link-revoke'}" type="button" onclick="setManagedShareRevoked(${index}, ${revoked ? 'false' : 'true'})">${revoked ? 'REVIVE' : 'REVOKE'}</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function openShareLinksModal() {
+  closeShareMenu();
+  document.getElementById('shareLinksModal').classList.add('open');
+  loadManagedShares();
+}
+
+function closeShareLinksModal() {
+  document.getElementById('shareLinksModal').classList.remove('open');
+}
+
+async function loadManagedShares() {
+  const list = document.getElementById('managed-link-list');
+  const references = getManagedShareReferences();
+  if (list) list.innerHTML = '<div class="managed-link-empty">LOADING LINK INTELLIGENCE...</div>';
+  try {
+    const response = await fetch('/api/shares/manage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'list', links: references })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || 'Unable to load links');
+    renderManagedShares(data.shares);
+  } catch (error) {
+    if (list) list.innerHTML = `<div class="managed-link-empty">${escapeShareText(error.message || 'Unable to load links.')}</div>`;
+  }
+}
+
+async function copyManagedShareLink(index) {
+  const share = managedShareRows[index];
+  if (!share) return;
+  try { await navigator.clipboard.writeText(share.url); showToast('LINK COPIED TO CLIPBOARD!'); }
+  catch { showToast('COPY FAILED.'); }
+}
+
+async function setManagedShareRevoked(index, revoked) {
+  const share = managedShareRows[index];
+  const reference = getManagedShareReferences().find(item => item.identifier === (share && share.identifier));
+  if (!share || !reference) { showToast('LINK OWNERSHIP KEY NOT FOUND.'); return; }
+  try {
+    const response = await fetch('/api/shares/manage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'set-status', identifier: reference.identifier, managementKey: reference.managementKey, revoked })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || 'Unable to update link');
+    managedShareRows[index] = data.share;
+    renderManagedShares(managedShareRows);
+    showToast(revoked ? 'LINK REVOKED.' : 'LINK REVIVED.');
+  } catch (error) {
+    showToast(error.message || 'LINK UPDATE FAILED.');
+  }
+}
 
 function getSecureShareTokenFromPath() {
   const parts = window.location.pathname.split('/').filter(Boolean);
@@ -2694,6 +2867,7 @@ function placeShareButton() {
         <button type="button" onclick="openShareModal('all')">ALL</button>
         <button type="button" onclick="openShareModal('connected')">ONLY CONNECTED</button>
         <button type="button" onclick="openShareModal('select')">SELECT</button>
+        <button type="button" onclick="openShareLinksModal()">YOUR LINKS</button>
       </div>
     </div>
   `;
