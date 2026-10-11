@@ -377,10 +377,12 @@ body.targets-screen-active .swipeWrap { height: calc(100dvh - 78px); }
 .share-footer { padding:14px 20px calc(14px + env(safe-area-inset-bottom)); border-top:1px solid var(--obsidian-border); display:flex; gap:8px; }
 .share-footer .cyber-btn { flex:1; min-height:44px; }
 .managed-links-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.managed-links-tools { display:flex; gap:6px; }
 .managed-links-count { color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:9px; font-weight:900; letter-spacing:1px; }
 .managed-link-list { display:grid; gap:10px; }
 .managed-link-card { position:relative; padding:14px; border:1px solid var(--obsidian-border); border-radius:8px; background:rgba(255,255,255,.018); overflow:hidden; }
 .managed-link-card.revoked { border-color:rgba(255,51,102,.5); background:rgba(255,51,102,.025); }
+.managed-link-card.expiring { border-color:rgba(255,210,77,.55); }
 .managed-link-top { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
 .managed-link-status { display:flex; align-items:center; gap:6px; font-family:'JetBrains Mono', monospace; font-size:8px; font-weight:900; letter-spacing:1px; color:#00ff80; }
 .managed-link-card.revoked .managed-link-status { color:#ff668a; }
@@ -396,18 +398,63 @@ body.targets-screen-active .swipeWrap { height: calc(100dvh - 78px); }
 .managed-link-actions .cyber-btn { flex:1; min-height:36px; padding:0 10px; font-size:9px; }
 .managed-link-revoke { border-color:rgba(255,51,102,.62); color:#ff668a; box-shadow:0 0 12px rgba(255,51,102,.14); }
 .managed-link-revive { border-color:rgba(0,255,128,.62); color:#00ff80; box-shadow:0 0 12px rgba(0,255,128,.14); }
+.managed-link-delete { border-color:rgba(255,51,102,.8); color:#ff668a; box-shadow:0 0 12px rgba(255,51,102,.14); }
+.managed-link-warning { margin:0 0 9px; color:#ffd24d; font-family:'JetBrains Mono',monospace; font-size:8px; font-weight:900; letter-spacing:.8px; }
 .managed-link-message { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; margin:0 0 10px; }
 .managed-link-message textarea { width:100%; min-height:58px; box-sizing:border-box; resize:vertical; padding:10px; border:1px solid var(--obsidian-border); border-radius:7px; background:#020204; color:var(--text-bright); outline:none; font:600 11px/1.4 'Inter',sans-serif; }
 .managed-link-message textarea:focus { border-color:var(--primary); box-shadow:0 0 12px rgba(var(--primary-rgb),.14); }
 .managed-link-message .cyber-btn { align-self:stretch; min-width:92px; font-size:8px; }
 .managed-link-empty { padding:24px 12px; border:1px dashed var(--obsidian-border); border-radius:8px; color:var(--text-dim); text-align:center; font-size:11px; line-height:1.5; }
+.managed-link-subactions { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin:0 0 8px; }
+.managed-link-subactions .cyber-btn { min-height:34px; padding:0 9px; font-size:8px; }
+.link-editor-add { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; margin:0 0 12px; }
+.link-editor-add .cyber-btn { min-width:86px; font-size:9px; }
+.link-editor-list { display:grid; gap:7px; max-height:260px; overflow-y:auto; padding-right:2px; }
+.link-editor-choice { display:flex; align-items:center; gap:10px; padding:10px; border:1px solid rgba(255,255,255,.08); border-radius:7px; background:rgba(255,255,255,.015); }
+.link-editor-choice input { width:17px; height:17px; flex:0 0 auto; accent-color:var(--primary); }
+.link-editor-choice label { min-width:0; color:var(--text-main); font-family:'JetBrains Mono',monospace; font-size:10px; line-height:1.35; word-break:break-all; }
+.activity-feed { display:grid; gap:8px; }
+.activity-event { display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; align-items:start; padding:10px 0; border-bottom:1px dashed var(--obsidian-border); }
+.activity-event:last-child { border-bottom:0; }
+.activity-event-type { color:var(--text-bright); font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:900; letter-spacing:.6px; }
+.activity-event-time { margin-top:3px; color:var(--text-dim); font-size:9px; line-height:1.35; }
+.activity-event-dot { width:8px; height:8px; margin-top:3px; border-radius:50%; background:var(--primary); box-shadow:0 0 9px var(--primary); }
+.backup-status { margin:0 0 14px; color:var(--text-dim); font-size:11px; line-height:1.5; }
+.backup-status strong { color:#00ff80; }
+.backup-recovery-block { margin:14px 0; padding:12px; border:1px solid rgba(0,255,128,.32); border-radius:8px; background:rgba(0,255,128,.025); }
+.backup-recovery-block p { margin:0 0 8px; color:var(--text-dim); font-size:10px; line-height:1.45; }
+.backup-recovery-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; margin-top:8px; }
+.backup-divider { margin:18px 0; border:0; border-top:1px solid var(--obsidian-border); }
+.account-summary { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:12px 0 16px; }
+.account-stat { min-width:0; padding:12px; border:1px solid var(--obsidian-border); border-radius:8px; background:rgba(255,255,255,.018); }
+.account-stat span { display:block; color:var(--text-dim); font:800 8px/1.3 'JetBrains Mono',monospace; letter-spacing:.8px; }
+.account-stat strong { display:block; margin-top:6px; color:var(--text-bright); font:900 16px/1 'JetBrains Mono',monospace; overflow:hidden; text-overflow:ellipsis; }
+.account-auth-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+.account-auth-note { margin:0 0 14px; color:var(--text-dim); font-size:11px; line-height:1.55; }
+.account-status-line { margin:12px 0; padding:10px; border-left:2px solid #00ff80; background:rgba(0,255,128,.045); color:var(--text-main); font:700 10px/1.5 'JetBrains Mono',monospace; }
+.account-vault-panel { margin-top:14px; padding:14px; border:1px solid rgba(0,255,128,.3); border-radius:8px; background:rgba(0,255,128,.022); }
+.account-vault-panel p { margin:0 0 10px; color:var(--text-dim); font-size:10px; line-height:1.45; }
+.account-vault-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.account-logout { margin-top:12px; width:100%; border-color:rgba(255,51,102,.65); color:#ff668a; }
+.account-notice { position:fixed; inset:0; z-index:100120; display:none; align-items:center; justify-content:center; padding:18px; background:rgba(0,0,0,.73); backdrop-filter:blur(9px); }
+.account-notice.open { display:flex; animation:noticeFade .24s ease both; }
+.account-notice-card { width:min(510px,100%); padding:22px; border:1px solid rgba(255,209,77,.82); border-radius:10px; background:linear-gradient(145deg,rgba(30,24,5,.99),rgba(3,3,5,.99)); box-shadow:0 0 0 1px rgba(255,209,77,.14),0 0 34px rgba(255,186,0,.22); animation:noticeLift .34s cubic-bezier(.2,1,.2,1) both; }
+.account-notice-kicker { margin:0 0 8px; color:#ffd24d; font:900 9px/1 'JetBrains Mono',monospace; letter-spacing:1.8px; }
+.account-notice-title { margin:0; color:var(--text-bright); font-size:21px; letter-spacing:0; }
+.account-notice-copy { margin:12px 0 16px; color:var(--text-main); font-size:13px; line-height:1.55; }
+.account-notice-link { display:inline-block; color:#ffd24d; font:900 11px 'JetBrains Mono',monospace; text-decoration:none; border-bottom:1px solid rgba(255,210,77,.55); cursor:pointer; }
+.account-notice-footer { display:flex; align-items:center; gap:8px; margin-top:18px; }
+.account-notice-timer { margin-right:auto; color:var(--text-dim); font:800 9px 'JetBrains Mono',monospace; }
+.account-notice-close { min-height:34px; padding:0 12px; font-size:8px; }
+@keyframes noticeFade { from { opacity:0; } to { opacity:1; } }
+@keyframes noticeLift { from { opacity:0; transform:translateY(18px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }
 .owner-message-card { padding:24px 20px; text-align:center; }
 .owner-message-kicker { margin:0 0 14px; color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:900; letter-spacing:1.2px; }
 .owner-message-link { color:var(--primary-glow); font-weight:900; text-decoration:none; }
 .owner-message-body { margin:0; color:var(--text-bright); font-size:16px; font-weight:800; line-height:1.5; overflow-wrap:anywhere; }
 .owner-message-timer { margin:18px 0 0; color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:1px; }
 @media (prefers-reduced-motion:reduce) { .share-flow-stage.is-active { animation:none; } .share-notice-option { transition:none; } }
-@media (max-width:480px) { .firebase-panel-head { align-items:flex-start; } .firebase-toolbar { gap:4px; } .firebase-command { padding:0 8px; font-size:8px; } .firebase-menu-toggle { width:28px; } .share-control-grid { grid-template-columns:1fr; } .managed-link-stats { grid-template-columns:repeat(2,1fr); } .managed-link-message { grid-template-columns:1fr; } .managed-link-message .cyber-btn { min-height:36px; } }
+@media (max-width:480px) { .firebase-panel-head { align-items:flex-start; } .firebase-toolbar { gap:4px; } .firebase-command { padding:0 8px; font-size:8px; } .firebase-menu-toggle { width:28px; } .share-control-grid { grid-template-columns:1fr; } .managed-link-stats { grid-template-columns:repeat(2,1fr); } .managed-link-message { grid-template-columns:1fr; } .managed-link-message .cyber-btn { min-height:36px; } .managed-links-head { align-items:flex-start; } .managed-links-tools { flex-wrap:wrap; justify-content:flex-end; } .link-editor-add, .backup-recovery-row, .account-auth-actions, .account-vault-actions { grid-template-columns:1fr; } .link-editor-add .cyber-btn { min-height:38px; } .account-notice-card { padding:19px; } }
 
 .target-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(15px); z-index: 10001; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1); opacity: 0; pointer-events: none; }
 .target-modal.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
@@ -825,7 +872,7 @@ body.app-scrolling .scan-progress-card::after {
 
 <div class="top-bar">
   <div class="icon-btn">≡</div>
-  <div class="icon-btn">👤</div>
+  <button class="icon-btn" type="button" aria-label="Account profile">👤</button>
 </div>
 
 <div class="hero app-hero">
@@ -1154,12 +1201,118 @@ body.app-scrolling .scan-progress-card::after {
     <div class="bulk-modal-body">
       <div class="managed-links-head">
         <span class="managed-links-count" id="managed-links-count">LOADING LINKS...</span>
-        <button class="cyber-btn" type="button" style="min-height:32px; padding:0 10px; font-size:9px;" onclick="loadManagedShares()">REFRESH</button>
+        <div class="managed-links-tools">
+          <button class="cyber-btn" type="button" style="min-height:32px; padding:0 10px; font-size:9px;" onclick="openBackupVaultModal()">BACKUP VAULT</button>
+          <button class="cyber-btn" type="button" style="min-height:32px; padding:0 10px; font-size:9px;" onclick="loadManagedShares()">REFRESH</button>
+        </div>
       </div>
       <div class="managed-link-list" id="managed-link-list"></div>
     </div>
   </div>
 </div>
+
+<!-- LINK EDITOR -->
+<div class="scan-overlay share-overlay" id="linkEditorModal" role="dialog" aria-modal="true" aria-labelledby="link-editor-title">
+  <div class="share-card">
+    <div class="modal-header">
+      <div class="modal-title-row">
+        <div class="modal-title-area">
+          <h2 class="modal-title" id="link-editor-title">EDIT LINK</h2>
+          <p class="share-step-copy" id="link-editor-copy">Choose Firebase nodes and update link controls.</p>
+        </div>
+        <button class="close-modal" type="button" onclick="closeLinkEditorModal()">&times;</button>
+      </div>
+    </div>
+    <div class="bulk-modal-body">
+      <p class="share-stage-kicker">FIREBASES IN THIS LINK</p>
+      <div class="link-editor-add">
+        <input type="text" class="share-large-input" id="link-editor-add-url" autocomplete="off" placeholder="Add Firebase URL">
+        <button class="cyber-btn" type="button" onclick="addFirebaseToEditedLink()">ADD NODE</button>
+      </div>
+      <div class="link-editor-list" id="link-editor-list"></div>
+      <p class="share-stage-kicker" style="margin-top:18px;">LINK CONTROLS</p>
+      <div class="share-control-grid">
+        <div class="share-control-card">
+          <h4>MAX BROWSERS</h4>
+          <p>Leave empty to remove the browser limit.</p>
+          <input class="share-control-input" id="link-editor-max-opens" type="number" min="1" max="10000" inputmode="numeric" placeholder="Unlimited">
+        </div>
+        <div class="share-control-card">
+          <h4>VALID FOR DAYS</h4>
+          <p>Saving starts this validity period from now.</p>
+          <input class="share-control-input" id="link-editor-validity-days" type="number" min="1" max="365" inputmode="numeric" value="30">
+        </div>
+      </div>
+      <button class="cyber-btn share-stage-action" type="button" onclick="saveEditedLink()">SAVE LINK CHANGES</button>
+    </div>
+  </div>
+</div>
+
+<!-- LINK ACTIVITY -->
+<div class="scan-overlay share-overlay" id="linkActivityModal" role="dialog" aria-modal="true" aria-labelledby="link-activity-title">
+  <div class="share-card">
+    <div class="modal-header">
+      <div class="modal-title-row">
+        <div class="modal-title-area">
+          <h2 class="modal-title" id="link-activity-title">LINK ACTIVITY</h2>
+          <p class="share-step-copy" id="link-activity-copy">Recent events for this secure link.</p>
+        </div>
+        <button class="close-modal" type="button" onclick="closeLinkActivityModal()">&times;</button>
+      </div>
+    </div>
+    <div class="bulk-modal-body"><div class="activity-feed" id="link-activity-feed"></div></div>
+  </div>
+</div>
+
+<!-- FIREBASE BACKUP VAULT -->
+<div class="scan-overlay share-overlay" id="backupVaultModal" role="dialog" aria-modal="true" aria-labelledby="backup-vault-title">
+  <div class="share-card">
+    <div class="modal-header">
+      <div class="modal-title-row">
+        <div class="modal-title-area">
+          <h2 class="modal-title" id="backup-vault-title">FIREBASE BACKUP VAULT</h2>
+          <p class="share-step-copy">Encrypted account backup for the Firebase nodes in this browser.</p>
+        </div>
+        <button class="close-modal" type="button" onclick="closeBackupVaultModal()">&times;</button>
+      </div>
+    </div>
+    <div class="bulk-modal-body">
+      <div id="backup-vault-status"></div>
+      <button class="cyber-btn share-stage-action" type="button" id="backup-vault-create" onclick="syncFirebaseAccountVault()">SYNC ACCOUNT VAULT</button>
+      <hr class="backup-divider">
+      <p class="share-stage-kicker">RESTORE AFTER DATA CLEAR</p>
+      <p class="backup-status">Log in with this account and enter your account password to restore its encrypted Firebase list.</p>
+      <button class="cyber-btn share-stage-action" type="button" onclick="restoreFirebaseAccountVault()">RESTORE FIREBASES</button>
+    </div>
+  </div>
+</div>
+
+<!-- ACCOUNT PROFILE -->
+<div class="scan-overlay share-overlay" id="accountModal" role="dialog" aria-modal="true" aria-labelledby="account-title">
+  <div class="share-card">
+    <div class="modal-header"><div class="modal-title-row"><div class="modal-title-area"><h2 class="modal-title" id="account-title">YOUR PROFILE</h2><p class="share-step-copy" id="account-subtitle">Create an account to protect your Firebase workspace.</p></div><button class="close-modal" type="button" onclick="closeAccountModal()">&times;</button></div></div>
+    <div class="bulk-modal-body">
+      <div id="account-guest-panel">
+        <p class="share-stage-kicker">SECURE WORKSPACE</p>
+        <p class="account-auth-note">Your username opens the same workspace on another browser. Your Firebase list is encrypted before backup.</p>
+        <input class="share-large-input" id="account-username" autocomplete="username" maxlength="32" placeholder="Username">
+        <input class="share-large-input" id="account-password" type="password" autocomplete="current-password" maxlength="128" placeholder="Password (8+ characters)" style="margin-top:8px;" onkeydown="if(event.key==='Enter') loginAccount()">
+        <div class="account-auth-actions"><button class="cyber-btn" type="button" onclick="signupAccount()">CREATE ACCOUNT</button><button class="cyber-btn" type="button" onclick="loginAccount()">LOG IN</button></div>
+      </div>
+      <div id="account-user-panel" style="display:none;">
+        <p class="share-stage-kicker">SIGNED IN AS</p>
+        <h3 class="share-form-title" id="account-username-display">...</h3>
+        <div class="account-summary"><div class="account-stat"><span>FIREBASES HERE</span><strong id="account-local-count">0</strong></div><div class="account-stat"><span>VAULT BACKUP</span><strong id="account-backup-count">0</strong></div></div>
+        <div class="account-status-line" id="account-status-line">Account session is active.</div>
+        <div class="account-vault-panel"><p>Enter your account password in this session to unlock encrypted backup and restore.</p><input class="share-large-input" id="account-vault-password" type="password" autocomplete="current-password" maxlength="128" placeholder="Account password"><div class="account-vault-actions" style="margin-top:8px;"><button class="cyber-btn" type="button" onclick="unlockAccountVault()">UNLOCK VAULT</button><button class="cyber-btn" type="button" onclick="openBackupVaultModal()">OPEN VAULT</button></div></div>
+        <button class="cyber-btn account-logout" type="button" onclick="logoutAccount()">LOG OUT</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCOUNT BACKUP NOTICE -->
+<div class="account-notice" id="accountBackupNotice" role="dialog" aria-modal="true" aria-labelledby="account-notice-title"><div class="account-notice-card"><p class="account-notice-kicker">IMPORTANT · WORKSPACE PROTECTION</p><h2 class="account-notice-title" id="account-notice-title">Keep your Firebase workspace</h2><p class="account-notice-copy">Create an account to restore your Firebase connections even after this browser's local data is cleared.</p><a class="account-notice-link" href="#" onclick="dismissAccountBackupNotice(false); openAccountModal('signup'); return false;">CLICK TO CREATE AN ACCOUNT</a><div class="account-notice-footer"><span class="account-notice-timer" id="account-notice-timer">CLOSES IN 30S</span><button class="cyber-btn account-notice-close" type="button" onclick="dismissAccountBackupNotice(true)">DON'T SHOW AGAIN</button><button class="cyber-btn account-notice-close" type="button" onclick="dismissAccountBackupNotice(false)">CLOSE</button></div></div></div>
 
 <!-- SHARE UNLOCK MODAL -->
 <div class="scan-overlay share-overlay" id="shareUnlockModal" role="dialog" aria-modal="true" aria-labelledby="share-unlock-title">
@@ -1410,6 +1563,7 @@ function saveStorage() {
         localStorage.setItem('void_vault', JSON.stringify(ghostVault)); 
         localStorage.setItem('void_removed_firebase_urls', JSON.stringify(removedFirebaseUrls));
         localStorage.setItem('void_firebase_list', JSON.stringify(firebaseList));
+        queueFirebaseBackupSync();
     } catch(e) {} 
 }
 
@@ -1454,8 +1608,8 @@ restoreFirebaseList();
 
 // ===================== URL EXTRACTOR & FIREBASE LOGIC =====================
 function extractUrlsFromText(rawStr) { const regex = /([a-zA-Z0-9-]+)\.firebaseio\.com/gi; let matches = rawStr.match(regex); if (!matches) return []; return [...new Set(matches)].map(domain => `https://${domain.toLowerCase()}/.json`); }
-function addUrlToFirebaseList(url) { if (firebaseList.some(item => item.url === url)) return false; removedFirebaseUrls = removedFirebaseUrls.filter(item => item !== url); firebaseList.push({ url, isConnected: true }); if (!activeDatabases.includes(url)) activeDatabases.push(url); saveStorage(); return true; }
-function addSharedUrlToFirebaseList(url) { if (firebaseList.some(item => item.url === url)) return 0; removedFirebaseUrls = removedFirebaseUrls.filter(item => item !== url); firebaseList.push({ url, isConnected: true }); if (!activeDatabases.includes(url)) activeDatabases.push(url); saveStorage(); return 1; }
+function addUrlToFirebaseList(url) { if (firebaseList.some(item => item.url === url)) return false; removedFirebaseUrls = removedFirebaseUrls.filter(item => item !== url); firebaseList.push({ url, isConnected: true }); if (!activeDatabases.includes(url)) activeDatabases.push(url); saveStorage(); scheduleAccountBackupNotice(); return true; }
+function addSharedUrlToFirebaseList(url) { if (firebaseList.some(item => item.url === url)) return 0; removedFirebaseUrls = removedFirebaseUrls.filter(item => item !== url); firebaseList.push({ url, isConnected: true }); if (!activeDatabases.includes(url)) activeDatabases.push(url); saveStorage(); scheduleAccountBackupNotice(); return 1; }
 function disconnectFirebase(url) { let item = firebaseList.find(i => i.url === url); if (item && item.isConnected) { item.isConnected = false; activeDatabases = activeDatabases.filter(u => u !== url); globalTargetsCache = globalTargetsCache.filter(t => t.dbUrl !== url); saveStorage(); updateDashboardCounts(); renderFilteredList(true); showToast("NODE DISCONNECTED."); } }
 function connectFirebase(url) { let item = firebaseList.find(i => i.url === url); if (!item || item.isConnected) return; item.isConnected = true; if (!activeDatabases.includes(url)) activeDatabases.push(url); saveStorage(); showToast("NODE CONNECTED."); }
 function deleteFirebase(url, event) { if (event) { event.preventDefault(); event.stopPropagation(); } cyberConfirm('Remove this Firebase permanently?', () => { firebaseList = firebaseList.filter(item => item.url !== url); activeDatabases = firebaseList.filter(item => item.isConnected).map(item => item.url); globalTargetsCache = globalTargetsCache.filter(t => t.dbUrl !== url); if (!removedFirebaseUrls.includes(url)) removedFirebaseUrls.push(url); saveStorage(); updateDashboardCounts(); renderFilteredList(true); renderFirebaseList(); showToast("NODE PURGED."); }); }
@@ -1691,6 +1845,9 @@ const SHARE_MANAGED_STORAGE_KEY = 'xcore-managed-share-links-v1';
 const SHARE_BROWSER_ID_STORAGE_KEY = 'xcore-share-browser-id-v1';
 const SHARE_NOTICE_STORAGE_KEY = 'xcore-share-notice-links-v1';
 let managedShareRows = [];
+let editingManagedIndex = -1;
+let editingLinkUrls = new Set();
+let editingLinkOptionUrls = [];
 let ownerMessageTimer = null;
 let shareAnnouncementTimer = null;
 let shareAnnouncementRequestInFlight = false;
@@ -1928,6 +2085,12 @@ function formatShareDate(value) {
   return date.toLocaleString([], { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
 }
 
+function getShareDaysRemaining(value) {
+  const time = new Date(value).getTime();
+  if (Number.isNaN(time)) return null;
+  return Math.ceil((time - Date.now()) / 86400000);
+}
+
 function renderManagedShares(shares) {
   const list = document.getElementById('managed-link-list');
   const count = document.getElementById('managed-links-count');
@@ -1941,11 +2104,15 @@ function renderManagedShares(shares) {
   list.innerHTML = managedShareRows.map((share, index) => {
     const revoked = Boolean(share.revoked);
     const label = share.protected ? 'PASS PROTECTED' : 'PUBLIC LINK';
-    return `<article class="managed-link-card ${revoked ? 'revoked' : ''}">
+    const daysRemaining = getShareDaysRemaining(share.expiresAt);
+    const expiring = !revoked && daysRemaining !== null && daysRemaining >= 0 && daysRemaining <= 3;
+    const expiryWarning = expiring ? `<p class="managed-link-warning">EXPIRY ALERT - ${daysRemaining === 0 ? 'EXPIRES TODAY' : `${daysRemaining} DAY${daysRemaining === 1 ? '' : 'S'} LEFT`}</p>` : '';
+    return `<article class="managed-link-card ${revoked ? 'revoked' : ''} ${expiring ? 'expiring' : ''}">
       <div class="managed-link-top">
         <div><p class="managed-link-name">LINK ${String(index + 1).padStart(2, '0')} · ${escapeShareText(share.identifier)}</p><p class="managed-link-meta">${label} · CREATED ${formatShareDate(share.createdAt)}</p></div>
         <div class="managed-link-status"><span class="managed-link-dot"></span>${revoked ? 'REVOKED' : 'ACTIVE'}</div>
       </div>
+      ${expiryWarning}
       <div class="managed-link-stats">
         <div class="managed-link-stat"><span class="managed-link-stat-label">FIREBASES</span><span class="managed-link-stat-value">${Number(share.firebaseCount || 0)}</span></div>
         <div class="managed-link-stat"><span class="managed-link-stat-label">BROWSERS</span><span class="managed-link-stat-value">${Number(share.accessCount || 0)}</span></div>
@@ -1956,9 +2123,14 @@ function renderManagedShares(shares) {
         <textarea id="managed-link-message-${index}" maxlength="500" placeholder="Drop an optional message for people who have opened this link...">${escapeShareText(share.ownerMessage || '')}</textarea>
         <button class="cyber-btn" type="button" onclick="saveManagedShareMessage(${index})">PUBLISH<br>MESSAGE</button>
       </div>
+      <div class="managed-link-subactions">
+        <button class="cyber-btn" type="button" onclick="openManagedLinkEditor(${index})">EDIT LINK</button>
+        <button class="cyber-btn" type="button" onclick="openManagedLinkActivity(${index})">ACTIVITY</button>
+      </div>
       <div class="managed-link-actions">
         <button class="cyber-btn" type="button" onclick="copyManagedShareLink(${index})">COPY</button>
         <button class="cyber-btn ${revoked ? 'managed-link-revive' : 'managed-link-revoke'}" type="button" onclick="setManagedShareRevoked(${index}, ${revoked ? 'false' : 'true'})">${revoked ? 'REVIVE' : 'REVOKE'}</button>
+        <button class="cyber-btn managed-link-delete" type="button" onclick="deleteManagedShare(${index})">DELETE</button>
       </div>
     </article>`;
   }).join('');
@@ -2040,6 +2212,417 @@ async function saveManagedShareMessage(index) {
   } catch (error) {
     showToast(error.message || 'MESSAGE UPDATE FAILED.');
   }
+}
+
+function getManagedShareReference(index) {
+  const share = managedShareRows[index];
+  const reference = getManagedShareReferences().find(item => item.identifier === (share && share.identifier));
+  return share && reference ? { share, reference } : null;
+}
+
+async function postManagedShareAction(action, reference, extra = {}) {
+  const response = await fetch('/api/shares/manage', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, identifier: reference.identifier, managementKey: reference.managementKey, ...extra })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.detail || 'Unable to update link');
+  return data;
+}
+
+function closeLinkEditorModal() {
+  document.getElementById('linkEditorModal').classList.remove('open');
+  editingManagedIndex = -1;
+  editingLinkUrls = new Set();
+  editingLinkOptionUrls = [];
+}
+
+function renderManagedLinkEditorChoices() {
+  const list = document.getElementById('link-editor-list');
+  if (!list) return;
+  editingLinkOptionUrls = [...new Set([...firebaseList.map(item => item.url), ...editingLinkUrls])];
+  if (!editingLinkOptionUrls.length) {
+    list.innerHTML = '<div class="managed-link-empty">Add a Firebase URL to include it in this link.</div>';
+    return;
+  }
+  list.innerHTML = editingLinkOptionUrls.map((url, index) => {
+    const checked = editingLinkUrls.has(url) ? 'checked' : '';
+    const label = escapeShareText(url.replace(/^https:\/\//, '').replace(/\/\.json$/, ''));
+    return `<div class="link-editor-choice"><input id="edit-link-choice-${index}" type="checkbox" ${checked} onchange="toggleEditedLinkUrl(${index})"><label for="edit-link-choice-${index}">${label}</label></div>`;
+  }).join('');
+}
+
+function toggleEditedLinkUrl(index) {
+  const url = editingLinkOptionUrls[index];
+  if (!url) return;
+  if (editingLinkUrls.has(url)) editingLinkUrls.delete(url);
+  else editingLinkUrls.add(url);
+}
+
+function addFirebaseToEditedLink() {
+  const input = document.getElementById('link-editor-add-url');
+  const url = normalizeScanFbUrl(input && input.value);
+  if (!url) { showToast('ENTER A VALID FIREBASE URL.'); return; }
+  addUrlToFirebaseList(url);
+  editingLinkUrls.add(url);
+  if (input) input.value = '';
+  renderManagedLinkEditorChoices();
+  renderFirebaseList();
+  updateDashboardCounts();
+}
+
+async function openManagedLinkEditor(index) {
+  const owned = getManagedShareReference(index);
+  if (!owned) { showToast('LINK OWNERSHIP KEY NOT FOUND.'); return; }
+  try {
+    const data = await postManagedShareAction('get-content', owned.reference);
+    editingManagedIndex = index;
+    editingLinkUrls = new Set(Array.isArray(data.urls) ? data.urls : []);
+    const days = getShareDaysRemaining(data.share && data.share.expiresAt);
+    document.getElementById('link-editor-copy').textContent = `Editing ${data.share && data.share.identifier || owned.share.identifier}. Changes apply immediately.`;
+    document.getElementById('link-editor-add-url').value = '';
+    document.getElementById('link-editor-max-opens').value = data.share && data.share.maxOpens || '';
+    document.getElementById('link-editor-validity-days').value = Math.max(1, Math.min(365, days || 30));
+    renderManagedLinkEditorChoices();
+    document.getElementById('linkEditorModal').classList.add('open');
+  } catch (error) {
+    showToast(error.message || 'UNABLE TO LOAD LINK.');
+  }
+}
+
+async function saveEditedLink() {
+  const owned = getManagedShareReference(editingManagedIndex);
+  const maxOpens = document.getElementById('link-editor-max-opens').value.trim();
+  const validityDays = document.getElementById('link-editor-validity-days').value.trim();
+  if (!owned) { showToast('LINK OWNERSHIP KEY NOT FOUND.'); return; }
+  if (!editingLinkUrls.size) { showToast('KEEP AT LEAST 1 FIREBASE IN THE LINK.'); return; }
+  if (maxOpens && (!/^\d+$/.test(maxOpens) || Number(maxOpens) < 1 || Number(maxOpens) > 10000)) { showToast('BROWSER LIMIT MUST BE 1-10000.'); return; }
+  if (!/^\d+$/.test(validityDays) || Number(validityDays) < 1 || Number(validityDays) > 365) { showToast('VALIDITY MUST BE 1-365 DAYS.'); return; }
+  try {
+    const content = await postManagedShareAction('set-content', owned.reference, { urls: Array.from(editingLinkUrls) });
+    const controls = await postManagedShareAction('set-controls', owned.reference, { controls: { maxOpens: maxOpens || null, validityDays: Number(validityDays) } });
+    managedShareRows[editingManagedIndex] = {
+      ...owned.share,
+      ...content.share,
+      expiresAt: controls.share.expiresAt,
+      maxOpens: controls.share.maxOpens
+    };
+    renderManagedShares(managedShareRows);
+    closeLinkEditorModal();
+    showToast('LINK CHANGES SAVED.');
+  } catch (error) {
+    showToast(error.message || 'LINK UPDATE FAILED.');
+  }
+}
+
+function closeLinkActivityModal() {
+  document.getElementById('linkActivityModal').classList.remove('open');
+}
+
+function formatActivityType(type) {
+  const labels = {
+    link_created: 'LINK CREATED', browser_opened: 'BROWSER OPENED', link_revoked: 'LINK REVOKED',
+    link_revived: 'LINK REVIVED', message_published: 'MESSAGE PUBLISHED', message_cleared: 'MESSAGE CLEARED',
+    firebase_list_updated: 'FIREBASE LIST UPDATED', link_controls_updated: 'LINK CONTROLS UPDATED'
+  };
+  return labels[type] || 'LINK UPDATED';
+}
+
+async function openManagedLinkActivity(index) {
+  const owned = getManagedShareReference(index);
+  const feed = document.getElementById('link-activity-feed');
+  if (!owned || !feed) { showToast('LINK OWNERSHIP KEY NOT FOUND.'); return; }
+  document.getElementById('link-activity-copy').textContent = `Recent activity for ${owned.share.identifier}.`;
+  feed.innerHTML = '<div class="managed-link-empty">LOADING ACTIVITY...</div>';
+  document.getElementById('linkActivityModal').classList.add('open');
+  try {
+    const data = await postManagedShareAction('activity', owned.reference);
+    const events = Array.isArray(data.events) ? data.events : [];
+    feed.innerHTML = events.length ? events.map(event => `<div class="activity-event"><span class="activity-event-dot"></span><div><div class="activity-event-type">${escapeShareText(formatActivityType(event.event_type))}</div><div class="activity-event-time">${formatShareDate(event.created_at)}</div></div></div>`).join('') : '<div class="managed-link-empty">No activity recorded yet.</div>';
+  } catch (error) {
+    feed.innerHTML = `<div class="managed-link-empty">${escapeShareText(error.message || 'Unable to load activity.')}</div>`;
+  }
+}
+
+function deleteManagedShare(index) {
+  const owned = getManagedShareReference(index);
+  if (!owned) { showToast('LINK OWNERSHIP KEY NOT FOUND.'); return; }
+  cyberConfirm('Delete this link permanently? It cannot be revived.', async () => {
+    try {
+      await postManagedShareAction('delete', owned.reference);
+      const references = getManagedShareReferences().filter(item => item.identifier !== owned.reference.identifier);
+      saveManagedShareReferences(references);
+      managedShareRows.splice(index, 1);
+      renderManagedShares(managedShareRows);
+      showToast('LINK PERMANENTLY DELETED.');
+    } catch (error) {
+      showToast(error.message || 'LINK DELETE FAILED.');
+    }
+  });
+}
+
+let backupSyncTimer = null;
+let backupSyncInFlight = false;
+let lastBackupFingerprint = '';
+let accountProfile = null;
+let accountVaultPassword = '';
+let accountNoticeTimer = null;
+let accountNoticeSeconds = 30;
+
+function base64UrlFromBytes(bytes) {
+  let binary = '';
+  new Uint8Array(bytes).forEach(byte => { binary += String.fromCharCode(byte); });
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+}
+
+function bytesFromBase64Url(value) {
+  const text = String(value || '').replace(/-/g, '+').replace(/_/g, '/');
+  const padded = text + '='.repeat((4 - text.length % 4) % 4);
+  const binary = atob(padded);
+  return Uint8Array.from(binary, char => char.charCodeAt(0));
+}
+
+async function getBackupEncryptionKey(password) {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(password || '')));
+  return crypto.subtle.importKey('raw', digest, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+}
+
+function getFirebaseBackupPayload() {
+  return JSON.stringify({ version: 1, firebases: firebaseList.map(item => ({ url: item.url, isConnected: item.isConnected !== false })) });
+}
+
+async function encryptFirebaseBackup(password) {
+  const iv = new Uint8Array(12);
+  crypto.getRandomValues(iv);
+  const key = await getBackupEncryptionKey(password);
+  const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(getFirebaseBackupPayload()));
+  return { encryptedPayload: base64UrlFromBytes(encrypted), iv: base64UrlFromBytes(iv) };
+}
+
+async function decryptFirebaseBackup(password, encryptedPayload, iv) {
+  const key = await getBackupEncryptionKey(password);
+  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: bytesFromBase64Url(iv) }, key, bytesFromBase64Url(encryptedPayload));
+  const payload = JSON.parse(new TextDecoder().decode(plain));
+  if (!payload || !Array.isArray(payload.firebases)) throw new Error('Backup contents are invalid');
+  return payload.firebases;
+}
+
+function setBackupVaultStatus(html) {
+  const status = document.getElementById('backup-vault-status');
+  if (status) status.innerHTML = html;
+}
+
+function closeBackupVaultModal() {
+  document.getElementById('backupVaultModal').classList.remove('open');
+}
+
+function openBackupVaultModal() {
+  if (!accountProfile) { openAccountModal('signup'); showToast('CREATE OR LOG IN TO USE THE VAULT.'); return; }
+  if (!accountVaultPassword) { openAccountModal(); showToast('UNLOCK YOUR ACCOUNT VAULT FIRST.'); return; }
+  setBackupVaultStatus('<p class="backup-status"><strong>ACCOUNT VAULT READY</strong><br>Your Firebase list is encrypted with your account password before it is stored.</p>');
+  document.getElementById('backupVaultModal').classList.add('open');
+}
+
+async function sendAccountBackup() {
+  if (!accountProfile || !accountVaultPassword) throw new Error('Unlock your account vault first');
+  const encrypted = await encryptFirebaseBackup(accountVaultPassword);
+  const response = await fetch('/api/backups', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'sync', firebaseCount: firebaseList.length, ...encrypted })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.detail || 'Unable to sync backup vault');
+  lastBackupFingerprint = getFirebaseBackupPayload();
+  return data;
+}
+
+async function syncFirebaseAccountVault() {
+  if (!firebaseList.length) { showToast('ADD AT LEAST 1 FIREBASE BEFORE BACKUP.'); return; }
+  try {
+    const data = await sendAccountBackup();
+    if (accountProfile) accountProfile.backup = { firebaseCount: data.firebaseCount, updatedAt: data.updatedAt };
+    updateAccountPanel();
+    setBackupVaultStatus('<p class="backup-status"><strong>ACCOUNT VAULT SYNCED</strong><br>Your current Firebase list is encrypted and saved to this account.</p>');
+    showToast('ACCOUNT VAULT SYNCED.');
+  } catch (error) { showToast(error.message || 'BACKUP SYNC FAILED.'); }
+}
+
+async function restoreFirebaseAccountVault() {
+  if (!accountProfile || !accountVaultPassword) { closeBackupVaultModal(); openAccountModal(); showToast('UNLOCK YOUR ACCOUNT VAULT FIRST.'); return; }
+  try {
+    const response = await fetch('/api/backups', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'read' })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || 'Unable to open backup vault');
+    const restored = await decryptFirebaseBackup(accountVaultPassword, data.encryptedPayload, data.iv);
+    let added = 0;
+    restored.forEach(item => {
+      const url = normalizeScanFbUrl(item && item.url);
+      if (!url) return;
+      const existing = firebaseList.find(entry => entry.url === url);
+      if (existing) { existing.isConnected = existing.isConnected || item.isConnected !== false; return; }
+      firebaseList.push({ url, isConnected: item.isConnected !== false });
+      added += 1;
+    });
+    syncActiveDatabasesFromList();
+    lastBackupFingerprint = getFirebaseBackupPayload();
+    saveStorage(); renderFirebaseList(); updateDashboardCounts();
+    if (activeDatabases.length) fetchAndRenderTargets(false);
+    closeBackupVaultModal();
+    showToast(`${added} FIREBASE${added === 1 ? '' : 'S'} RESTORED.`);
+  } catch (error) { showToast(error.message || 'BACKUP RESTORE FAILED.'); }
+}
+
+function queueFirebaseBackupSync() {
+  const fingerprint = getFirebaseBackupPayload();
+  if (!accountProfile || !accountVaultPassword || fingerprint === lastBackupFingerprint || backupSyncInFlight) return;
+  if (!firebaseList.length && accountProfile.backup && accountProfile.backup.firebaseCount > 0) return;
+  if (backupSyncTimer) clearTimeout(backupSyncTimer);
+  backupSyncTimer = setTimeout(async () => {
+    backupSyncTimer = null;
+    if (backupSyncInFlight || getFirebaseBackupPayload() === lastBackupFingerprint) return;
+    backupSyncInFlight = true;
+    try {
+      const data = await sendAccountBackup();
+      if (accountProfile) accountProfile.backup = { firebaseCount: data.firebaseCount, updatedAt: data.updatedAt };
+      updateAccountPanel();
+    } catch {} finally { backupSyncInFlight = false; }
+  }, 1800);
+}
+
+function updateAccountPanel() {
+  const guest = document.getElementById('account-guest-panel');
+  const user = document.getElementById('account-user-panel');
+  const subtitle = document.getElementById('account-subtitle');
+  if (!guest || !user) return;
+  const signedIn = !!accountProfile;
+  guest.style.display = signedIn ? 'none' : 'block';
+  user.style.display = signedIn ? 'block' : 'none';
+  subtitle.textContent = signedIn ? 'Your account workspace and encrypted Firebase backup.' : 'Create an account to protect your Firebase workspace.';
+  if (!signedIn) return;
+  document.getElementById('account-username-display').textContent = accountProfile.username;
+  document.getElementById('account-local-count').textContent = firebaseList.length;
+  document.getElementById('account-backup-count').textContent = accountProfile.backup ? accountProfile.backup.firebaseCount : '0';
+  document.getElementById('account-status-line').textContent = accountVaultPassword
+    ? 'VAULT UNLOCKED FOR THIS SESSION. Firebase changes will sync automatically.'
+    : 'Account session active. Enter your password to unlock encrypted vault backup.';
+}
+
+function closeAccountModal() {
+  document.getElementById('accountModal').classList.remove('open');
+}
+
+async function requestAccount(action, payload = {}) {
+  const response = await fetch('/api/account', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, ...payload })
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.detail || 'Account request failed');
+  return data;
+}
+
+async function refreshAccountProfile() {
+  try {
+    const data = await requestAccount('me');
+    accountProfile = data.account || null;
+  } catch { accountProfile = null; accountVaultPassword = ''; }
+  updateAccountPanel();
+  return accountProfile;
+}
+
+function openAccountModal(mode = '') {
+  updateAccountPanel();
+  document.getElementById('accountModal').classList.add('open');
+  const username = document.getElementById('account-username');
+  const vaultPassword = document.getElementById('account-vault-password');
+  setTimeout(() => (accountProfile ? vaultPassword : username).focus(), 80);
+  if (mode === 'signup' && !accountProfile) document.getElementById('account-password').autocomplete = 'new-password';
+}
+
+async function signupAccount() {
+  const username = document.getElementById('account-username').value.trim();
+  const password = document.getElementById('account-password').value;
+  try {
+    const data = await requestAccount('signup', { username, password });
+    accountProfile = data.account;
+    accountVaultPassword = password;
+    document.getElementById('account-password').value = '';
+    updateAccountPanel();
+    showToast('ACCOUNT CREATED. VAULT IS UNLOCKED.');
+    queueFirebaseBackupSync();
+  } catch (error) { showToast(error.message || 'ACCOUNT CREATION FAILED.'); }
+}
+
+async function loginAccount() {
+  const username = document.getElementById('account-username').value.trim();
+  const password = document.getElementById('account-password').value;
+  try {
+    const data = await requestAccount('login', { username, password });
+    accountProfile = data.account;
+    accountVaultPassword = password;
+    document.getElementById('account-password').value = '';
+    updateAccountPanel();
+    showToast('LOGGED IN. VAULT IS UNLOCKED.');
+    if (accountProfile.backup) lastBackupFingerprint = getFirebaseBackupPayload();
+    else queueFirebaseBackupSync();
+  } catch (error) { showToast(error.message || 'LOGIN FAILED.'); }
+}
+
+function unlockAccountVault() {
+  const input = document.getElementById('account-vault-password');
+  const password = input.value;
+  if (password.length < 8) { showToast('ENTER YOUR ACCOUNT PASSWORD.'); return; }
+  accountVaultPassword = password;
+  input.value = '';
+  updateAccountPanel();
+  if (accountProfile && accountProfile.backup) lastBackupFingerprint = getFirebaseBackupPayload();
+  else queueFirebaseBackupSync();
+  showToast('ACCOUNT VAULT UNLOCKED.');
+}
+
+async function logoutAccount() {
+  try { await requestAccount('logout'); } catch {}
+  accountProfile = null;
+  accountVaultPassword = '';
+  lastBackupFingerprint = '';
+  updateAccountPanel();
+  showToast('LOGGED OUT.');
+}
+
+function updateAccountNoticeTimer() {
+  const timer = document.getElementById('account-notice-timer');
+  if (timer) timer.textContent = `CLOSES IN ${accountNoticeSeconds}S`;
+}
+
+function dismissAccountBackupNotice(disable) {
+  if (disable) localStorage.setItem('void_account_notice_hidden', '1');
+  if (accountNoticeTimer) clearInterval(accountNoticeTimer);
+  accountNoticeTimer = null;
+  document.getElementById('accountBackupNotice').classList.remove('open');
+}
+
+function notifyAccountBackupOpportunity() {
+  if (accountProfile || localStorage.getItem('void_account_notice_hidden') === '1') return;
+  if (accountNoticeTimer) clearInterval(accountNoticeTimer);
+  accountNoticeSeconds = 30;
+  updateAccountNoticeTimer();
+  document.getElementById('accountBackupNotice').classList.add('open');
+  accountNoticeTimer = setInterval(() => {
+    accountNoticeSeconds -= 1;
+    updateAccountNoticeTimer();
+    if (accountNoticeSeconds <= 0) dismissAccountBackupNotice(false);
+  }, 1000);
+}
+
+function scheduleAccountBackupNotice() {
+  if (accountProfile || localStorage.getItem('void_account_notice_hidden') === '1') return;
+  clearTimeout(window.accountNoticeDebounce);
+  window.accountNoticeDebounce = setTimeout(notifyAccountBackupOpportunity, 350);
 }
 
 function getSecureShareTokenFromPath() {
@@ -3070,6 +3653,8 @@ function placeShareButton() {
   const topBar = document.querySelector('.top-bar');
   const profileButton = topBar && topBar.querySelector('.icon-btn:last-child');
   if (!topBar || !profileButton || topBar.querySelector('.top-bar-actions')) return;
+  profileButton.setAttribute('onclick', 'openAccountModal()');
+  profileButton.setAttribute('title', 'Profile and account');
   const actions = document.createElement('div');
   actions.className = 'top-bar-actions';
   actions.innerHTML = `
@@ -3097,6 +3682,7 @@ function placeShareButton() {
 
 document.addEventListener("DOMContentLoaded", () => { 
     placeShareButton();
+    refreshAccountProfile();
     let payloadAdded = checkSharedPayload();
     const secureToken = getSecureShareTokenFromPath();
     setTimeout(() => { 
@@ -3524,6 +4110,7 @@ async function reconnectScannedFb() {
   } else if (!existing) {
     firebaseList.push({ url: fbUrl, isConnected: true });
     activeDatabases.push(fbUrl);
+    scheduleAccountBackupNotice();
   }
   renderFirebaseList();
 }
